@@ -1,0 +1,24 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}{{ user.username }}{% endblock %}
+{% block mainContent %}
+    <div class="container user-profile top-margin">
+
+        <div class="row">
+            <div class="col-lg-4 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="profile-pic" src="{{ asset('uploads/user/profilepics/') }}{{ user.profilePicturePath }}">
+                        <div class="username">{{ user.username }}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-8">
+
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

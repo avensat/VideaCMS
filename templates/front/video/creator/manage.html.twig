@@ -1,0 +1,82 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Gestionnaire de vidéos{% endblock %}
+
+{% block mainContent %}
+    <div class="spacer"></div>
+<div class="container-fluid manager">
+    <a style="float: right" href="{{ path("video_add") }}" class="btn btn-dark"><i class="fal fa-plus"></i> Ajouter une vidéo</a>
+    <div class="title">Gestionnaire de vidéos</div>
+    <a href="{{ path("video_channel", {"user": app.user.usernameCanonical}) }}" class="channel-link">Accéder à ma chaine</a>
+    <div class="spacer"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="head">Liens externes</div>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date d'ajout</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for extVideo in extVideos %}
+                    <tr>
+                        <th scope="row">{{ extVideo.title }}</th>
+                        <td>
+                            {{ extVideo.createdAt|date("d/m/Y à H:i") }}
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                <a href="{{ path('video_view', {"id": "v" ~ extVideo.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path('video_edit', {'type': 'video', 'id': extVideo.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a href="{{ path('video_delete', {'type': 'video', 'id': extVideo.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        Pas de vidéos.
+                    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="head">Vidéos locales</div>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date d'ajout</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for upVideo in upVideos %}
+                    <tr>
+                        <th scope="row">{{ upVideo.title }}</th>
+                        <td>
+                            {{ upVideo.createdAt|date("d/m/Y à H:i") }}
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                <a href="{{ path('video_view', {"id": "u" ~ upVideo.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path('video_edit', {'type': 'upload', 'id': upVideo.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a href="{{ path('video_delete', {'type': 'upload', 'id': upVideo.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        Pas de vidéos
+                    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

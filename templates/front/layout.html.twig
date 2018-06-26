@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('dist/styles/Front/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('dist/styles/Front/plyr.css') }}">
+        <link rel="stylesheet" href="{{ asset('dist/styles/ionicons.min.css') }}">
+        <title>{% block title %}VideaCMS{% endblock %}</title>
+    </head>
+
+    <body>
+        {% include('front/loader.html.twig') %}
+        {% block header %}
+        <div class="fixed-top">
+            <header class="topbar">
+                <div class="container">
+                    <div class="row">
+                        <!-- social icon-->
+                        <div class="col-sm-12">
+                            <ul class="social-network">
+                                <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-youtube"></i></a></li>
+                                <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-facebook"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ path('front_homepage') }}" style="text-transform: uppercase; color: black">
+                        VidéaCMS
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive" style="font-family: 'Work Sans', sans-serif;">
+
+                        <ul class="navbar-nav ml-auto fs_navbar">
+
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ path('front_homepage') }}">Accueil
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('news_homepage') }}">Articles</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('video_homepage') }}">Vidéos</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('poll_homepage') }}">Sondages</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="">à Propos</a>
+                            </li>
+
+                            {% if is_granted('ROLE_CREATOR') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('administrationCreator') }}">Administration</a>
+                                </li>
+                            {% endif %}
+
+                            <li class="nav-item">
+                                {% if app.user %}
+                                    <a class="nav-link" href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                                {% else %}
+                                    <a class="nav-link" href="{{ path('fos_user_security_login') }}">Connexion</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div style="height:83px"></div>
+        {% endblock %}
+
+        <div class="mt-3">
+        {% block mainContent %} {% endblock %}
+        </div>
+
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="http://malsup.github.io/min/jquery.form.min.js"></script>
+        <script src="https://unpkg.com/sweetalert2@7.22.2/dist/sweetalert2.all.js"></script>
+        <script>
+
+            $(function() {
+                $(".progress-bar").hide();
+                var bar = $('.bar');
+                var percent = $('.percent');
+                var status = $('#status');
+
+                $('.upload-form').ajaxForm({
+                    beforeSend: function() {
+                        status.empty();
+                        var percentVal = '0%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    uploadProgress: function(event, position, total, percentComplete) {
+                        $(".progress-bar").show();
+                        $(".upload-form").LoadingOverlay("show");
+                        var percentVal = percentComplete + '%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    complete: function(xhr) {
+                        console.log(xhr.responseJSON);
+                        if(xhr.responseJSON.status === "ok"){
+                            $(".upload-form").LoadingOverlay("hide", 1);
+                            var id = xhr.responseJSON.link;
+                            {% set link = path('video_view', {'id': 'u' }) %}
+
+                            swal({
+                                title: 'Vidéo envoyée !',
+                                type: 'success',
+                                html: 'Vous pouvez désormais la visualiser à cette adresse : <br> <a href="{{ link }}' + id + '">{{ link }}' + id + '</a>',
+                                focusConfirm: false,
+                                footer: '<a href="{{ path("video_manage") }}">Retourner au gestionnaire</a>'
+                            });
+
+                            status.html("Le lien est {{ link }}" + id);
+                        }
+                    }
+                });
+            });
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.4/dist/loadingoverlay.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script defer src="{{ asset('dist/scripts/lib/font-awesome/all.js') }}"></script>
+    </body>
+</html>

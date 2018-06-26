@@ -1,0 +1,10 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="fos_user_user_show">
+    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+</div>
+
+<h3>Menu</h3>
+<a href="{{ path("video_manage") }}">Mes vidéos</a><br>
+<a href="{{ path("news_manage") }}">Mes articles</a><br>

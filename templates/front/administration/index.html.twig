@@ -1,0 +1,42 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Administration{% endblock %}
+
+{% block mainContent %}
+
+    <div class="container add">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body content">
+                        <a href="{{ path("news_manage") }}">
+                            <i class="fal fa-newspaper icon"></i>
+                            <span>Articles</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body content">
+                        <a href="{{ path("video_manage") }}">
+                            <i class="fal fa-video icon"></i>
+                            <span>Vidéos</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body content">
+                        <a href="{{ path("video_add") }}">
+                            <i class="fal fa-chart-pie icon"></i>
+                            <span>Sondages</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

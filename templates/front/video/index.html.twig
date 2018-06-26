@@ -1,0 +1,59 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Vidéos - {% endblock %}
+
+{% block mainContent %}
+    <div class="container">
+        <div class="row">
+            {% for video in videos %}
+                <div class="col-lg-8 offset-md-2 mb-4">
+                    <div class="card">
+                        <div class="card-header fs-header">
+                            <i class="far fa-video mr-2"></i> <span>{{ video.title }}</span>
+                        </div>
+                        <div class="card-body">
+                            {% if video.url is defined %}
+                                <div id="ytplayer-{{ video.urlId }}" class="ytvideo"></div>
+                            {% else %}
+                                Bonjour
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            {% if video.url is defined %}
+                                <i class="far fa-thumbs-up"></i> {{ getLikeCountForId(video.urlId) }} <span class="separator">|</span>
+                                <i class="far fa-comment"></i> {{ getCommentCountForId(video.urlId) }}
+                                <a href="{{ path('video_view', {'id': "v"~video.id}) }}" class="btn btn-success float-right">Commenter la vidéo</a>
+                            {% else %}
+                                <i class="far fa-thumbs-up"></i> {{ video.likes }}
+                                <a href="{{ path('video_view', {'id': "u"~video.id}) }}" class="btn btn-success float-right">Commenter la vidéo</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                Pas de vidéo
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Load the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/player_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubePlayerAPIReady() {
+            {% for video in videos %}
+                {% if video.url is defined %}
+                    player = new YT.Player('ytplayer-{{ video.urlId }}', {
+                        height: '360',
+                        width: '640',
+                        videoId: '{{ video.urlId }}'
+                    });
+                {% endif %}
+            {% endfor %}
+        }
+    </script>
+{% endblock %}

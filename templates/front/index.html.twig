@@ -1,0 +1,82 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Index - {% endblock %}
+
+{% block mainContent %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+
+            <div class="card">
+                <div class="card-header fs-header">
+                    <i class="fal fa-newspaper fa-lg mr-2"></i> <span>Actualités</span>
+                </div>
+                <div class="card-body">
+                    {% for article in getLastArticles() %}
+                        <div class="well well-sm {{ loop.last == false ? 'mb-3' }}">
+                            <div class="row">
+                                <div class="col-xs-9 col-md-9 section-box">
+                                    <div class="fs-video-list-title">{{ article.title }}</div>
+                                    <hr />
+                                    <div class="row rating-desc">
+                                        <div class="col-md-12">
+                                            <span class="fs-video-list-user"><span class="ion-person"></span> {{ article.user.username }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+
+            <div class="card">
+                <div class="card-header fs-header">
+                    <i class="fal fa-video fa-lg mr-2"></i><span>Dernières vidéos</span>
+                </div>
+                <div class="card-body">
+                    {% for video in getLastVideos() %}
+                        <div class="well well-sm {{ loop.last == false ? 'mb-3' }}">
+                            <div class="row">
+                                <div class="col-xs-3 col-md-3 text-center">
+                                    {% if video.url is defined %}
+                                        <img width="85px" src="{{ video.thumbnail }}" class="img-rounded img-responsive" />
+                                    {% else %}
+
+                                    {% endif %}
+                                </div>
+                                <div class="col-xs-9 col-md-9 section-box">
+                                    <div class="fs-video-list-title">{{ video.title }}</div>
+                                    <hr />
+                                    <div class="row rating-desc">
+                                        <div class="col-md-12">
+                                            {% if video.provider is defined %}
+                                                {% if video.provider == "youtube" %}
+                                                    <i class="far fa-thumbs-up"></i> {{ getLikeCountForId(video.urlId) }}  <span class="separator">|</span>
+                                                    <i class="far fa-comment"></i>{{ getCommentCountForId(video.urlId) }}
+                                                {% endif %}
+                                                <span class="fs-video-list-user"><span class="ion-person"></span> {{ video.user.username }}</span>
+                                            {% else %}
+                                                <i class="far fa-thumbs-up"></i> 1 <span class="separator">|</span>
+                                                <i class="far fa-comment"></i> 1
+                                                <span class="fs-video-list-user"><span class="ion-person"></span> {{ video.user.username }}</span>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% else %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

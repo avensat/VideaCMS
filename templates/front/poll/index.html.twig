@@ -1,0 +1,37 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Sondages - {% endblock %}
+
+{% block mainContent %}
+    <div class="container">
+        <div class="row">
+            {% for poll in polls %}
+                <div class="col-lg-8 offset-md-2 mb-4">
+                    <div class="card">
+                        <div class="card-header fs-header">
+                            <i class="fas fa-chart-pie mr-2"></i> <span>{{ poll.title }}</span>
+                        </div>
+                        <div class="card-body">
+                            {{ poll.question }}
+                            {% for choice in poll.choice %}
+                                <div>
+                                    {{ choice.value }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                            <i class="fas fa-ticket-alt"></i> 0 réponse(s)
+                            <a href="{{ path('getPoll', {'id': poll.id }) }}" class="btn btn-success float-right">Repondre au sondage</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                Pas de sondages
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+{% endblock %}

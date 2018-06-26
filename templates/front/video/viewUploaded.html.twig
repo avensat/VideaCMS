@@ -1,0 +1,79 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}{{ video.title }}{% endblock %}
+{% block mainContent %}
+
+    <div class="container">
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
+        {% if video.public %}
+
+        <div class="fs-video-body">
+            <video width="620" height="440" controls>
+                <source src="{{ path }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="container video">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="title">{{ video.title }}</div>
+                            <div class="views">{{ video.views }} vues</div>
+                        </div>
+                        <div class="col-lg-6 likes">
+                            {{ video.likes }} <a href="{{ path("video_like", {"id": video.id}) }}"><i class="ion-android-favorite-outline"></i> </a>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="user-box">
+                        <img class="profile-pic" src="{{ asset('uploads/user/profilepics/') }}{{ video.user.profilePicturePath }}">
+                        <span class="username">{{ video.user.username }}</span><br>
+                        <span class="date">{{ video.createdAt|date("d/m/y") }}</span>
+                    </div>
+                    <div class="description">
+                        {{ video.description }}
+                    </div>
+
+                </div>
+                <div class="col-lg-4 column">
+                    <div class="column-title">Autres vidéos</div>
+                        {% for video in getLastVideos() %}
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-lg-4 text-center">
+                                        <img width="130px" src="https://a4.odistatic.net/images/landingpages/vacation/640x480/paris_640x480.jpg" alt="bootsnipp" class="img-rounded img-responsive" />
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="fs-video-list-title">{{ video.title }}</div>
+                                        <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                    </div>
+                                </div>
+                        {% else %}
+                            No videos
+                        {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="comments">Commentaires</div>
+            {{ render(controller('App\\Controller\\CommentController::commentAction',{ 'request': app.request, 'identifier': "uvideo_" ~ video.id })) }}
+
+    {% else %}
+        The video is private
+    {% endif %}
+    </div>
+
+
+<script src="{{ asset('dist/scripts/lib/plyr.js') }}"></script>
+    <script>plyr.setup();</script>
+{% endblock %}

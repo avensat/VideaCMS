@@ -1,0 +1,24 @@
+<h3>Articles</h3>
+{% for article in articles %}
+    {{ article.title }} -
+    <a href="{{ path("news_edit", {"id": article.id}) }}">Edit</a>
+    <a href="{{ path("news_delete", {"id": article.id}) }}">Remove</a>
+    <a href="{{ path("news_view", {"id": article.id}) }}">View</a><br>
+{% else %}
+    Vous n'avez pas d'articles
+{% endfor %}
+<br>
+<a href="{{ path("news_add") }}">Ajouter un article</a>
+<br>
+
+<h3>Catégories</h3>
+
+{% for category in categories %}
+    {{ category.title }} -
+    <a href="{{ path("news_edit_cat", {"id": category.id}) }}">Edit</a>
+    <a href="{{ path("news_delete_cat", {"id": category.id}) }}">Remove</a><br>
+{% else %}
+    Pas de catégories
+{% endfor %}
+<br>
+<a href="{{ path("news_add_cat") }}">Ajouter une catégorie</a>

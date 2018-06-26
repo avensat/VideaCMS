@@ -1,0 +1,7 @@
+eight_points_guzzle:
+    clients:
+        youtube_api:
+            base_url: "https://www.googleapis.com/youtube/v3"
+            options:
+                headers:
+                    Accept: "application/json"

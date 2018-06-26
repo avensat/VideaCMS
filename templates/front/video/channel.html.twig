@@ -1,0 +1,79 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}{{ user.username }} vidéos{% endblock %}
+
+{% block mainContent %}
+    <div class="container top-margin channel">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="title">Chaine de {{ user.username }}</div>
+            </div>
+            <div class="col-lg-6">
+                <div class="social-icons">
+                    <li class="icon"><a href="#"><i style="color: #ca0000;" class="ion-social-youtube"></i></a></li>
+                    <li class="icon"><a href="#"><i style="color: #1dcaff;" class="ion-social-twitter"></i></a></li>
+                    <li class="icon"><a href="#"><i style="color: #3b5998;" class="ion-social-facebook"></i></a></li>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-7">
+                <span class="head">Dernière vidéo</span>
+
+                {% set lastVideo = getLastVideoForUser(user) %}
+
+                {% if lastVideo.url is defined %}
+                    // Lien
+                {% else %}
+                    <div class="fs-video-body">
+                        <video width="620" height="440" controls>
+                            <source src="../../../uploads/videos/{{ lastVideo.videoPath }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <a class="video-title" href="{{ path('video_view', {'id': "u"~lastVideo.id}) }}">{{ lastVideo.title }}</a>
+                    <p class="">{{ lastVideo.views }} vues</p>
+                {% endif %}
+
+            </div>
+            <div class="col-md-5">
+                {% for video in videos %}
+
+                    {% if video.url is defined %}
+                        <a href="{{ path('video_view', {'id': 'v'~video.id}) }}">
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-lg-4 text-center">
+                                    <img width="130px" src="https://img.youtube.com/vi/{{ getUrlId(video) }}/default.jpg" />
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="fs-video-list-title">{{ video.title }}</div>
+                                    <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('video_view', {'id': 'u'~video.id}) }}">
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-lg-4 text-center">
+                                    <img width="130px" src="" />
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="fs-video-list-title">{{ video.title }}</div>
+                                    <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+
+                {% else %}
+                    Pas de vidéo
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('dist/scripts/lib/plyr.js') }}"></script>
+    <script>plyr.setup();</script>
+{% endblock %}

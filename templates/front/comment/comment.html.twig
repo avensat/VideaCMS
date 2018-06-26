@@ -1,0 +1,25 @@
+{% for comment in comments %}
+    <div class="comment">
+        <div class="author">
+            {{ comment.user.username }} <span class="date">{{ comment.date|date("d/m/y h:i") }}</span>
+        </div>
+        <div class="content">
+            {{ comment.content }}
+        </div>
+        <div class="infos">
+             {{ comment.likes }} <a href="{{ path("comment_like", {"id": comment.id}) }}"><i style="font-size: 17px;" class="ion-thumbsup"></i></a>
+        </div>
+    </div>
+
+{% else %}
+    Pas de commentaires
+    <br>
+{% endfor %}
+<br>
+{% if app.user %}
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+{% else %}
+    Please login to post comments
+{% endif %}

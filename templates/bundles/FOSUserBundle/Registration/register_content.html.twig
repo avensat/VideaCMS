@@ -1,0 +1,97 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="register-container">
+    <div class="left-column">
+        <img class="logo"
+             src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU3IDU3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NyA1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIyNTZweCIgaGVpZ2h0PSIyNTZweCI+CjxwYXRoIGQ9Ik01NS4yNjMsMTYuNDI5Yy0xLjA4Ny0wLjY5NS0yLjQzNy0wLjc4OC0zLjYwOC0wLjI0N0w0NCwxOS43MTV2LTAuMTMxYzAtMS44MjMtMS40ODMtMy4zMDctMy4zMDctMy4zMDdIMzZ2LTUgIGMwLTEuNjU0LTEuMzQ2LTMtMy0zSDFjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDFoMzJjMC41NTEsMCwxLDAuNDQ4LDEsMXY1SDMuMzA3QzEuNDgzLDE2LjI3OCwwLDE3Ljc2MSwwLDE5LjU4NHYyNS4zODcgIGMwLDEuODIzLDEuNDgzLDMuMzA3LDMuMzA3LDMuMzA3aDM3LjM4NmMxLjgyNCwwLDMuMzA3LTEuNDgzLDMuMzA3LTMuMzA3di0wLjEzMWw3LjY1NSwzLjUzM2MwLjUwNiwwLjIzMywxLjA0NSwwLjM0OSwxLjU4MiwwLjM0OSAgYzAuNzA3LDAsMS40MDktMC4yLDIuMDI3LTAuNTk2QzU2LjM1MSw0Ny40MzEsNTcsNDYuMjQ1LDU3LDQ0Ljk1NFYxOS42MDJDNTcsMTguMzExLDU2LjM1MSwxNy4xMjUsNTUuMjYzLDE2LjQyOXogTTQyLDQ0Ljk3MSAgYzAsMC43MjEtMC41ODYsMS4zMDctMS4zMDcsMS4zMDdIMy4zMDdDMi41ODYsNDYuMjc4LDIsNDUuNjkyLDIsNDQuOTcxVjE5LjU4NGMwLTAuNzIxLDAuNTg2LTEuMzA3LDEuMzA3LTEuMzA3aDM3LjM4NiAgYzAuNzIxLDAsMS4zMDcsMC41ODYsMS4zMDcsMS4zMDd2MS4wNTR2MjMuMjc5VjQ0Ljk3MXogTTU1LDQ0Ljk1NGMwLDAuNjE0LTAuMjk3LDEuMTU3LTAuODE0LDEuNDg4ICBjLTAuNTE3LDAuMzMxLTEuMTMzLDAuMzc2LTEuNjkyLDAuMTE1TDQ0LDQyLjYzOFYyMS45MTdsOC40OTMtMy45MTljMC41NTgtMC4yNiwxLjE3NS0wLjIxNiwxLjY5MiwwLjExNVM1NSwxOC45ODgsNTUsMTkuNjAyICBWNDQuOTU0eiIgZmlsbD0iI0ZGRkZGRiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"/>
+        <img class="left-column-img"
+             src="https://images.unsplash.com/photo-1487611459768-bd414656ea10?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6492053f1a3187e3596132f5857917b4&auto=format&fit=crop&w=1950&q=80"
+             alt="">
+    </div>
+    <div class="right-column">
+        <div class="d-flex flex-column">
+            {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register register-form'}}) }}
+                <div class="form-group">
+                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'form.email'|trans}}) }}
+                </div>
+
+                <div class="form-group">
+                {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'form.username'|trans}}) }}
+                </div>
+
+                <div class="form-group">
+                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'form.password'|trans}}) }}
+                </div>
+
+                <div class="form-group">
+                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'form.password_confirmation'|trans}}) }}
+                </div>
+
+                {{ form_rest(form) }}
+
+                <div class="form-group">
+                    <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-outline-light"/>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<style>
+    body {
+        margin: inherit;
+    }
+
+    .logo {
+        position: absolute;
+        z-index: 1;
+        top: 35vh;
+        left: 35vh;
+    }
+
+    .register-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-column {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .left-column-img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        transform: scale(1.1);
+        filter: blur(2px) brightness(50%);
+    }
+
+    .right-column {
+        background-color: #15A9E9;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .register-form {
+        margin-top: 50vh;
+        transform: translateY(-50%);
+        width: 50vh;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
