@@ -8,7 +8,7 @@
             <div class="col-lg-4 text-center">
                 <div class="card">
                     <div class="card-body">
-                        <img class="profile-pic" src="{{ asset('uploads/user/profilepics/') }}{{ user.profilePicturePath }}">
+                        <img class="profile-pic" src="{{ asset(getProfilePic(user)) }}">
                         <div class="username">{{ user.username }}</div>
                     </div>
                 </div>
