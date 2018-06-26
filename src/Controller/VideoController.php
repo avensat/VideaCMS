@@ -73,7 +73,7 @@ class VideoController extends Controller
             $em->persist($video);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('success', 'Vidéo ajoutée !');
+            $this->addFlash('success', 'Vidéo ajoutée !');
             return $this->redirectToRoute('video_add');
         }
 

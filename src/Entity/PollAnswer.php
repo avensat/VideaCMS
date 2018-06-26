@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="poll_answer")
+ * @ORM\Entity(repositoryClass="App\Repository\PollAnswerRepository")
  */
 class PollAnswer
 {
@@ -34,7 +35,7 @@ class PollAnswer
     /**
      * @ORM\Column(type="integer")
      */
-    private $anwser;
+    private $answer;
 
     /**
      * @var Assert\DateTime $created_at
@@ -112,18 +113,18 @@ class PollAnswer
     /**
      * @return mixed
      */
-    public function getAnwser()
+    public function getAnswer()
     {
-        return $this->anwser;
+        return $this->answer;
     }
 
     /**
-     * @param mixed $anwser
+     * @param mixed $answer
      * @return PollAnswer
      */
-    public function setAnwser($anwser)
+    public function setAnswer($answer)
     {
-        $this->anwser = $anwser;
+        $this->answer = $answer;
         return $this;
     }
 
