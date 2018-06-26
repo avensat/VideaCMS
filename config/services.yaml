@@ -41,6 +41,11 @@ services:
              - { name: twig.extension }
            arguments: [ '@doctrine.orm.entity_manager' ]
 
+    App\Twig\UserExtension:
+           tags:
+             - { name: twig.extension }
+           arguments: [ '@doctrine.orm.entity_manager' ]
+
     App\Utils\YoutubeHelper:
         arguments: ['%youtube_api_key%']
         public: true
