@@ -594,3 +594,8 @@ li {
     font-size: 25px;
     color: #3a3a3a;
 }
+
+#chart {
+    height: 80px;
+    width: 80px;
+}
