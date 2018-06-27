@@ -18,33 +18,38 @@
 
         <div class="fs-video-body">
             <video width="620" height="440" controls>
-                <source src="{{ video.path }}" type="video/mp4">
+                <source src="{{ path }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
 
+
         <div class="container video">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="title">{{ video.title }}</div>
-                            <div class="views">{{ video.views }} vues</div>
+                    <div id="reload">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="title">{{ video.title }}</div>
+                                <div class="views">{{ video.views }} vues</div>
+                            </div>
+                            <div class="col-lg-6 likes">
+                                {{ video.likes }} <a onclick="ajaxLink(this);return false" href="{{ path("video_like", {"id": video.id}) }}"><i class="ion-android-favorite-outline"></i> </a>
+                            </div>
                         </div>
-                        <div class="col-lg-6 likes">
-                            {{ video.likes }} <a href="{{ path("video_like", {"id": video.id}) }}"><i class="ion-android-favorite-outline"></i> </a>
+                        <hr />
+                        <div class="user-box">
+                            <img class="profile-pic" src="{{ asset(getProfilePic(video.user)) }}">
+                            <span class="username"><a href="{{ path("video_channel", {'user': video.user.username}) }}">{{ video.user.username }}</a></span><br>
+                            <span class="date">Ajoutée le {{ video.createdAt|date("d/m/y à H:i") }}</span>
                         </div>
-                    </div>
-                    <hr />
-                    <div class="user-box">
-                        <img class="profile-pic" src="{{ asset(getProfilePic(video.user)) }}">
-                        <span class="username">{{ video.user.username }}</span><br>
-                        <span class="date">{{ video.createdAt|date("d/m/y") }}</span>
-                    </div>
-                    <div class="description">
-                        {{ video.description }}
-                    </div>
+                        <div class="description">
+                            {{ video.description }}
+                        </div>
 
+                        <div class="comments">Commentaires</div>
+                        {{ render(controller('App\\Controller\\CommentController::commentAction',{ 'identifier': "uvideo_" ~ video.id })) }}
+                    </div>
                 </div>
                 <div class="col-lg-4 column">
                     <div class="column-title">Autres vidéos</div>
@@ -81,10 +86,6 @@
                         {% endfor %}
                 </div>
             </div>
-
-
-            <div class="comments">Commentaires</div>
-            {{ render(controller('App\\Controller\\CommentController::commentAction',{ 'request': app.request, 'identifier': "uvideo_" ~ video.id })) }}
 
     {% else %}
         The video is private

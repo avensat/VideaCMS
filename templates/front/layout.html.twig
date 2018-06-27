@@ -90,7 +90,92 @@
         <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="http://malsup.github.io/min/jquery.form.min.js"></script>
         <script src="https://unpkg.com/sweetalert2@7.22.2/dist/sweetalert2.all.js"></script>
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <script>
+                swal(
+                    'Information',
+                    '{{ flashMessage }}',
+                    'success'
+                )
+            </script>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <script>
+                swal(
+                    'Erreur',
+                    '{{ flashMessage }}',
+                    'error'
+                )
+            </script>
+        {% endfor %}
         <script>
+
+            $.fn.serializeObject = function()
+            {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function() {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
+
+            // USE ON FORMS
+            $(document).on("submit", ".postAjax", function(e){
+                e.preventDefault();
+                $(this).LoadingOverlay("show");
+                data = $(this).serializeObject();
+                var element = $(this);
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    success:function(data){
+                        if(data.status === 'ok'){
+                            swal(
+                                'Succès',
+                                data.msg,
+                                'success'
+                            )
+                        }
+                        if(data.status === 'wait'){
+                            swal(
+                                'Erreur',
+                                data.msg,
+                                'error'
+                            )
+                        }
+                        if(data.status === 'error'){
+                            swal(
+                                'Erreur',
+                                data.msg,
+                                'error'
+                            )
+                        }
+
+                        $(".postAjax").LoadingOverlay("hide");
+                    }
+                });
+                $('#reload').load(window.location.href + " #reload" );
+            });
+
+            // USE ON LINKS => onclick="ajaxLink(this);return false"
+            function ajaxLink(obj){
+                var link = obj.getAttribute('href');
+                var dataClass = obj.getAttribute('class');
+                $.get(link, function(data, status){
+                    $('#reload').load(window.location.href + " #reload" );
+                });
+            }
 
             $(function() {
                 $(".progress-bar").hide();

@@ -14,8 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use FFMpeg\Coordinate\FrameRate;
@@ -287,11 +287,15 @@ class VideoController extends Controller
             ));
         }
         elseif($type == "u"){
-            $video = $this->getDoctrine()->getRepository(UploadedVideo::class)->findOneBy(array("id" => $id));
-            $video->addView($id);
+            $repo = $this->getDoctrine()->getRepository(UploadedVideo::class);
+            $video = $repo->findOneBy(array("id" => $id));
+            $repo->addView($id);
+            $path = $video->getWebVideoPath();
+
 
             return $this->render('/front/video/viewUploaded.html.twig', array(
-                'video' => $video
+                'video' => $video,
+                'path' => $path
             ));
         }
 
@@ -332,7 +336,7 @@ class VideoController extends Controller
         $em->persist($comment);
         $em->flush();
 
-        return $this->redirectToRoute($request->getUri());
+        return new JsonResponse(["status" => "ok"]);
     }
 
     /**
