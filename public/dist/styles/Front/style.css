@@ -630,7 +630,7 @@ li {
     height: 50px;
 }
 
-.channel .video-container {
+.video-container {
     position: relative;
     padding-bottom: 56.25%;
     padding-top: 30px;
@@ -673,4 +673,27 @@ li {
 
 .comment .metadata{
     display: inline-block;
+}
+
+.poll .form{
+    text-align: center;
+}
+
+.poll form{
+    width: 500px;
+    margin: auto;
+}
+
+.poll .added{
+    width: 450px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.subtitle{
+    text-transform: uppercase;
+    font-size: 24px;
+    color: #555555;
+    font-family: 'Oswald', sans-serif;
+    text-align: left;
 }
