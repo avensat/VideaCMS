@@ -10,12 +10,49 @@
                     <div class="card-body">
                         <img class="profile-pic" src="{{ asset(getProfilePic(user)) }}">
                         <div class="username">{{ user.username }}</div>
+                        <p>Dernière connexion le : {{ user.lastLogin|date("d/m/y à H:i") }}</p>
                     </div>
                 </div>
 
             </div>
             <div class="col-lg-8">
-
+                <div class="social-icons">
+                    <li class="icon"><a href="{{ user.youtube }}"><i style="color: #ca0000;" class="ion-social-youtube"></i></a></li>
+                    <li class="icon"><a href="{{ user.twitter }}"><i style="color: #1dcaff;" class="ion-social-twitter"></i></a></li>
+                    <li class="icon"><a href="{{ user.facebook }}"><i style="color: #3b5998;" class="ion-social-facebook"></i></a></li>
+                </div>
+                <span class="title">Dernières vidéos</span>
+                <div class="space50"></div>
+                {% for video in getLastVideosForUser(user) %}
+                    {% if video.url is defined %}
+                        <a href="{{ path('video_view', {'id': 'v'~video.id}) }}">
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-lg-4 text-center">
+                                    <img width="220px" src="https://img.youtube.com/vi/{{ getUrlId(video) }}/default.jpg" />
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="fs-video-list-title">{{ video.title }}</div>
+                                    <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('video_view', {'id': 'u'~video.id}) }}">
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-lg-4 text-center">
+                                    <img width="130px" src="" />
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="fs-video-list-title">{{ video.title }}</div>
+                                    <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <b>Cette utilisateur n'a pas de vidéos</b>
+                {% endfor %}
+                <button type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-danger">Signaler</button>
             </div>
         </div>
 
