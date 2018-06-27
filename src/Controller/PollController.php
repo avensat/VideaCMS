@@ -34,10 +34,10 @@ class PollController extends Controller
     public function getPollAction(Poll $poll)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if($user != null){
-            $anwserRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
-            $anwsers = $anwserRepo->getAnswerByPollAndUser($poll, $user);
-            if(count($anwsers) == 0){
+        $answerRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
+        if($user != "anon."){
+            $answers = $answerRepo->getAnswerByPollAndUser($poll, $user);
+            if(count($answers) == 0){
                 $userCanRespond = true;
             } else {
                 $userCanRespond = false;
@@ -48,6 +48,7 @@ class PollController extends Controller
 
         return $this->render('/front/poll/get.html.twig', [
             'poll' => $poll,
+            'answersCount' => count($answerRepo->getAnswerByPoll($poll)),
             'userCanRespond' => $userCanRespond,
         ]);
     }
@@ -55,11 +56,12 @@ class PollController extends Controller
     /**
      * @Route("/answer/{id}", name="answerPoll")
      * @param Poll $poll
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function answerPollAction(Request $request, Poll $poll)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if($user != null){
+        if($user != "anon."){
             $answersRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
             $answers = $answersRepo->getAnswerByPollAndUser($poll, $user);
             if(count($answers) == 0){
@@ -68,7 +70,7 @@ class PollController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($answer);
                 $em->flush();
-                $this->addFlash('error', 'Votre réponse à bien été enregistré !');
+                $this->addFlash('success', 'Votre réponse à bien été enregistré !');
                 return $this->redirectToRoute('getPoll', ['id' => $poll->getId()]);
             } else {
                 $this->addFlash('error', 'Vous avez déja repondus au sondage !');
