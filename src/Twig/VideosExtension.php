@@ -93,12 +93,15 @@ class VideosExtension extends \Twig_Extension
         $providerVideo = $this->em->getRepository(ProviderVideo::class)->findOneBy(["user" => $user], ['id' => 'DESC']);
         $uploadedVideo = $this->em->getRepository(UploadedVideo::class)->findOneBy(["user" => $user], ['id' => 'DESC']);
 
-        if($providerVideo->getCreatedAt() > $uploadedVideo->getCreatedAt()){
+        if(!$uploadedVideo)
             return $providerVideo;
-        }
-        else{
+        elseif(!$providerVideo)
             return $uploadedVideo;
-        }
+
+        if($providerVideo->getCreatedAt() > $uploadedVideo->getCreatedAt())
+            return $providerVideo;
+        else
+            return $uploadedVideo;
     }
 
 

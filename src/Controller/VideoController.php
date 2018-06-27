@@ -287,15 +287,11 @@ class VideoController extends Controller
             ));
         }
         elseif($type == "u"){
-            $repo = $this->getDoctrine()->getRepository(UploadedVideo::class);
-            $video = $repo->findOneBy(array("id" => $id));
-            $repo->addView($id);
-            $path = $video->getWebVideoPath();
-
+            $video = $this->getDoctrine()->getRepository(UploadedVideo::class)->findOneBy(array("id" => $id));
+            $video->addView($id);
 
             return $this->render('/front/video/viewUploaded.html.twig', array(
-                'video' => $video,
-                'path' => $path
+                'video' => $video
             ));
         }
 
