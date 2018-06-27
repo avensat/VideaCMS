@@ -15,13 +15,17 @@ class YoutubeHelper
     }
 
     public function getVideoInfo($id){
+
         $url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" . $id . "&key=" . $this->apiKey;
-        $client = new Client();
-        try {
-            $response = $client->request('GET', $url, ['type' => 'text/json']);
-            return json_decode($response->getBody()->getContents())->items[0]->statistics;
-        } catch (GuzzleException $e) {
-            return "Erreur Youtube";
-        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        $result=curl_exec($ch);
+        curl_close($ch);
+
+        $data = json_decode($result);
+        return $data->items[0]->statistics;
+
     }
 }
