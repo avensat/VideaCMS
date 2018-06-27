@@ -37,7 +37,7 @@
                     </div>
                     <hr />
                     <div class="user-box">
-                        <img class="profile-pic" src="{{ asset('uploads/user/profilepics/') }}{{ video.user.profilePicturePath }}">
+                        <img class="profile-pic" src="{{ asset(getProfilePic(video.user)) }}">
                         <span class="username">{{ video.user.username }}</span><br>
                         <span class="date">{{ video.createdAt|date("d/m/y") }}</span>
                     </div>
@@ -49,15 +49,33 @@
                 <div class="col-lg-4 column">
                     <div class="column-title">Autres vidéos</div>
                         {% for video in getLastVideos() %}
-                                <div class="row" style="margin-bottom: 15px;">
-                                    <div class="col-lg-4 text-center">
-                                        <img width="130px" src="https://a4.odistatic.net/images/landingpages/vacation/640x480/paris_640x480.jpg" alt="bootsnipp" class="img-rounded img-responsive" />
+                            {% if video.url is defined %}
+                                <a href="{{ path('video_view', {'id': 'v'~video.id}) }}">
+                                    <div class="row" style="margin-bottom: 15px;">
+                                        <div class="col-lg-4 text-center">
+                                            <img width="130px" src="https://img.youtube.com/vi/{{ getUrlId(video) }}/default.jpg" />
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="fs-video-list-title">{{ video.title }}</div>
+                                            <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                            <p class="views">{{ video.user.username }}</p>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <div class="fs-video-list-title">{{ video.title }}</div>
-                                        <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('video_view', {'id': 'u'~video.id}) }}">
+                                    <div class="row" style="margin-bottom: 15px;">
+                                        <div class="col-lg-4 text-center">
+                                            <img width="130px" src="{{ asset('uploads/videos/thumbnails/' ~ video.thumbnail) }}" />
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="fs-video-list-title">{{ video.title }}</div>
+                                            <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                            <p class="views">{{ video.user.username }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
+                            {% endif %}
                         {% else %}
                             No videos
                         {% endfor %}

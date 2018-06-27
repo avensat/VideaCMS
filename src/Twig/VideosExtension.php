@@ -36,6 +36,7 @@ class VideosExtension extends \Twig_Extension
 			new \Twig_SimpleFunction('getExtVideoUrl', array($this, 'getExtVideoUrl')),
 			new \Twig_SimpleFunction('getLastVideos', array($this, 'getLastVideos')),
 			new \Twig_SimpleFunction('getLastVideoForUser', array($this, 'getLastVideoForUser')),
+			new \Twig_SimpleFunction('getLastVideosForUser', array($this, 'getLastVideosForUser')),
 			new \Twig_SimpleFunction('getUrlId', array($this, 'getUrlId')),
             new \Twig_SimpleFunction('getLikeCountForId', array($this, 'getLikeCountForId')),
             new \Twig_SimpleFunction('getCommentCountForId', array($this, 'getCommentCountForId')),
@@ -74,6 +75,19 @@ class VideosExtension extends \Twig_Extension
         });
 		return $videos;
 	}
+
+    public function getLastVideosForUser(User $user){
+        $providerVideos = $this->em->getRepository(ProviderVideo::class)->findBy(['user' => $user]);
+        $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findBy(['user' => $user]);
+        $videos = array_merge($providerVideos, $uploadedVideos);
+        usort($videos, function($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return $a < $b ? 1 : -1;
+        });
+        return $videos;
+    }
 
 	public function getLastVideoForUser(User $user){
         $providerVideo = $this->em->getRepository(ProviderVideo::class)->findOneBy(["user" => $user], ['id' => 'DESC']);

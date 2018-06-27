@@ -1,4 +1,7 @@
 {
+    "alchemy/binary-driver": {
+        "version": "1.6.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -86,6 +89,9 @@
             "ref": "8be83603226d268ee8a93721b5bb77ec71d8d334"
         }
     },
+    "evenement/evenement": {
+        "version": "v2.1.0"
+    },
     "fig/link-util": {
         "version": "1.0.0"
     },
@@ -125,6 +131,9 @@
     "monolog/monolog": {
         "version": "1.23.0"
     },
+    "neutron/temporary-filesystem": {
+        "version": "2.3.0"
+    },
     "nikic/php-parser": {
         "version": "v4.0.1"
     },
@@ -139,6 +148,9 @@
     },
     "paragonie/random_compat": {
         "version": "v2.0.12"
+    },
+    "php-ffmpeg/php-ffmpeg": {
+        "version": "v0.11.1-pl-1"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
