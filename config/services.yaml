@@ -31,12 +31,22 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Twig\PollExtension:
+        tags:
+          - { name: twig.extension }
+        arguments: [ '@doctrine.orm.entity_manager' ]
+
     App\Twig\VideosExtension:
         tags:
           - { name: twig.extension }
         arguments: [ '@doctrine.orm.entity_manager' ]
 
     App\Twig\ArticlesExtension:
+           tags:
+             - { name: twig.extension }
+           arguments: [ '@doctrine.orm.entity_manager' ]
+
+    App\Twig\UserExtension:
            tags:
              - { name: twig.extension }
            arguments: [ '@doctrine.orm.entity_manager' ]

@@ -22,7 +22,7 @@ class TestController extends Controller
         $poll->setQuestion('Pain au chocolat ou chocolatine');
         $poll->setChoice([
             ['id' => 1, 'value' => 'Pain au chocolat'],
-            ['id' => 2, 'value' => 'chocolatine'],
+            ['id' => 2, 'value' => 'Chocolatine'],
         ]);
 
         $em = $this->getDoctrine()->getManager();
