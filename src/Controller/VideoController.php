@@ -8,6 +8,7 @@ use App\Entity\ProviderVideo;
 use App\Form\UploadType;
 use App\Form\VideoType;
 use DateTime;
+use FFMpeg\FFMpeg;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,6 +18,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
+use FFMpeg\Coordinate\FrameRate;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Coordinate\TimeCode;
 
 /**
  * @Route("/videos")
@@ -89,6 +93,8 @@ class VideoController extends Controller
      */
     public function uploadAction(Request $request){
 
+
+
         $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $uploadVideo = new UploadedVideo();
@@ -99,16 +105,44 @@ class VideoController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             $userInfo = $this->getDoctrine()->getRepository(User::class)->findOneBy(array("id" => $this->getUser()->getId()));
             $uploadVideo->setUser($userInfo);
             $uploadVideo->setUserLikes(array());
             $uploadVideo->preUploadVideo();
             $uploadVideo->uploadVideo();
 
+            // Generate thumbnail
+
+            $ffmpeg = FFMpeg::create(array(
+                'ffmpeg.binaries'  => $_ENV["FFMPEG_PATH"],
+                'ffprobe.binaries' => $_ENV["FFPROBE_PATH"],
+                'timeout'          => 3600,
+                'ffmpeg.threads'   => 12,
+            ));
+
+            $publicPath = $this->get('kernel')->getRootDir() . '/../public/';
+
+            $video = $ffmpeg->open($publicPath.'uploads/videos/'.$uploadVideo->getVideoPath());
+
+            $video
+                ->filters()
+                ->resize(new Dimension(320, 240))
+                ->synchronize();
+
+            $random = random_bytes(32);
+            $randomString = bin2hex($random);
+
+            $video
+                ->frame(TimeCode::fromSeconds(2))
+                ->save($publicPath.'uploads/videos/thumbnails/'.$randomString.'.jpg');
+
+            $uploadVideo->setThumbnail($randomString.'.jpg');
             $em = $this->getDoctrine()->getManager();
             $em->persist($uploadVideo);
             $em->flush();
+
+
+
             return new JsonResponse(["status" => "ok", "link" => $uploadVideo->getId()]);
         }
 
@@ -253,15 +287,11 @@ class VideoController extends Controller
             ));
         }
         elseif($type == "u"){
-            $repo = $this->getDoctrine()->getRepository(UploadedVideo::class);
-            $video = $repo->findOneBy(array("id" => $id));
-            $repo->addView($id);
-            $path = $video->getWebVideoPath();
-
+            $video = $this->getDoctrine()->getRepository(UploadedVideo::class)->findOneBy(array("id" => $id));
+            $video->addView($id);
 
             return $this->render('/front/video/viewUploaded.html.twig', array(
-                'video' => $video,
-                'path' => $path
+                'video' => $video
             ));
         }
 

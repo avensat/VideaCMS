@@ -25,7 +25,14 @@
                 {% set lastVideo = getLastVideoForUser(user) %}
 
                 {% if lastVideo.url is defined %}
-                    // Lien
+                    <div class="video-container">
+                        <iframe width="420" height="315"
+                                src="https://www.youtube.com/embed/{{ getUrlId(lastVideo) }}"
+                                frameborder="0"
+                                allow="autoplay; encrypted-media" allowfullscreen>
+                        </iframe>
+                    </div>
+                    <a class="video-title" href="{{ path('video_view', {'id': "v"~lastVideo.id}) }}">{{ lastVideo.title }}</a>
                 {% else %}
                     <div class="fs-video-body">
                         <video width="620" height="440" controls>
@@ -39,6 +46,7 @@
 
             </div>
             <div class="col-md-5">
+                <span class="head">Vidéos de {{ user.username }}</span>
                 {% for video in videos %}
 
                     {% if video.url is defined %}
@@ -57,7 +65,7 @@
                         <a href="{{ path('video_view', {'id': 'u'~video.id}) }}">
                             <div class="row" style="margin-bottom: 15px;">
                                 <div class="col-lg-4 text-center">
-                                    <img width="130px" src="" />
+                                    <img width="130px" src="{{ video.thumbnail }}" />
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="fs-video-list-title">{{ video.title }}</div>

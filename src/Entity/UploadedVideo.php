@@ -86,6 +86,10 @@ class UploadedVideo
     // for temporary storage
     private $tempVideoPath;
 
+    /**
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=false)
+     */
+    private $thumbnail;
 
     /**
      * @var DateTime $createdAt
@@ -147,6 +151,22 @@ class UploadedVideo
                 ? null
                 : $this->getUploadRootDir().'/'.$this->videoPath;
 
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * @param mixed $thumbnail
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
     }
 
     /**

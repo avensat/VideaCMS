@@ -36,6 +36,7 @@ class VideosExtension extends \Twig_Extension
 			new \Twig_SimpleFunction('getExtVideoUrl', array($this, 'getExtVideoUrl')),
 			new \Twig_SimpleFunction('getLastVideos', array($this, 'getLastVideos')),
 			new \Twig_SimpleFunction('getLastVideoForUser', array($this, 'getLastVideoForUser')),
+			new \Twig_SimpleFunction('getLastVideosForUser', array($this, 'getLastVideosForUser')),
 			new \Twig_SimpleFunction('getUrlId', array($this, 'getUrlId')),
             new \Twig_SimpleFunction('getLikeCountForId', array($this, 'getLikeCountForId')),
             new \Twig_SimpleFunction('getCommentCountForId', array($this, 'getCommentCountForId')),
@@ -67,24 +68,38 @@ class VideosExtension extends \Twig_Extension
         $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findAll();
         $videos = array_merge($providerVideos, $uploadedVideos);
         usort($videos, function($a, $b) {
-            if ($a == $b) {
+            if ($a == $b)
                 return 0;
-            }
             return $a < $b ? 1 : -1;
         });
 		return $videos;
 	}
 
+    public function getLastVideosForUser(User $user){
+        $providerVideos = $this->em->getRepository(ProviderVideo::class)->findBy(['user' => $user]);
+        $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findBy(['user' => $user]);
+        $videos = array_merge($providerVideos, $uploadedVideos);
+        usort($videos, function($a, $b) {
+            if ($a == $b)
+                return 0;
+            return $a < $b ? 1 : -1;
+        });
+        return $videos;
+    }
+
 	public function getLastVideoForUser(User $user){
         $providerVideo = $this->em->getRepository(ProviderVideo::class)->findOneBy(["user" => $user], ['id' => 'DESC']);
         $uploadedVideo = $this->em->getRepository(UploadedVideo::class)->findOneBy(["user" => $user], ['id' => 'DESC']);
 
-        if($providerVideo->getCreatedAt() > $uploadedVideo->getCreatedAt()){
+        if(!$uploadedVideo)
             return $providerVideo;
-        }
-        else{
+        elseif(!$providerVideo)
             return $uploadedVideo;
-        }
+
+        if($providerVideo->getCreatedAt() > $uploadedVideo->getCreatedAt())
+            return $providerVideo;
+        else
+            return $uploadedVideo;
     }
 
 
@@ -93,22 +108,20 @@ class VideosExtension extends \Twig_Extension
         return $video->getUrlId();
     }
 
-    public function getLikeCountForId($id)
-    {
+    public function getLikeCountForId($id){
         $likeCount = $this->youtubeHelper->getVideoInfo($id);
-        if (is_object($this->youtubeHelper->getVideoInfo($id)) != null) {
+        if (is_object($likeCount) != null)
             return $likeCount->likeCount;
-        }
+        return null;
+
     }
 
 
     public function getCommentCountForId($id){
         $commentCount = $this->youtubeHelper->getVideoInfo($id);
-        if(is_object($this->youtubeHelper->getVideoInfo($id)) != null){
+        if(is_object($commentCount))
             return $commentCount->commentCount;
-        } else {
+        else
             return $commentCount;
-        }
-
     }
 }
