@@ -68,9 +68,8 @@ class VideosExtension extends \Twig_Extension
         $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findAll();
         $videos = array_merge($providerVideos, $uploadedVideos);
         usort($videos, function($a, $b) {
-            if ($a == $b) {
+            if ($a == $b)
                 return 0;
-            }
             return $a < $b ? 1 : -1;
         });
 		return $videos;
@@ -81,9 +80,8 @@ class VideosExtension extends \Twig_Extension
         $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findBy(['user' => $user]);
         $videos = array_merge($providerVideos, $uploadedVideos);
         usort($videos, function($a, $b) {
-            if ($a == $b) {
+            if ($a == $b)
                 return 0;
-            }
             return $a < $b ? 1 : -1;
         });
         return $videos;
@@ -110,22 +108,20 @@ class VideosExtension extends \Twig_Extension
         return $video->getUrlId();
     }
 
-    public function getLikeCountForId($id)
-    {
+    public function getLikeCountForId($id){
         $likeCount = $this->youtubeHelper->getVideoInfo($id);
-        if (is_object($this->youtubeHelper->getVideoInfo($id)) != null) {
+        if (is_object($likeCount) != null)
             return $likeCount->likeCount;
-        }
+        return null;
+
     }
 
 
     public function getCommentCountForId($id){
         $commentCount = $this->youtubeHelper->getVideoInfo($id);
-        if(is_object($this->youtubeHelper->getVideoInfo($id)) != null){
+        if(is_object($commentCount))
             return $commentCount->commentCount;
-        } else {
+        else
             return $commentCount;
-        }
-
     }
 }
