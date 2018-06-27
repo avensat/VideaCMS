@@ -6,6 +6,8 @@ use App\Entity\Poll;
 use App\Entity\PollAnswer;
 use phpseclib\File\ANSI;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,10 +35,11 @@ class PollController extends Controller
      */
     public function getPollAction(Poll $poll)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $answerRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
-        if($user != "anon."){
-            $answers = $answerRepo->getAnswerByPollAndUser($poll, $user);
+        $user = $this->getUser();
+
+        if($user){
+            $answersRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
+            $answers = $answersRepo->getAnswerByPollAndUser($poll, $user);
             if(count($answers) == 0){
                 $userCanRespond = true;
             } else {
@@ -80,5 +83,52 @@ class PollController extends Controller
             $this->addFlash('error', 'Vous devez être connecté pour repondre au sondage !');
             return $this->redirectToRoute('getPoll', ['id' => $poll->getId()]);
         }
+    }
+
+    /**
+     * @Route("/create", name="getPoll")
+     */
+    public function createAction(Request $request){
+
+        $form = $this->createFormBuilder()
+            ->add('title', TextType::class)
+            ->add('question', TextType::class)
+            ->add('poll', HiddenType::class)
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        if($form->isSubmitted()){
+            $data = $form->getData();
+
+            $poll = new Poll();
+            $poll->setTitle($data['title']);
+            $poll->setQuestion($data['question']);
+            $out = [];
+            foreach ($data['poll'] as $key => $value){
+                $in = ["id" => $key, "value" => $value];
+                array_push($out, $in);
+            }
+            $poll->setChoice($out);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($poll);
+            $em->flush();
+            $this->addFlash('success', 'Sondage ajouté !');
+            return $this->redirectToRoute("poll_manage");
+        }
+
+        return $this->render('/front/poll/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/manage", name="poll_manage")
+     */
+    public function manageAction(){
+
+        return $this->render('/front/poll/manage.html.twig', [
+        ]);
     }
 }

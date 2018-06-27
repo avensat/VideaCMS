@@ -1,25 +1,39 @@
-{% for comment in comments %}
-    <div class="comment">
-        <div class="author">
-            {{ comment.user.username }} <span class="date">{{ comment.date|date("d/m/y h:i") }}</span>
-        </div>
-        <div class="content">
-            {{ comment.content }}
-        </div>
-        <div class="infos">
-             {{ comment.likes }} <a href="{{ path("comment_like", {"id": comment.id}) }}"><i style="font-size: 17px;" class="ion-thumbsup"></i></a>
-        </div>
-    </div>
 
-{% else %}
-    Pas de commentaires
-    <br>
-{% endfor %}
+    {% for comment in comments %}
+        <div class="comment">
+            <img class="profile-pic" src="{{ asset(getProfilePic(comment.user)) }}">
+            <div class="metadata">
+                <div class="author">
+                    {{ comment.user.username }} <span class="date">{{ comment.date|date("d/m/y h:i") }}</span>
+                </div>
+                <div class="content">
+                    {{ comment.content }}
+                </div>
+                <div class="infos">
+                    {{ comment.likes }} <a class="like" href="{{ path("comment_like", {"id": comment.id}) }}" onclick="ajaxLink(this);return false"><i style="font-size: 17px;" class="ion-thumbsup"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+    {% else %}
+        Pas de commentaires
+        <br>
+    {% endfor %}
+
 <br>
 {% if app.user %}
-{{ form_start(form) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
+    <div id="comment">
+        {{ form_start(form, {'attr': {'class': 'postAjax'}}) }}
+
+        {{ form_widget(form.content, {'attr': {'placeholder': "Ajoutez un commentaire", 'class': 'form-control'}}) }}
+        {{ form_errors(form.content) }}
+
+        {{ form_widget(form.submit, {'label': 'Envoyer', 'attr': {'class': 'btn btn-secondary'}}) }}
+
+        {{ form_end(form) }}
+    </div>
+
 {% else %}
     Please login to post comments
 {% endif %}

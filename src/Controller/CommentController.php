@@ -5,6 +5,11 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -17,14 +22,40 @@ class CommentController extends Controller
         return $this->render('/front/comment/index.html.twig');
     }
 
-    public function commentAction(Request $request, $identifier){
+    public function commentAction($identifier){
+
+        $comments = $this->getDoctrine()->getRepository(Comment::class)->findBy(["identifier" => $identifier], ['id' => 'DESC']);
+
+        $form = $this->createFormBuilder()
+            ->add('content', TextareaType::class)
+            ->add('identifier', HiddenType::class, ['data' => $identifier])
+            ->add('submit', SubmitType::class)
+            ->setAction($this->generateUrl('comment_post'))
+            ->getForm()
+        ;
+
+        return $this->render('/front/comment/comment.html.twig', array(
+            'form' => $form->createView(),
+            'comments' => $comments
+        ));
+    }
+
+    /**
+     * @Route("/post", name="comment_post")
+     */
+    public function postAction(Request $request){
 
         $session = new Session();
-        $comments = $this->getDoctrine()->getRepository(Comment::class)->findBy(array("identifier" => $identifier));
 
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $form = $this->createFormBuilder($comment)
+            ->add('content', TextareaType::class)
+            ->add('identifier', HiddenType::class)
+            ->add('submit', SubmitType::class)
+            ->setAction($this->generateUrl('comment_post'))
+            ->getForm()
+            ->handleRequest($request)
+        ;
 
         if(!$session->has("lastComment")){
             $session->set("lastComment", date("h:i"));
@@ -34,27 +65,26 @@ class CommentController extends Controller
 
             if(date("h:i") > $session->get("lastComment")){
 
+                $data = $form->getData();
+
                 $comment->setDate(new \DateTime("now"));
-                $comment->setIdentifier($identifier);
+                $comment->setIdentifier($data->getIdentifier());
                 $comment->setUser($this->getUser());
                 $comment->setUserLikes(array());
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($comment);
                 $em->flush();
-                $request->getSession()->getFlashBag()->add('success', 'Commentaire ajouté !');
                 $session->set("lastComment", date("h:i"));
+                return new JsonResponse(["status" => "ok", "msg" => "Commentaire ajouté !"]);
+
             }
             else{
-                $request->getSession()->getFlashBag()->add('success', 'Veuillez patienter une minute');
+                return new JsonResponse(["status" => "wait", "msg" => "Veuillez patienter une minute avant de poster à nouveau"]);
             }
 
         }
-
-        return $this->render('/front/comment/comment.html.twig', array(
-            'form' => $form->createView(),
-            'comments' => $comments
-        ));
+        return new AccessDeniedException("Not authorized");
     }
 
 	/**
@@ -88,6 +118,6 @@ class CommentController extends Controller
         $em->persist($comment);
         $em->flush();
 
-        return $this->redirectToRoute($request->getUri());
+        return new JsonResponse(["status" => "ok"]);
     }
 }
