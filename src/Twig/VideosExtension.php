@@ -40,6 +40,7 @@ class VideosExtension extends \Twig_Extension
 			new \Twig_SimpleFunction('getUrlId', array($this, 'getUrlId')),
             new \Twig_SimpleFunction('getLikeCountForId', array($this, 'getLikeCountForId')),
             new \Twig_SimpleFunction('getCommentCountForId', array($this, 'getCommentCountForId')),
+            new \Twig_SimpleFunction('getViewCountForId', array($this, 'getViewCountForId')),
 		);
 	}
 
@@ -110,18 +111,28 @@ class VideosExtension extends \Twig_Extension
 
     public function getLikeCountForId($id){
         $likeCount = $this->youtubeHelper->getVideoInfo($id);
-        if (is_object($likeCount) != null)
+        if (is_object($likeCount) != null){
             return $likeCount->likeCount;
-        return null;
-
+        } else {
+            return 0;
+        }
     }
 
+    public function getViewCountForId($id){
+        $likeCount = $this->youtubeHelper->getVideoInfo($id);
+        if (is_object($likeCount) != null){
+            return $likeCount->viewCount;
+        } else {
+            return 0;
+        }
+    }
 
     public function getCommentCountForId($id){
-        $commentCount = $this->youtubeHelper->getVideoInfo($id);
-        if(is_object($commentCount))
-            return $commentCount->commentCount;
-        else
-            return $commentCount;
+        $likeCount = $this->youtubeHelper->getVideoInfo($id);
+        if (is_object($likeCount) != null){
+            return $likeCount->commentCount;
+        } else {
+            return 0;
+        }
     }
 }

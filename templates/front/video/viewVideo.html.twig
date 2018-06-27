@@ -4,20 +4,73 @@
 
 {% block mainContent %}
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 offset-md-2 mb-4">
-                <div class="card">
-                    <div class="card-header fs-header">
-                        <i class="far fa-video mr-2"></i> <span>{{ video.title }}</span>
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
                     </div>
-                    <div class="card-body">
-                        <div id="ytplayer" class="ytvideo"></div>
-                    </div>
-                    <div class="card-footer">
-                        <i class="far fa-thumbs-up"></i> {{ getLikeCountForId(getUrlId(video)) }}
-                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="fs-video-body">
+        <div id="ytplayer" class="ytvideo"></div>
+    </div>
+
+<div class="container video">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="title">{{ video.title }}</div>
+                    <div class="views">{{ getViewCountForId(getUrlId(video))|number_format(0, '', ' ') }} vues</div>
+                </div>
+                <div class="col-lg-6 likes">
+                    {{ getLikeCountForId(getUrlId(video))|number_format(0, '', ' ') }} <i class="far fa-thumbs-up"></i>
                 </div>
             </div>
+            <hr />
+            <div class="user-box">
+                <img class="profile-pic" src="{{ asset(getProfilePic(video.user)) }}">
+                <span class="username">{{ video.user.username }}</span><br>
+                <span class="date">{{ video.createdAt|date("d/m/y") }}</span>
+            </div>
+        </div>
+        <div class="col-lg-4 column">
+            <div class="column-title">Autres vidéos</div>
+            {% for video in getLastVideos() %}
+                {% if video.url is defined %}
+                    <a href="{{ path('video_view', {'id': 'v'~video.id}) }}">
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-lg-4 text-center">
+                                <img width="130px" src="https://img.youtube.com/vi/{{ getUrlId(video) }}/default.jpg" />
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="fs-video-list-title">{{ video.title }}</div>
+                                <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                <p class="views">{{ video.user.username }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% else %}
+                    <a href="{{ path('video_view', {'id': 'u'~video.id}) }}">
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-lg-4 text-center">
+                                <img width="130px" src="{{ asset('uploads/videos/thumbnails/' ~ video.thumbnail) }}" />
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="fs-video-list-title">{{ video.title }}</div>
+                                <p class="views">{{ video.createdAt|date('d/m/y') }}</p>
+                                <p class="views">{{ video.user.username }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% else %}
+                No videos
+            {% endfor %}
         </div>
     </div>
 
@@ -32,8 +85,8 @@
 
         function onYouTubePlayerAPIReady() {
             player = new YT.Player('ytplayer', {
-                height: '360',
-                width: '640',
+                height: '640',
+                width: '100%',
                 videoId: '{{ video.urlId }}'
             });
         }
