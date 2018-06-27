@@ -20,11 +20,11 @@
                         </div>
                         <div class="card-footer">
                             {% if video.url is defined %}
-                                <i class="far fa-thumbs-up"></i> {{ getLikeCountForId(video.urlId) }} <span class="separator">|</span>
-                                <i class="far fa-comment"></i> {{ getCommentCountForId(video.urlId) }}
+                                <i class="far fa-thumbs-up"></i> {{ getLikeCountForId(video.urlId)|number_format(0, '', ' ') }} <span class="separator">|</span>
+                                <i class="far fa-comment"></i> {{ getCommentCountForId(video.urlId)|number_format(0, '', ' ') }}
                                 <a href="{{ path('video_view', {'id': "v"~video.id}) }}" class="btn btn-success float-right">Commenter la vidéo</a>
                             {% else %}
-                                <i class="far fa-thumbs-up"></i> {{ video.likes }}
+                                <i class="far fa-thumbs-up"></i> {{ video.likes|number_format(0, '', ' ') }}
                                 <a href="{{ path('video_view', {'id': "u"~video.id}) }}" class="btn btn-success float-right">Commenter la vidéo</a>
                             {% endif %}
                         </div>
