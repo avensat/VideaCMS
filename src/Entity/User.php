@@ -81,6 +81,11 @@ class User extends BaseUser
     private $articles;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Poll", mappedBy="user")
+     */
+    private $polls;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\UploadedVideo", mappedBy="user")
      */
     private $videoUpload;
@@ -500,5 +505,21 @@ class User extends BaseUser
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPools()
+    {
+        return $this->pools;
+    }
+
+    /**
+     * @param mixed $pools
+     */
+    public function setPools($pools)
+    {
+        $this->pools = $pools;
     }
 }

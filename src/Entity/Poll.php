@@ -56,6 +56,13 @@ class Poll
      */
     private $createdAt;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="polls")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime("now");
@@ -132,5 +139,21 @@ class Poll
     public function setChoice($choice)
     {
         $this->choice = $choice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }

@@ -104,6 +104,7 @@ class PollController extends Controller
             $poll = new Poll();
             $poll->setTitle($data['title']);
             $poll->setQuestion($data['question']);
+            $poll->setUser($this->getUser());
             $out = [];
             foreach ($data['poll'] as $key => $value){
                 $in = ["id" => $key, "value" => $value];
@@ -128,7 +129,9 @@ class PollController extends Controller
      */
     public function manageAction(){
 
+        $polls = $this->getDoctrine()->getRepository(Poll::class)->findBy(['user' => $this->getUser()]);
         return $this->render('/front/poll/manage.html.twig', [
+            "polls" => $polls
         ]);
     }
 }

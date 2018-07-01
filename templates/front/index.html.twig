@@ -9,7 +9,25 @@
 
             <div class="card">
                 <div class="card-header fs-header">
-                    <i class="fal fa-newspaper fa-lg mr-2"></i> <span>Actualités</span>
+                    <i class="fal fa-chart-line"></i> <span> La vidéo tendance</span>
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header fs-header">
+                    <i class="fal fa-video"></i> <span> Plus de vidéos</span>
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header fs-header">
+                    <i class="fal fa-newspaper"></i> <span> Articles</span>
                 </div>
                 <div class="card-body">
                     {% for article in getLastArticles() %}
@@ -33,6 +51,37 @@
         </div>
         <div class="col-lg-4">
 
+            {% if app.user is not null %}
+                connecté
+            {% else %}
+                <div class="card">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-sign-in"></i><span> Connexion</span>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ path("fos_user_security_check") }}" class="login" method="post">
+                            <div class="form-group">
+                                <label for="email">Pseudo</label>
+                                <input type="email" name="_username" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre pseudo" required="required">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Mot de passe</label>
+                                <input type="password" name="_password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required="required">
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="_remember_me" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Mémoriser ma connexion</label>
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ render(controller('App\\Controller\\UserController::getTokenAction')) }}" />
+                            <br>
+                            <button type="submit" class="btn btn-primary">Connexion</button>
+                        </form>
+                        <span>Vous n'avez pas encore de compte ? <a href="">Inscrivez-vous</a> </span>
+                        <a href="">Mot de passe oublié</a>
+                    </div>
+                </div>
+            {% endif %}
+<br>
             <div class="card">
                 <div class="card-header fs-header">
                     <i class="fal fa-video fa-lg mr-2"></i><span>Dernières vidéos</span>

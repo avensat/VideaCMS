@@ -5,11 +5,21 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class UserController extends Controller
 {
+
+    private $tokenManager;
+
+    public function __construct(CsrfTokenManagerInterface $tokenManager = null)
+    {
+        $this->tokenManager = $tokenManager;
+    }
+
     public function indexAction()
     {
         return $this->render('/front/user/index.html.twig');
@@ -54,5 +64,10 @@ class UserController extends Controller
         return $this->render('/front/user/profile/view.html.twig', array(
             "user" => $user
         ));
+    }
+
+    public function getTokenAction()
+    {
+        return new Response($this->tokenManager->getToken('authenticate')->getValue());
     }
 }

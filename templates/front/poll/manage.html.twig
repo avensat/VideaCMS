@@ -1,7 +1,11 @@
 {% extends "front/layout.html.twig" %}
-
 {% block title %}Gérer mes sondage - {% endblock %}
-
 {% block mainContent %}
+
+    {% for poll in polls %}
+        {{ poll.title }}
+    {% else %}
+
+    {% endfor %}
 
 {% endblock %}
