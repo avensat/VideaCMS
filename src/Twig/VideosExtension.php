@@ -41,6 +41,7 @@ class VideosExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getLikeCountForId', array($this, 'getLikeCountForId')),
             new \Twig_SimpleFunction('getCommentCountForId', array($this, 'getCommentCountForId')),
             new \Twig_SimpleFunction('getViewCountForId', array($this, 'getViewCountForId')),
+            new \Twig_SimpleFunction('getHomeVideo', array($this, 'getHomeVideo')),
 		);
 	}
 
@@ -134,5 +135,20 @@ class VideosExtension extends \Twig_Extension
         } else {
             return 0;
         }
+    }
+
+    public function getHomeVideo(){
+        $providerVideo = $this->em->getRepository(ProviderVideo::class)->findOneBy([], ['id' => 'DESC']);
+        $uploadedVideo = $this->em->getRepository(UploadedVideo::class)->findOneBy([], ['id' => 'DESC']);
+
+        if(!$uploadedVideo)
+            return $providerVideo;
+        elseif(!$providerVideo)
+            return $uploadedVideo;
+
+        if($providerVideo->getCreatedAt() > $uploadedVideo->getCreatedAt())
+            return $providerVideo;
+        else
+            return $uploadedVideo;
     }
 }
