@@ -189,4 +189,18 @@ class PollController extends Controller
             'choices' => $choices
         ]);
     }
+
+    /**
+     * @Route("/delete/{poll}", name="poll_delete")
+     */
+    public function deleteAction(Request $request, Poll $poll){
+        if($poll->getUser() != $this->getUser())
+            return $this->redirectToRoute('poll_manage');
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($poll);
+        $em->flush();
+        $this->addFlash('success', 'Sondage supprimé !');
+        return $this->redirectToRoute("poll_manage");
+    }
 }
