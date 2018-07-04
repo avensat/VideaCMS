@@ -14,18 +14,21 @@
                     </div>
                     <div class="card-body">
                         {% if userCanRespond == true %}
-                            {{ poll.question }}
-                            <form action="{{ path('answerPoll', {'id': poll.id}) }}">
-                                {% for choice in poll.choice %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="choices" id="{{ choice.value }}" value="{{ choice.id }}" checked>
-                                    <label class="form-check-label" for="{{ choice.value }}">
-                                        {{ choice.value }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                                <input class="btn btn-success" type="submit" placeholder="Submit">
-                            </form>
+                            <div class="pTitle">{{ poll.question }}</div>
+                            <div class="text-center">
+                                <form action="{{ path('answerPoll', {'id': poll.id}) }}">
+                                    {% for choice in poll.choice %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="choices" id="{{ choice.value }}" value="{{ choice.id }}" checked>
+                                            <label class="form-check-label" for="{{ choice.value }}">
+                                                {{ choice.value }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                    <br>
+                                    <input class="btn btn-success" type="submit" placeholder="Submit">
+                                </form>
+                            </div>
                         {% else %}
                             <div class="pTitle">{{ poll.question }}</div>
                             <canvas id="chart"></canvas>
