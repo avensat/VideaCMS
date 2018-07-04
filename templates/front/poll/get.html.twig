@@ -6,6 +6,8 @@
     <div class="container poll">
         <div class="row">
             <div class="col-lg-8 offset-md-2 mb-4">
+                <a href="{{ path("poll_homepage") }}" class="btn btn-primary">Retour à la liste des sondages</a>
+                <br><br>
                 <div class="card">
                     <div class="card-header fs-header">
                         <i class="fas fa-chart-pie mr-2"></i> <span>{{ poll.title }}</span>
@@ -27,10 +29,13 @@
                         {% else %}
                             <div class="pTitle">{{ poll.question }}</div>
                             <canvas id="chart"></canvas>
+                            <div class="box">
+                                <i class="fal fa-exclamation-square"></i> Vous avez déjà répondu à ce sondage.
+                            </div>
                         {% endif %}
                     </div>
-                    <div class="card-footer">
-                        <i class="fas fa-ticket-alt"></i> {{ answersCount }} réponse(s)
+                        <div class="card-footer">
+                        <i class="fas fa-ticket-alt"></i> {{ answersCount }} réponse(s) à ce sondage !
                     </div>
                 </div>
             </div>

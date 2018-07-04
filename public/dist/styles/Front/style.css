@@ -972,3 +972,31 @@ section .section-title {
     color: #011627;
     margin-bottom: 30px;
 }
+
+.poll .box{
+    background-color: #FF9F1C;
+    text-align: center;
+    color: #FDFFFC;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.user-head{
+    float:right;
+}
+
+.poll .question{
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    font-size: 30px;
+}
+
+.poll .responses{
+    text-align: center;
+    font-size: 20px;
+    color: #2EC4B6;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

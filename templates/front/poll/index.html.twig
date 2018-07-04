@@ -3,35 +3,47 @@
 {% block title %}Sondages - {% endblock %}
 
 {% block mainContent %}
-    <div class="container">
-
-
-        {{ knp_pagination_sortable(polls, 'Trier', 'a.id') }}
+    <div class="container poll">
+        <span class="bigTitle" style="display: block">Sondages</span>
+        <span class="subtitle" style="text-transform: none">Ceci est la liste des sondages proposés par nos différents utilisateurs.</span><br>
+        {{ knp_pagination_sortable(polls, 'Trier par pertinence', 'a.id') }}
 
         <div class="row">
+            <div class="col-md-9">
             {% for poll in polls %}
-                <div class="col-lg-8 offset-md-2 mb-4">
-                    <div class="card">
-                        <div class="card-header fs-header">
-                            <i class="fas fa-chart-pie mr-2"></i> <span>{{ poll.title }}</span>
-                        </div>
-                        <div class="card-body">
-                            {{ poll.question }}
+                <div class="card">
+                    <div class="card-header fs-header">
+                        <i class="fas fa-chart-pie mr-2"></i> <span>{{ poll.title }}</span>
+                        <span class="user-head">Par : <a href="{{ path("video_channel", {'user': poll.user.username}) }}">{{ poll.user.username }}</a></span>
+                    </div>
+                    <div class="card-body">
+                        <div class="question"><i class="fal fa-question-circle"></i> {{ poll.question }}</div>
+                        <div class="responses">
                             {% for choice in poll.choice %}
-                                <div>
-                                    {{ choice.value }}
-                                </div>
+                                <div><i class="fal fa-angle-right"></i> {{ choice.value }}</div>
                             {% endfor %}
                         </div>
-                        <div class="card-footer">
-                            <i class="fas fa-ticket-alt"></i> 0 réponse(s)
-                            <a href="{{ path('getPoll', {'id': poll.id }) }}" class="btn btn-success float-right">Repondre au sondage</a>
-                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <i class="fas fa-ticket-alt"></i> {{ poll.answer|length }} réponse(s)
+                        <a href="{{ path('poll_view', {'id': poll.id }) }}" class="btn btn-success float-right">Répondre au sondage</a>
                     </div>
                 </div>
+                <div class="spacer30"></div>
             {% else %}
-                Pas de sondages
+                Pas de sondages.
             {% endfor %}
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-bullhorn"></i><span> Publicité</span>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ asset("dist/imgs/ad.jpg") }}" width="100%">
+                    </div>
+                </div>
+            </div>
 
             <div class="navigation">
                 {{ knp_pagination_render(polls) }}
