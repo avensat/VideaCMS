@@ -16,7 +16,7 @@
                         <i class="fas fa-chart-pie mr-2"></i> <span>{{ poll.title }}</span>
                         <span class="user-head">Par : <a href="{{ path("video_channel", {'user': poll.user.username}) }}">{{ poll.user.username }}</a></span>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body poll-bg">
                         <div class="question"><i class="fal fa-question-circle"></i> {{ poll.question }}</div>
                         <div class="responses">
                             {% for choice in poll.choice %}

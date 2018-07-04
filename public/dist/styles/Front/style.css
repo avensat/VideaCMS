@@ -1005,3 +1005,9 @@ section .section-title {
     color: #2EC4B6;
     margin-top: 10px;
 }
+
+.poll .poll-bg{
+    background-image: url(../../../../dist/imgs/bgs/poll-bg.jpg);
+    width: 100%;
+    background-repeat: no-repeat;
+}

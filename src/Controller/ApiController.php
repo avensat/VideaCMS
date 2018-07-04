@@ -18,8 +18,7 @@ class ApiController extends Controller
      */
     public function answerPollAction(Poll $poll)
     {
-        $answersRepo = $this->getDoctrine()->getRepository(PollAnswer::class);
-        $answers = $answersRepo->getAnswerByPoll($poll);
+        $answers = $this->getDoctrine()->getRepository(PollAnswer::class)->findBy(["poll" => $poll]);
         $label = [];
         $data = [];
 
@@ -29,7 +28,7 @@ class ApiController extends Controller
         }
 
         foreach ($answers as $answer){
-            $data[$answer->getAnswer()-1]++;
+            $data[$answer->getAnswer()]++;
         }
 
         $poll = [
