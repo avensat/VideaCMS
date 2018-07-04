@@ -1,0 +1,116 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Editer un sondage - {% endblock %}
+
+{% block mainContent %}
+
+    <div class="spacer"></div>
+    <div class="container-fluid manager poll">
+        <div class="title">Editer un sondage</div>
+        <div class="spacer"></div>
+
+        <div class="row">
+            <div class="col-md-3">
+
+                <div class="card menu-box">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-user"></i>  Gestion des sondages
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list">
+                            <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-chart-pie"></i> Gérer mes sondages</a>
+                            <a href="{{ path("create_poll") }}" class="list-group-item list-group-item-action"><i class="fal fa-plus"></i> Ajouter un sondage</a>
+                            <a href="{{ path("video_channel", {"user": app.user.usernameCanonical}) }}" class="list-group-item list-group-item-action"><i class="fal fa-eye"></i> Ma chaine</a>
+                            <a href="{{ path("front_homepage") }}" class="list-group-item list-group-item-action"><i class="fal fa-home"></i> Retourner à l'accueil</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="spacer30"></div>
+                <div class="card menu-box">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-user"></i>  Menu principal
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list">
+                            <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-newspaper"></i> Mes articles</a>
+                            <a href="{{ path("video_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-video"></i> Mes vidéos</a>
+                            <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                            <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-user-circle"></i> Ma chaine</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fal fa-cogs"></i> Mon compte</a>
+                            <a href="{{ path("fos_user_security_logout") }}" class="list-group-item list-group-item-action"><i class="fal fa-sign-out"></i> Me déconnecter</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                <div class="form">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                <div class="subtitle"> <i class="fal fa-sticky-note" style="margin-right: 5px;"></i> Titre du sondage</div>
+                                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Entrez un titre'}}) }}
+                                {{ form_errors(form.title) }}
+                            </div>
+
+                            <div class="form-group">
+                                <div class="subtitle"> <i class="fal fa-question-circle" style="margin-right: 5px;"></i> Votre question</div>
+                                {{ form_widget(form.question, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une question'}}) }}
+                                {{ form_errors(form.question) }}
+                            </div>
+
+                            <div class="subtitle"> <i class="fal fa-list" style="margin-right: 5px;"></i> Vos réponses</div>
+                            {{ form_widget(form.poll) }}
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="form[poll][1]" placeholder="Entrez une première réponse" value="{{ choices[0].value }}" required/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="form[poll][0]" placeholder="Entrez une deuxième réponse" value="{{ choices[1].value }}" required/>
+                            </div>
+                            <div class="for">
+                                {% if choices|length > 2 %}
+                                    {% for choice in choices|slice(2, 15) %}
+                                        <div class="form-group">
+                                            <input placeholder="Réponse n° {{ loop.index }}" class="form-control added" type="text" value="{{ choice.value }}" name="form[poll][{{ loop.index + 1 }}]" required/>
+                                            <a href="#" class="remove_field"><i class="fal fa-trash-alt"></i></a>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="input_fields_wrap"></div>
+                            <button type="button" class="btn btn-secondary" id="add-field">Ajouter un champs</button>
+                            <button type="submit" class="btn btn-primary">Modifier le sondage</button>
+                            {{ form_end(form) }}
+                            <div class="helper">Vous avez la possibilité d'ajouter jusqu'à 10 réponses.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var max_fields      = 11;
+        var wrapper         = $(".input_fields_wrap");
+        var add_button      = $("#add-field");
+        var x = {{ choices|length }};
+
+        $(add_button).click(function(e){
+            e.preventDefault();
+            if(x < max_fields){
+                $(wrapper).append('' +
+                    '<div class="form-group">' +
+                    '<input placeholder="Réponse n°' + x + '" class="form-control added" type="text" name="form[poll][' + x + ']" required/>' +
+                    '<a href="#" class="remove_field"><i class="fal fa-trash-alt"></i></a>' +
+                    '</div>');
+                x++;
+            }
+        });
+
+        $('.for').on("click",".remove_field", function(e){ //user click on remove text
+            e.preventDefault(); $(this).parent('div').remove(); x--;
+        });
+    </script>
+
+{% endblock %}

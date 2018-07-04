@@ -145,4 +145,48 @@ class PollController extends Controller
             "polls" => $polls
         ]);
     }
+
+    /**
+     * @Route("/edit/{poll}", name="poll_edit")
+     */
+    public function editAction(Request $request, Poll $poll){
+
+        if($poll->getUser() != $this->getUser())
+            return $this->redirectToRoute('poll_manage');
+
+        $choices = $poll->getChoice();
+
+        $form = $this->createFormBuilder()
+            ->add('title', TextType::class, ['data' => $poll->getTitle()])
+            ->add('question', TextType::class, ['data' => $poll->getQuestion()])
+            ->add('poll', HiddenType::class)
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        if($form->isSubmitted()){
+            $data = $form->getData();
+
+            $poll->setTitle($data['title']);
+            $poll->setQuestion($data['question']);
+            $out = [];
+            foreach ($data['poll'] as $key => $value){
+                $in = ["id" => $key, "value" => $value];
+                array_push($out, $in);
+            }
+            $poll->setChoice($out);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($poll);
+            $em->flush();
+            $this->addFlash('success', 'Sondage modifié !');
+            return $this->redirectToRoute("poll_manage");
+        }
+
+
+        return $this->render('/front/poll/edit.html.twig', [
+            'form' => $form->createView(),
+            'choices' => $choices
+        ]);
+    }
 }
