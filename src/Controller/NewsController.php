@@ -44,7 +44,8 @@ class NewsController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
-            $request->getSession()->getFlashBag()->add('success', 'Article publié !');
+            $this->addFlash('success', 'Article publié !');
+            return $this->redirectToRoute("news_manage");
         }
         return $this->render('front/news/editor/add.html.twig', array(
             'form' => $form->createView()
@@ -66,7 +67,8 @@ class NewsController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
-            $request->getSession()->getFlashBag()->add('success', 'Catégorie ajoutée !');
+            $this->addFlash('success', 'Catégorie ajoutée !');
+            return $this->redirectToRoute("news_manage");
         }
 
         return $this->render('front/news/editor/addCat.html.twig', array(
@@ -91,7 +93,8 @@ class NewsController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $request->getSession()->getFlashBag()->add('success', 'Article modifié !');
+            $this->addFlash('success', 'Article modifié !');
+            return $this->redirectToRoute("news_manage");
         }
 
         return $this->render('front/news/editor/edit.html.twig', array(
@@ -115,7 +118,8 @@ class NewsController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $request->getSession()->getFlashBag()->add('success', 'Catégorie modifiée !');
+            $this->addFlash('success', 'Catégorie modifiée !');
+            return $this->redirectToRoute("news_manage");
         }
 
         return $this->render('front/news/editor/editCat.html.twig', array(
@@ -137,7 +141,7 @@ class NewsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($article);
         $em->flush();
-        $request->getSession()->getFlashBag()->add('success', 'Article supprimé !');
+        $this->addFlash('success', 'Article supprimé !');
         return $this->redirectToRoute("news_manage");
 
     }
@@ -153,7 +157,7 @@ class NewsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
         $em->flush();
-        $request->getSession()->getFlashBag()->add('success', 'Categorie supprimé !');
+        $this->addFlash('success', 'Categorie supprimé !');
         return $this->redirectToRoute("news_manage");
 
     }
@@ -173,13 +177,31 @@ class NewsController extends Controller
     /**
      * @Route("/manage", name="news_manage")
      */
-    public function manageAction(){
+    public function manageAction(Request $request){
         $this->denyAccessUnlessGranted('ROLE_EDITOR');
 
         $user = $this->getUser();
 
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findBy(array("user" => $user));
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $paginator  = $this->get('knp_paginator');
+
+        $dql   = "SELECT a FROM App\Entity\Article a WHERE a.user = ".$user->getId()." ORDER BY a.id DESC";
+        $query = $em->createQuery($dql);
+
+        $articles = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+
+        $dql   = "SELECT a FROM App\Entity\Category a ORDER BY a.id DESC";
+        $query = $em->createQuery($dql);
+
+        $categories = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
 
         return $this->render('front/news/editor/manage.html.twig', array(
             'articles' => $articles,

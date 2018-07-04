@@ -1,24 +1,135 @@
-<h3>Articles</h3>
-{% for article in articles %}
-    {{ article.title }} -
-    <a href="{{ path("news_edit", {"id": article.id}) }}">Edit</a>
-    <a href="{{ path("news_delete", {"id": article.id}) }}">Remove</a>
-    <a href="{{ path("news_view", {"id": article.id}) }}">View</a><br>
-{% else %}
-    Vous n'avez pas d'articles
-{% endfor %}
-<br>
-<a href="{{ path("news_add") }}">Ajouter un article</a>
-<br>
+{% extends "front/layout.html.twig" %}
 
-<h3>Catégories</h3>
+{% block title %}News - {% endblock %}
 
-{% for category in categories %}
-    {{ category.title }} -
-    <a href="{{ path("news_edit_cat", {"id": category.id}) }}">Edit</a>
-    <a href="{{ path("news_delete_cat", {"id": category.id}) }}">Remove</a><br>
-{% else %}
-    Pas de catégories
-{% endfor %}
-<br>
-<a href="{{ path("news_add_cat") }}">Ajouter une catégorie</a>
+{% block mainContent %}
+<div class="container-fluid">
+    <div class="bigTitle">Mes articles</div>
+    <div class="row">
+        <div class="col-md-3">
+
+            <div class="card menu-box">
+                <div class="card-header fs-header">
+                    <i class="fal fa-user"></i>  Gestion des articles
+                </div>
+                <div class="card-body">
+                    <div class="list-group list">
+                        <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-newspaper"></i> Gérer mes article</a>
+                        <a href="{{ path("news_add") }}" class="list-group-item list-group-item-action"><i class="fal fa-plus"></i> Ajouter un article</a>
+                        <a href="{{ path("news_add_cat") }}" class="list-group-item list-group-item-action"><i class="fal fa-plus"></i> Ajouter une catégorie</a>
+                        <a href="{{ path("front_homepage") }}" class="list-group-item list-group-item-action"><i class="fal fa-home"></i> Retourner à l'accueil</a>
+                    </div>
+                </div>
+            </div>
+            <div class="spacer30"></div>
+            <div class="card menu-box">
+                <div class="card-header fs-header">
+                    <i class="fal fa-user"></i>  Menu principal
+                </div>
+                <div class="card-body">
+                    <div class="list-group list">
+                        <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-newspaper"></i> Mes articles</a>
+                        <a href="{{ path("video_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-video"></i> Mes vidéos</a>
+                        <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                        <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-user-circle"></i> Ma chaine</a>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fal fa-cogs"></i> Mon compte</a>
+                        <a href="{{ path("fos_user_security_logout") }}" class="list-group-item list-group-item-action"><i class="fal fa-sign-out"></i> Me déconnecter</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#articles" role="tab" aria-controls="home" aria-selected="true">Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#cat" role="tab" aria-controls="profile" aria-selected="false">Catégories</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="articles" role="tabpanel" aria-labelledby="articles-tab">
+
+                            <br>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" style="color: #ffffff">{{ knp_pagination_sortable(articles, 'ID', 'a.id') }}</th>
+                                    <th scope="col">Titre</th>
+                                    <th scope="col">Date d'ajout</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for article in articles %}
+                                    <tr>
+                                        <th scope="row">{{ article.id }}</th>
+                                        <th scope="row">{{ article.title }}</th>
+                                        <td>
+                                            {{ article.creation|date("d/m/Y à H:i") }}
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                                <a href="{{ path("news_view", {"id": article.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                                <a href="{{ path("news_edit", {"id": article.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                                <a href="{{ path("news_delete", {"id": article.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <div class="alert alert-primary" role="alert">
+                                        Pas d'articles.
+                                    </div>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <div class="navigation">
+                                {{ knp_pagination_render(articles) }}
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="cat" role="tabpanel" aria-labelledby="cat-tab">
+
+                            <br>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Titre</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for category in categories %}
+                                    <tr>
+                                        <th scope="row">{{ category.title }}</th>
+                                        <td style="text-align: right;">
+                                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                                <a href="{{ path("news_edit_cat", {"id": category.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                                <a href="{{ path("news_delete_cat", {"id": category.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <div class="alert alert-primary" role="alert">
+                                        Pas de catégories, veuillez en ajouter une.
+                                    </div>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

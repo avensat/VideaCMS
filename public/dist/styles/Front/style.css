@@ -887,7 +887,7 @@ section .section-title {
     }
 }
 
-.home .list-group-item {
+.list-group-item {
     position: relative;
     display: block;
     padding: 0.55rem 1.25rem;
@@ -899,13 +899,13 @@ section .section-title {
     font-family: 'Dosis', sans-serif;
 }
 
-.home .list-group-item-action:hover {
+.list-group-item-action:hover {
     color: #000000;
     text-decoration: none;
     background-color: #e1e1e1;
 }
 
-.logged-box .list svg{
+.menu-box .list svg{
     color: red;
     margin-right: 10px;
 }
@@ -931,4 +931,36 @@ section .section-title {
 .home .articles .date{
     color: black;
     font-size: 13px;
+}
+
+.home .users-list{
+    text-align: center;
+}
+
+.home .users-list span{
+    font-family: 'Oswald', sans-serif;
+    color: #011627;
+}
+
+.bigTitle{
+    text-transform: uppercase;
+    font-size: 45px;
+    color: #FF9F1C;
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 10px;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #fff ;
+    background-color: #2EC4B6;
+}
+
+.list-group-item.active svg {
+    color: #fff;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }

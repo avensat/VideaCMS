@@ -25,6 +25,7 @@ class UserExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('getProfilePic', array($this, 'getProfilePic')),
+            new \Twig_SimpleFunction('getLastUsers', array($this, 'getLastUsers')),
         );
     }
 
@@ -32,5 +33,9 @@ class UserExtension extends \Twig_Extension
         if($user->getProfilePicturePath())
             return 'uploads/user/profilepics/'.$user->getProfilePicturePath();
         return 'uploads/user/profilepics/user_default.png';
+    }
+
+    public function getLastUsers(){
+        return $this->em->getRepository(User::class)->findBy([], ['id' => 'DESC']);
     }
 }

@@ -29,7 +29,7 @@ class ArticlesExtension extends \Twig_Extension
 	}
 
 	public function getLastArticles($limit = 5){
-        $articles = $this->em->getRepository(Article::class)->findAll();
+        $articles = $this->em->getRepository(Article::class)->findBy([], ['id' => 'DESC'],$limit,0);
 		return $articles;
 	}
 }

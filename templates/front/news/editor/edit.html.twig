@@ -1,3 +1,72 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
+{% extends "front/layout.html.twig" %}
+
+{% block title %}News - {% endblock %}
+
+{% block mainContent %}
+    <div class="container-fluid">
+        <div class="bigTitle">Editer un article</div>
+        <div class="row">
+            <div class="col-md-3">
+
+                <div class="card menu-box">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-user"></i>  Gestion des articles
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list">
+                            <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-newspaper"></i> Gérer mes article</a>
+                            <a href="{{ path("news_add") }}" class="list-group-item list-group-item-action"><i class="fal fa-plus"></i> Ajouter un article</a>
+                            <a href="{{ path("news_add_cat") }}" class="list-group-item list-group-item-action"><i class="fal fa-plus"></i> Ajouter une catégorie</a>
+                            <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-home"></i> Retourner à l'accueil</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="spacer30"></div>
+                <div class="card menu-box">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-user"></i>  Menu principal
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list">
+                            <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-newspaper"></i> Mes articles</a>
+                            <a href="{{ path("video_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-video"></i> Mes vidéos</a>
+                            <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                            <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-user-circle"></i> Ma chaine</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fal fa-cogs"></i> Mon compte</a>
+                            <a href="{{ path("fos_user_security_logout") }}" class="list-group-item list-group-item-action"><i class="fal fa-sign-out"></i> Me déconnecter</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+
+                <div class="card">
+                    <div class="card-body">
+
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.title, "Titre de votre article") }}
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.category, "Catégorie de l'article") }}
+                            {{ form_widget(form.category) }}
+                            {{ form_errors(form.category) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.content, "Texte de l'article") }}
+                            {{ form_widget(form.content) }}
+                            {{ form_errors(form.content) }}
+                        </div>
+                        {{ form_widget(form.save, {'label': 'Publier'}) }}
+                        {{ form_end(form) }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

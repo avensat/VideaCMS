@@ -44,7 +44,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row more-videos">
-                    {% for video in getLastVideos() %}
+                    {% for video in getLastVideos()|slice(0, 8) %}
 
                                 <div class="col-xs-3 col-md-3">
                                     {% if video.url is defined %}
@@ -89,15 +89,19 @@
                     <i class="fal fa-newspaper"></i> <span> Derniers articles</span>
                 </div>
                 <div class="card-body articles">
-                    {% for article in getLastArticles() %}
-
+                    {% for article in getLastArticles()|slice(0, 5) %}
                         <a href="{{ path("news_view", {'id': article.id}) }}"><span class="atitle">{{ article.title }}</span></a>
                         <span class="description">{{ article.content|length > 200 ? article.content|slice(0, 200) ~ '[...]' : article.content  }}</span>
                         <span class="user"><a href="{{ path("video_channel", {'user': article.user.username}) }}">{{ article.user.username }}</a> <span class="date">le {{ article.creation|date("d/m/y à H:i") }}</span></span>
-
+                        {% if not loop.last %}
+                            <hr/>
+                        {% endif %}
                     {% else %}
                         Aucun article pour le moment !
                     {% endfor %}
+                    <div style="text-align: right">
+                        <a href="" class="see-link">Tous nos articles <i class="fal fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
 
@@ -105,9 +109,9 @@
         <div class="col-lg-4">
 
             {% if app.user is not null %}
-                <div class="card logged-box">
+                <div class="card menu-box">
                     <div class="card-header fs-header">
-                        <i class="fal fa-user"></i>  Mon compte</span>
+                        <i class="fal fa-user"></i>  Mon compte
                     </div>
                     <div class="card-body">
                         <div class="list-group list">
@@ -148,13 +152,27 @@
                     </div>
                 </div>
             {% endif %}
-<br>
+            <br>
             <div class="card">
                 <div class="card-header fs-header">
-                    <i class="fal fa-users"></i><span> Derniers utilisateurs</span>
+                    <i class="fal fa-users"></i><span> Derniers utilisateurs ( {{ getLastUsers()|length }} )</span>
                 </div>
                 <div class="card-body">
-
+                    <div class="row">
+                        {% for user in getLastUsers()|slice(0,10) %}
+                            <div class="col-md-3 users-list">
+                                <a href="{{ path("video_channel", {'user': user.username}) }}">
+                                    <img src="{{ getProfilePic(user) }}" width="50px">
+                                    <span class="username">{{ user.username }}</span>
+                                </a>
+                            </div>
+                        {% else %}
+                            Pas d'utilisateurs...
+                        {% endfor %}
+                    </div>
+                    <div style="text-align: right">
+                        <a href="" class="see-link">Tous les utilisateurs <i class="fal fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
 
@@ -164,7 +182,7 @@
                     <i class="fal fa-bullhorn"></i><span> Publicité</span>
                 </div>
                 <div class="card-body">
-
+                    <img src="{{ asset("dist/imgs/ad.jpg") }}" width="100%">
                 </div>
             </div>
 
