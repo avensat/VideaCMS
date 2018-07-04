@@ -20,16 +20,27 @@ class PollController extends Controller
     /**
      * @Route("/", name="poll_homepage")
      */
-    public function pollHomepage()
+    public function pollHomepage(Request $request)
     {
-        $polls = $this->getDoctrine()->getRepository(Poll::class)->findAll();
+
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT a FROM App\Entity\Poll a";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $polls = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+
         return $this->render('/front/poll/index.html.twig', [
             'polls' => $polls,
         ]);
     }
 
     /**
-     * @Route("/get/{id}", name="getPoll")
+     * @Route("/v/{id}", name="poll_view")
      * @param Poll $poll
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -51,7 +62,7 @@ class PollController extends Controller
 
         return $this->render('/front/poll/get.html.twig', [
             'poll' => $poll,
-            'answersCount' => count($answerRepo->getAnswerByPoll($poll)),
+            'answersCount' => count($answersRepo->getAnswerByPoll($poll)),
             'userCanRespond' => $userCanRespond,
         ]);
     }
@@ -63,7 +74,7 @@ class PollController extends Controller
      */
     public function answerPollAction(Request $request, Poll $poll)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
         if($user != "anon."){
             $answersRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
             $answers = $answersRepo->getAnswerByPollAndUser($poll, $user);
@@ -73,20 +84,20 @@ class PollController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($answer);
                 $em->flush();
-                $this->addFlash('success', 'Votre réponse à bien été enregistré !');
-                return $this->redirectToRoute('getPoll', ['id' => $poll->getId()]);
+                $this->addFlash('success', 'Votre réponse a bien été enregistrée !');
+                return $this->redirectToRoute('poll_view', ['id' => $poll->getId()]);
             } else {
-                $this->addFlash('error', 'Vous avez déja repondus au sondage !');
-                return $this->redirectToRoute('getPoll', ['id' => $poll->getId()]);
+                $this->addFlash('error', 'Vous avez déjà répondu au sondage !');
+                return $this->redirectToRoute('poll_view', ['id' => $poll->getId()]);
             }
         } else {
-            $this->addFlash('error', 'Vous devez être connecté pour repondre au sondage !');
-            return $this->redirectToRoute('getPoll', ['id' => $poll->getId()]);
+            $this->addFlash('error', 'Vous devez être connecté pour répondre au sondage !');
+            return $this->redirectToRoute('poll_view', ['id' => $poll->getId()]);
         }
     }
 
     /**
-     * @Route("/create", name="getPoll")
+     * @Route("/create", name="create_poll")
      */
     public function createAction(Request $request){
 

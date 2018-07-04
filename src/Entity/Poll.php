@@ -56,6 +56,11 @@ class Poll
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PollAnswer", mappedBy="poll")
+     */
+    private $answer;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="polls")
@@ -155,5 +160,29 @@ class Poll
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * Set answer.
+     *
+     * @param PollAnswer|null $answers
+     *
+     * @return PollAnswer
+     */
+    public function setAnswer(PollAnswer $answer = null)
+    {
+        $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Get answer.
+     *
+     * @return PollAnswer|null
+     */
+    public function getAnswer()
+    {
+        return $this->answer;
     }
 }

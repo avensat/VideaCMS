@@ -2,10 +2,88 @@
 {% block title %}Gérer mes sondage - {% endblock %}
 {% block mainContent %}
 
-    {% for poll in polls %}
-        {{ poll.title }}
-    {% else %}
+    <div class="spacer"></div>
+    <div class="container-fluid manager">
+    <div class="title">Gestion des sondages</div>
+    <div class="spacer"></div>
 
-    {% endfor %}
+    <div class="row">
+        <div class="col-md-3">
+
+            <div class="card menu-box">
+                <div class="card-header fs-header">
+                    <i class="fal fa-user"></i>  Gestion des sondages
+                </div>
+                <div class="card-body">
+                    <div class="list-group list">
+                        <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-video"></i> Gérer mes sondages</a>
+                        <a href="{{ path("create_poll") }}" class="list-group-item list-group-item-action"><i class="fal fa-plus"></i> Ajouter un sondage</a>
+                        <a href="{{ path("video_channel", {"user": app.user.usernameCanonical}) }}" class="list-group-item list-group-item-action"><i class="fal fa-eye"></i> Ma chaine</a>
+                        <a href="{{ path("front_homepage") }}" class="list-group-item list-group-item-action"><i class="fal fa-home"></i> Retourner à l'accueil</a>
+                    </div>
+                </div>
+            </div>
+            <div class="spacer30"></div>
+            <div class="card menu-box">
+                <div class="card-header fs-header">
+                    <i class="fal fa-user"></i>  Menu principal
+                </div>
+                <div class="card-body">
+                    <div class="list-group list">
+                        <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-newspaper"></i> Mes articles</a>
+                        <a href="{{ path("video_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-video"></i> Mes vidéos</a>
+                        <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                        <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-user-circle"></i> Ma chaine</a>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fal fa-cogs"></i> Mon compte</a>
+                        <a href="{{ path("fos_user_security_logout") }}" class="list-group-item list-group-item-action"><i class="fal fa-sign-out"></i> Me déconnecter</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Titre</th>
+                                <th scope="col">Question</th>
+                                <th scope="col">Réponses</th>
+                                <th scope="col">Date d'ajout</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for poll in polls %}
+                                <tr>
+                                    <th scope="row">{{ poll.title }}</th>
+                                    <th scope="row">{{ poll.question }}</th>
+                                    <th scope="row">{{ poll.answer|length }}</th>
+                                    <td>
+                                        {{ poll.createdAt|date("d/m/Y à H:i") }}
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                            <a href="{{ path('poll_view', {"id": poll.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                            <a href="" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                            <a href="" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <div class="alert alert-primary" role="alert">
+                                    Pas de sondages
+                                </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}

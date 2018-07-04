@@ -27,7 +27,7 @@ class PollAnswer
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Poll")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Poll", inversedBy="answer")
      * @ORM\JoinColumn(name="poll_id", referencedColumnName="id")
      */
     private $poll;

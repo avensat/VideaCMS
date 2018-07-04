@@ -4,6 +4,10 @@
 
 {% block mainContent %}
     <div class="container">
+
+
+        {{ knp_pagination_sortable(polls, 'Trier', 'a.id') }}
+
         <div class="row">
             {% for poll in polls %}
                 <div class="col-lg-8 offset-md-2 mb-4">
@@ -28,6 +32,11 @@
             {% else %}
                 Pas de sondages
             {% endfor %}
+
+            <div class="navigation">
+                {{ knp_pagination_render(polls) }}
+            </div>
+
         </div>
     </div>
 
