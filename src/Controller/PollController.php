@@ -191,7 +191,7 @@ class PollController extends Controller
     }
 
     /**
-     * @Route("/delete/{poll}", name="poll_delete")
+     * @Route("/delete/{poll}", name="poll_remove")
      */
     public function deleteAction(Request $request, Poll $poll){
         if($poll->getUser() != $this->getUser())

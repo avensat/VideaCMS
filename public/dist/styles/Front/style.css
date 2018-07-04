@@ -437,7 +437,10 @@ li {
     font-size: 35px;
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
-    color: #474849;
+    color: #395064;
+    padding-left: 10px;
+    text-transform: none;
+    vertical-align: middle;
     margin-bottom: 30px;
 }
 
@@ -588,8 +591,10 @@ li {
     text-align: center;
     font-size: 30px;
     margin-bottom: 20px;
-    font-family: 'Oxygen', sans-serif;
+    font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
+    font-weight: 500;
+    color: #E71D36;
 }
 
 .channel .video-title{

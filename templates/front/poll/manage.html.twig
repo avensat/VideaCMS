@@ -65,7 +65,7 @@
                                         <div class="btn-group mr-2" role="group" aria-label="Second group">
                                             <a href="{{ path('poll_view', {"id": poll.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
                                             <a href="{{ path('poll_edit', {'poll': poll.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
-                                            <a href="" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                                            <a href="{{ path('poll_remove', {'poll': poll.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>

@@ -31,8 +31,8 @@ class UserExtension extends \Twig_Extension
 
     public function getProfilePic(User $user){
         if($user->getProfilePicturePath())
-            return 'uploads/user/profilepics/'.$user->getProfilePicturePath();
-        return 'uploads/user/profilepics/user_default.png';
+            return '/uploads/user/profilepics/'.$user->getProfilePicturePath();
+        return '/uploads/user/profilepics/user_default.png';
     }
 
     public function getLastUsers(){
