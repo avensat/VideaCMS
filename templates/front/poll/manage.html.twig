@@ -60,9 +60,7 @@
                                     <th scope="row">{{ poll.title }}</th>
                                     <th scope="row">{{ poll.question }}</th>
                                     <th scope="row">{{ poll.answer|length }}</th>
-                                    <td>
-                                        {{ poll.createdAt|date("d/m/Y à H:i") }}
-                                    </td>
+                                    <td>{{ poll.createdAt|date("d/m/Y à H:i") }}</td>
                                     <td style="text-align: right;">
                                         <div class="btn-group mr-2" role="group" aria-label="Second group">
                                             <a href="{{ path('poll_view', {"id": poll.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
