@@ -5,6 +5,7 @@ easy_admin:
             - { label: 'General' }
             - { entity: 'User', label: 'Utilisateurs', icon: 'users' }
             - { entity: 'Comments', label: 'Commentaires', icon: 'commenting-o' }
+            - { entity: 'Polls', label: 'Sondages', icon: 'pie-chart' }
             - { label: 'Vidéos' }
             - { entity: 'Videos_locales', label: 'Vidéos locales', icon: 'hdd-o' }
             - { entity: 'Videos_ligne', label: 'Vidéos en ligne', icon: 'youtube-play' }
@@ -19,6 +20,11 @@ easy_admin:
             label: 'Commentaires'
             list:
                 title: "Les derniers commentaires"
+        Polls:
+            class: App\Entity\Poll
+            label: 'Sondages'
+            list:
+                title: "Liste des sondages"
         News_article:
             class: App\Entity\Article
             label: 'Articles'
