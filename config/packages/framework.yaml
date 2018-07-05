@@ -9,6 +9,8 @@ framework:
     session:
         handler_id: ~
 
+    default_locale: fr
+
     #esi: true
     #fragments: true
     php_errors:

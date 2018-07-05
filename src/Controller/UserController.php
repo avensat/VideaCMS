@@ -5,10 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class UserController extends Controller
 {
@@ -30,27 +34,67 @@ class UserController extends Controller
      */
     public function editCustomAction(Request $request){
 
-        $userInfo = $this->getDoctrine()->getRepository(User::class)->findOneBy(array("id" => $this->getUser()->getId()));
-        $form = $this->get('form.factory')->create(UserType::class, $userInfo);
+        $userInfo = $this->getUser();
 
+        $form = $this->createFormBuilder()
+            ->add('twitter', UrlType::class, ['data' => $userInfo->getTwitter(), 'required' => false])
+            ->add('facebook', UrlType::class, ['data' => $userInfo->getFacebook(), 'required' => false])
+            ->add('youtube', UrlType::class, ['data' => $userInfo->getYoutube(), 'required' => false])
+            ->add('submit', SubmitType::class)
+            ->getForm()->handleRequest($request);
 
-        $form->handleRequest($request);
+        $formPicture = $this->createFormBuilder()
+            ->add('profilePicture', FileType::class)
+            ->add('submit', SubmitType::class)
+            ->setAction($this->generateUrl("user_custom_picture"))
+            ->getForm();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $data = $form->getData();
+
+            $userInfo->setTwitter($data['twitter']);
+            $userInfo->setFacebook($data['facebook']);
+            $userInfo->setYoutube($data['youtube']);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'Informations sauvegardés.');
+            return $this->redirectToRoute('user_custom');
+        }
+
+        return $this->render('/front/user/edit_custom.html.twig', array(
+            "form" => $form->createView(),
+            "formPicture" => $formPicture->createView()
+        ));
+    }
+
+    /**
+     * @Route("/profile/edit/picture", name="user_custom_picture")
+     * @Method({"POST"})
+     */
+    public function editPictureAction(Request $request){
+        $formPicture = $this->createFormBuilder()
+            ->add('profilePicture', FileType::class)
+            ->add('submit', SubmitType::class)
+            ->setAction($this->generateUrl("user_custom_picture"))
+            ->getForm()->handleRequest($request);
+
+        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+
+            $data = $formPicture->getData();
+            $userInfo = $this->getUser();
+
+            $userInfo->setProfilePictureFile($data['profilePicture']);
             $userInfo->preUploadProfilePicture();
             $userInfo->uploadProfilePicture();
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $request->getSession()->getFlashBag()->add('success', 'Modifications ok');
 
-            return $this->redirectToRoute('fos_user_profile_edit');
+            $this->addFlash('success', "Photo de profil modifiée !");
         }
-
-        return $this->render('/front/user/edit_custom.html.twig', array(
-            "form" => $form->createView()
-        ));
+        return $this->redirectToRoute("user_custom");
     }
 
     /**

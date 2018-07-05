@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use App\Entity\Poll;
 use App\Entity\User;
 use App\Entity\UploadedVideo;
 use App\Entity\ProviderVideo;
@@ -348,6 +350,9 @@ class VideoController extends Controller
         $providerVideos = $this->getDoctrine()->getRepository(ProviderVideo::class)->findBy(array("user" => $user));
         $uploadedVideos = $this->getDoctrine()->getRepository(UploadedVideo::class)->findBy(array("user" => $user));
 
+        $articles = $this->getDoctrine()->getRepository(Article::class)->findBy(['user' => $user], ['id' => 'DESC'], null, 0);
+        $polls = $this->getDoctrine()->getRepository(Poll::class)->findBy(['user' => $user], ['id' => 'DESC'], null, 0);
+
         $videos = array_merge($providerVideos, $uploadedVideos);
         usort($videos, function($a, $b) {
             if ($a == $b) {
@@ -358,7 +363,9 @@ class VideoController extends Controller
 
         return $this->render('/front/video/channel.html.twig', array(
             'user' => $user,
-            'videos' => $videos
+            'videos' => $videos,
+            'articles' => $articles,
+            'polls' => $polls,
         ));
 
     }

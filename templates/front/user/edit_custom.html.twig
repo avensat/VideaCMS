@@ -1,3 +1,71 @@
-{{ form_start(form, {'action': path('fs_user_custom')}) }}
-{{ form_rest(form) }}
-{{ form_end(form) }}
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Index - {% endblock %}
+
+{% block mainContent %}
+    <div class="container profile">
+        <div class="title">Mon profil</div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card menu-box">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-user"></i>  Gestion du compte
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list">
+                            <a href="{{ path("user_custom") }}" class="list-group-item list-group-item-action active"><i class="fal fa-user"></i> Modifier mon profil</a>
+                            <a href="{{ path("fos_user_profile_edit") }}" class="list-group-item list-group-item-action "><i class="fal fa-cogs"></i> Modifier mon compte</a>
+                            <a href="{{ path("fos_user_change_password") }}" class="list-group-item list-group-item-action"><i class="fal fa-lock"></i> Mot de passe</a>
+                            <a href="{{ path("front_homepage") }}" class="list-group-item list-group-item-action"><i class="fal fa-home"></i> Retourner à l'accueil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        {{ form_start(form) }}
+
+                        <div class="form-group">
+                            {{ form_label(form.twitter, "URL de votre compte Twitter") }}
+                            {{ form_widget(form.twitter) }}
+                            {{ form_errors(form.twitter) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.facebook, "URL de votre compte Facebook") }}
+                            {{ form_widget(form.facebook) }}
+                            {{ form_errors(form.facebook) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.youtube, "URL de votre compte Youtube") }}
+                            {{ form_widget(form.youtube) }}
+                            {{ form_errors(form.youtube) }}
+                        </div>
+
+                        {{ form_widget(form.submit, {'label': "Mettre à jour"}) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ getProfilePic(app.user) }}" width="100%">
+                        <div class="spacer30"></div>
+                        {{ form_start(formPicture) }}
+                        <div class="form-group">
+                            {{ form_widget(formPicture.profilePicture) }}
+                        </div>
+
+                        {{ form_widget(formPicture.submit, {'label': "Mettre à jour"}) }}
+                        {{ form_end(formPicture) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

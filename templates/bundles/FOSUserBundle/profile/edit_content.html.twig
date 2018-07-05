@@ -1,0 +1,39 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Index - {% endblock %}
+
+{% block mainContent %}
+    <div class="container profile">
+    <div class="title">Mon compte</div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card menu-box">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-user"></i>  Gestion du compte
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list">
+                            <a href="{{ path("user_custom") }}" class="list-group-item list-group-item-action"><i class="fal fa-user"></i> Modifier mon profil</a>
+                            <a href="{{ path("fos_user_profile_edit") }}" class="list-group-item list-group-item-action active"><i class="fal fa-cogs"></i> Modifier mon compte</a>
+                            <a href="{{ path("fos_user_change_password") }}" class="list-group-item list-group-item-action"><i class="fal fa-lock"></i> Mot de passe</a>
+                            <a href="{{ path("front_homepage") }}" class="list-group-item list-group-item-action"><i class="fal fa-home"></i> Retourner à l'accueil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+                        {{ form_widget(form) }}
+                        <div>
+                            <input type="submit" class="btn btn-primary" value="Enregistrer" />
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

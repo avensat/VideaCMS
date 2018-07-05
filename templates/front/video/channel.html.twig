@@ -58,7 +58,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="head">Biographie <i class="fal fa-angle-down"></i></div>
-                        
+                        <div class="text-center">
+                            <img src="{{ getProfilePic(user) }}" width="150px">
+                        </div>
+
+                        {% for role in user.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                <div class="admin"><i class="fal fa-star"></i> Administrateur</div>
+                            {% endif %}
+                            {% if role == "ROLE_CREATOR" %}
+                                <div class="creator"><i class="fal fa-badge-check"></i> Créateur</div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -104,15 +115,37 @@
             </div>
         </div>
         <div class="spacer30"></div>
-        <div class="card">
-            <div class="card-body">
+        <div class="card channel-article-bg">
+            <div class="card-body articles">
                 <div class="head">Articles <i class="fal fa-angle-down"></i></div>
+                {% for article in articles %}
+                    <a href="{{ path("news_view", {'id': article.id}) }}"><span class="atitle">{{ article.title }}</span></a>
+                    <span class="description">{{ article.content|length > 200 ? article.content|slice(0, 200) ~ '[...]' : article.content  }}</span>
+                    <span class="user"><a href="{{ path("video_channel", {'user': article.user.username}) }}">{{ article.user.username }}</a> <span class="date">le {{ article.creation|date("d/m/y à H:i") }}</span></span>
+                    {% if not loop.last %}
+                        <hr/>
+                    {% endif %}
+                {% else %}
+                    Aucun article pour le moment !
+                {% endfor %}
             </div>
         </div>
         <div class="spacer30"></div>
-        <div class="card">
-            <div class="card-body">
+        <div class="card channel-poll-bg">
+            <div class="card-body channel-poll">
                 <div class="head">Sondages <i class="fal fa-angle-down"></i></div>
+                <div class="row">
+                    {% for poll in polls %}
+                        <div class="col-md-4 content">
+                            <span class="pTitle">{{ poll.title }}</span>
+                            <span class="question">{{ poll.question }}</span>
+                            <span class="responses">{{ poll.answer|length }} réponse(s) !</span>
+                            <a href="" class="btn btn-secondary ">Voter !</a>
+                        </div>
+                    {% else %}
+                        Aucun sondage pour le moment !
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

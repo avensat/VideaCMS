@@ -915,25 +915,21 @@ section .section-title {
     margin-right: 10px;
 }
 
-.home .articles .atitle{
+.articles .atitle{
     font-size: 20px;
     display: block;
 }
 
-.home .articles .description{
-
-}
-
-.home .articles .user{
+.articles .user{
     display: block;
 }
 
-.home .articles .user a{
+.articles .user a{
     font-family: 'Oswald', sans-serif;
     color: #2EC4B6;
 }
 
-.home .articles .date{
+.articles .date{
     color: black;
     font-size: 13px;
 }
@@ -1015,4 +1011,61 @@ section .section-title {
     background-image: url(../../../../dist/imgs/bgs/poll-bg.jpg);
     width: 100%;
     background-repeat: no-repeat;
+}
+
+.channel .admin{
+    padding-top:10px;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    color: #FF9F1C;
+}
+
+.channel .creator{
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    color: #2EC4B6;
+    padding: 10px;
+}
+
+.channel-poll .content{
+    text-align: center;
+}
+
+.channel .channel-poll-bg{
+    background-image: url(../../../../dist/imgs/bgs/polls-channel.png);
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+
+.channel .channel-article-bg{
+    background-image: url(../../../../dist/imgs/bgs/articles-channel.png);
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+
+.channel .channel-poll .pTitle{
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 23px;
+    color: #011627;
+}
+
+.channel .channel-poll .question{
+    display: block;
+    padding: 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    font-weight: 200;
+    color: #2EC4B6;
+}
+
+.channel .channel-poll a{
+    display: block;
+    margin-top: 20px;
 }
