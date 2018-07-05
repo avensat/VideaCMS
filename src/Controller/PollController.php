@@ -74,6 +74,9 @@ class PollController extends Controller
      */
     public function answerPollAction(Request $request, Poll $poll)
     {
+
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $user = $this->getUser();
         if($user != "anon."){
             $answersRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
@@ -100,6 +103,8 @@ class PollController extends Controller
      * @Route("/create", name="create_poll")
      */
     public function createAction(Request $request){
+
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $form = $this->createFormBuilder()
             ->add('title', TextType::class)
@@ -140,6 +145,8 @@ class PollController extends Controller
      */
     public function manageAction(){
 
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
+
         $polls = $this->getDoctrine()->getRepository(Poll::class)->findBy(['user' => $this->getUser()]);
         return $this->render('/front/poll/manage.html.twig', [
             "polls" => $polls
@@ -150,6 +157,8 @@ class PollController extends Controller
      * @Route("/edit/{poll}", name="poll_edit")
      */
     public function editAction(Request $request, Poll $poll){
+
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         if($poll->getUser() != $this->getUser())
             return $this->redirectToRoute('poll_manage');
@@ -194,6 +203,8 @@ class PollController extends Controller
      * @Route("/delete/{poll}", name="poll_remove")
      */
     public function deleteAction(Request $request, Poll $poll){
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
+
         if($poll->getUser() != $this->getUser())
             return $this->redirectToRoute('poll_manage');
 

@@ -1122,3 +1122,21 @@ section .section-title {
 .users-table a{
     color: #ffffff;
 }
+
+.confirmed{
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 35px;
+}
+
+.add .disabled svg{
+    color: #dbdbdb;
+}
+
+.add .disabled span{
+    color: #dbdbdb;
+}
+
+.add .disabled i{
+    color: #b6b5b5;
+}

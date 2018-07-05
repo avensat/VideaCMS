@@ -8,6 +8,7 @@
         <div class="head">Choisissez une action</div>
         <div class="row">
             <div class="col-md-6">
+                {% if is_granted('ROLE_CREATOR') %}
                 <div class="card">
                     <div class="card-body content">
                         <a href="{{ path("video_upload") }}">
@@ -16,6 +17,15 @@
                         </a>
                     </div>
                 </div>
+                {% else %}
+                    <div class="card">
+                        <div class="card-body content disabled">
+                            <i class="fal fa-upload icon"></i>
+                            <span>Envoyer une vidéo</span>
+                            <i>Votre type de compte ne vous permet pas cette action.</i>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <div class="card">

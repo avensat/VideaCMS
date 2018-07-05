@@ -1,8 +1,15 @@
-{% trans_default_domain 'FOSUserBundle' %}
-
-{% block fos_user_content %}
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-    {% if targetUrl %}
-    <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-    {% endif %}
-{% endblock fos_user_content %}
+{% extends "front/layout.html.twig" %}
+{% block title %}Compte activé ! - {% endblock %}
+{% block mainContent %}
+    <div class="container confirmed">
+        <div class="card">
+            <div class="card-body">
+                <div style="height: 50px"></div>
+                Votre compte a été activé avec succès !
+                <div style="height: 50px"></div>
+                <a href="{{ path('fos_user_security_login') }}" class="btn btn-primary btn-large">Me connecter</a>
+                <div style="height: 50px"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

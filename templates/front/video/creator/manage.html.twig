@@ -33,9 +33,11 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group list">
-                        <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-newspaper"></i> Mes articles</a>
                         <a href="{{ path("video_manage") }}" class="list-group-item list-group-item-action active"><i class="fal fa-video"></i> Mes vidéos</a>
-                        <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                        {% if is_granted('ROLE_CREATOR') %}
+                            <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-newspaper"></i> Mes articles</a>
+                            <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                        {% endif %}
                         <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-user-circle"></i> Ma chaine</a>
                         <a href="#" class="list-group-item list-group-item-action"><i class="fal fa-cogs"></i> Mon compte</a>
                         <a href="{{ path("fos_user_security_logout") }}" class="list-group-item list-group-item-action"><i class="fal fa-sign-out"></i> Me déconnecter</a>
@@ -84,6 +86,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="head">Vidéos locales</div>
+                            {% if is_granted('ROLE_CREATOR') %}
                             <table class="table">
                                 <thead class="thead-dark">
                                 <tr>
@@ -114,6 +117,11 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                            {% else %}
+                                <div class="alert alert-primary" role="alert">
+                                    En tant qu'utilisateur standard vous n'avez pas la possibilité d'héberger des vidéos sur nos serveurs.
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

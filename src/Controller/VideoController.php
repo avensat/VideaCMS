@@ -72,7 +72,7 @@ class VideoController extends Controller
      */
     public function addLinkAction(Request $request){
 
-        $this->denyAccessUnlessGranted('ROLE_CREATOR');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $video = new ProviderVideo();
         $form = $this->get('form.factory')->create(VideoType::class, $video);
@@ -102,8 +102,6 @@ class VideoController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function uploadAction(Request $request){
-
-
 
         $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
@@ -166,7 +164,7 @@ class VideoController extends Controller
      */
     public function manageAction(){
 
-        $this->denyAccessUnlessGranted('ROLE_CREATOR');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $extVideos = $this->getDoctrine()->getRepository(ProviderVideo::class)->findBy(array("user" => $this->getUser()));
         $upVideos = $this->getDoctrine()->getRepository(UploadedVideo::class)->findBy(array("user" => $this->getUser()));
@@ -222,11 +220,13 @@ class VideoController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $type, $id){
-        $this->denyAccessUnlessGranted('ROLE_CREATOR');
+
 
         $user = $this->getUser();
 
         if($type == "upload"){
+
+            $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
             if($repo = $this->getDoctrine()->getRepository(UploadedVideo::class)->findOneBy(array("id" => $id, "user" => $user))){
                 $repo->setVideoFile($repo->getVideoFile());
@@ -255,6 +255,8 @@ class VideoController extends Controller
 
         }
         elseif($type == "video"){
+
+            $this->denyAccessUnlessGranted('ROLE_USER');
 
             if($repo = $this->getDoctrine()->getRepository(ProviderVideo::class)->findOneBy(array("id" => $id, "user" => $user))) {
 

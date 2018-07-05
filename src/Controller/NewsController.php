@@ -30,7 +30,7 @@ class NewsController extends Controller
      * @Route("/add", name="news_add")
      */
     public function addAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $article = new Article();
 
@@ -56,7 +56,7 @@ class NewsController extends Controller
      * @Route("/add/category", name="news_add_cat")
      */
     public function addCatAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -80,7 +80,7 @@ class NewsController extends Controller
      * @Route("/edit/{id}", name="news_edit", requirements={"id"="\d+"})
      */
     public function editAction(Request $request, $id){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $user = $this->getUser();
 
@@ -107,7 +107,7 @@ class NewsController extends Controller
      * @Route("/edit/category/{id}", name="news_edit_cat", requirements={"id"="\d+"})
      */
     public function editCatAction(Request $request, $id){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array("id" => $id));
 
@@ -132,7 +132,7 @@ class NewsController extends Controller
      * @Route("/delete/{id}", name="news_delete", requirements={"id"="\d+"})
      */
     public function deleteAction(Request $request, $id){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $user = $this->getUser();
 
@@ -150,7 +150,7 @@ class NewsController extends Controller
      * @Route("/delete/category/{id}", name="news_delete_cat", requirements={"id"="\d+"})
      */
     public function deleteCatAction(Request $request, $id){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array("id" => $id));
 
@@ -178,7 +178,7 @@ class NewsController extends Controller
      * @Route("/manage", name="news_manage")
      */
     public function manageAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $user = $this->getUser();
 
