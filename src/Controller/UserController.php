@@ -117,4 +117,23 @@ class UserController extends Controller
     {
         return new Response($this->tokenManager->getToken('authenticate')->getValue());
     }
+
+    /**
+     * @Route("/users", name="users_list")
+     */
+    public function usersListAction(Request $request){
+
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $users, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+
+        return $this->render('/front/user/list.html.twig', array(
+            "users" => $pagination
+        ));
+    }
 }

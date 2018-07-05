@@ -59,13 +59,9 @@
                                 <a class="nav-link" href="{{ path('poll_homepage') }}">Sondages</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="">à Propos</a>
-                            </li>
-
                             {% if is_granted('ROLE_CREATOR') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('administrationCreator') }}">Administration</a>
+                                    <a class="nav-link" href="{{ path('administrationCreator') }}">Dashboard</a>
                                 </li>
                             {% endif %}
 
@@ -112,13 +108,12 @@
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4 col-md-4">
-                        <h5>Utile</h5>
+                        <h5>Videa CMS</h5>
                         <ul class="list-unstyled quick-links">
-                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Home</a></li>
-                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>About</a></li>
-                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
-                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Get Started</a></li>
-                            <li><a href="https://wwwe.sunlimetech.com" title="Design and developed by"><i class="fa fa-angle-double-right"></i>Imprint</a></li>
+                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i> Support</a></li>
+                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i> Nous contacter</a></li>
+                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i> FAQ</a></li>
+                            <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i> A Propos</a></li>
                         </ul>
                     </div>
                 </div>
