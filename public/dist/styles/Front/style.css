@@ -314,7 +314,8 @@ li {
 }
 
 .video{
-    margin-top: 10px;
+    background: white;
+    padding-top: 10px;
 }
 
 .video .title{
@@ -1068,4 +1069,12 @@ section .section-title {
 .channel .channel-poll a{
     display: block;
     margin-top: 20px;
+}
+
+.profile .aTitle{
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 10px;
+    font-size: 25px;
+    margin-top: -10px;
+    color: #011627;
 }

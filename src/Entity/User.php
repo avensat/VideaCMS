@@ -48,6 +48,19 @@ class User extends BaseUser
 
     /**
      *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 400,
+     *      minMessage = "Votre bio ne peut pas faire moins de 2 caractères.",
+     *      maxMessage = "Votre bio ne peut pas faire plus de 400 caractères."
+     * )
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $biography;
+
+    /**
+     *
      * @Assert\Url(
      *    protocols = {"http", "https"}
      * )
@@ -521,5 +534,21 @@ class User extends BaseUser
     public function setPools($pools)
     {
         $this->pools = $pools;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBiography()
+    {
+        return $this->biography;
+    }
+
+    /**
+     * @param mixed $biography
+     */
+    public function setBiography($biography)
+    {
+        $this->biography = $biography;
     }
 }

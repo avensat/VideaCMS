@@ -7,6 +7,7 @@ use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,6 +41,7 @@ class UserController extends Controller
             ->add('twitter', UrlType::class, ['data' => $userInfo->getTwitter(), 'required' => false])
             ->add('facebook', UrlType::class, ['data' => $userInfo->getFacebook(), 'required' => false])
             ->add('youtube', UrlType::class, ['data' => $userInfo->getYoutube(), 'required' => false])
+            ->add('biography', TextareaType::class, ['data' => $userInfo->getBiography(), 'required' => false])
             ->add('submit', SubmitType::class)
             ->getForm()->handleRequest($request);
 
@@ -56,6 +58,7 @@ class UserController extends Controller
             $userInfo->setTwitter($data['twitter']);
             $userInfo->setFacebook($data['facebook']);
             $userInfo->setYoutube($data['youtube']);
+            $userInfo->setBiography($data['biography']);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();

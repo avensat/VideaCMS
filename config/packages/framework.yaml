@@ -10,6 +10,7 @@ framework:
         handler_id: ~
 
     default_locale: fr
+    translator: { fallback: fr }
 
     #esi: true
     #fragments: true
