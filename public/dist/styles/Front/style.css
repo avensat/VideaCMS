@@ -1078,3 +1078,24 @@ section .section-title {
     margin-top: -10px;
     color: #011627;
 }
+
+.videos-thumbs{
+
+}
+
+.videos-thumbs .user{
+    font-family: 'Oswald', sans-serif;
+    color: #2EC4B6;
+}
+
+.videos-thumbs .vtitle{
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    color: #011627;
+}
+
+.sort{
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-family: 'Oswald', sans-serif;
+}

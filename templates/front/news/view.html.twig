@@ -5,7 +5,7 @@
 {% block mainContent %}
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 offset-md-2 mb-4">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header fs-header">
                         <img width="30px" src="{{ asset('dist/imgs/icons/folded-newspaper.svg') }}">
@@ -18,8 +18,7 @@
                         {{ article.user.username }} dans {{ article.category.title }}
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-8 offset-md-2 mb-4">
+                <br>
                 <div class="card">
                     <div class="card-header fs-header">
                         <img width="30px" src="{{ asset('dist/imgs/icons/folded-newspaper.svg') }}">
@@ -29,7 +28,20 @@
                         {{ render(controller('App\\Controller\\CommentController::commentAction',{ 'request': app.request, 'identifier': "article_" ~ article.id })) }}
                     </div>
                 </div>
+
             </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-bullhorn"></i><span> Publicité</span>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ asset("dist/imgs/ad.jpg") }}" width="100%">
+                    </div>
+                </div>
+            </div>
+
         </div>
+
     </div>
 {% endblock %}

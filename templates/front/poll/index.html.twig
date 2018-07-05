@@ -6,7 +6,11 @@
     <div class="container poll">
         <span class="bigTitle" style="display: block">Sondages</span>
         <span class="subtitle" style="text-transform: none">Ceci est la liste des sondages proposés par nos différents utilisateurs.</span><br>
-        {{ knp_pagination_sortable(polls, 'Trier par pertinence', 'a.id') }}
+
+        <div class="sort">
+            <i class="fal fa-sort"></i>
+            {{ knp_pagination_sortable(polls, 'Trier par pertinence', 'a.id') }}
+        </div>
 
         <div class="row">
             <div class="col-md-9">

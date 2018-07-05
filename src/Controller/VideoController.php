@@ -32,10 +32,11 @@ class VideoController extends Controller
     /**
      * @Route("/", name="video_homepage")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $providerVideos = $this->getDoctrine()->getRepository(ProviderVideo::class)->findAll();
-        $uploadedVideos = $this->getDoctrine()->getRepository(UploadedVideo::class)->findAll();
+
+        $providerVideos = $this->getDoctrine()->getRepository(ProviderVideo::class)->findBy([], ['id' => 'DESC'], null, 0);
+        $uploadedVideos = $this->getDoctrine()->getRepository(UploadedVideo::class)->findBy([], ['id' => 'DESC'], null, 0);
         $videos = array_merge($providerVideos, $uploadedVideos);
         usort($videos, function($a, $b) {
             if ($a == $b) {
@@ -43,8 +44,15 @@ class VideoController extends Controller
             }
             return $a < $b ? 1 : -1;
         });
+
+        $paginator  = $this->get('knp_paginator');
+        $data = $paginator->paginate(
+            $videos, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
         return $this->render('/front/video/index.html.twig', [
-            'videos' => $videos,
+            'videos' => $data,
         ]);
     }
 
