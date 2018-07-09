@@ -49,7 +49,7 @@ class PollController extends Controller
         $user = $this->getUser();
 
         if($user){
-            $answersRepo =  $this->getDoctrine()->getRepository(PollAnswer::class);
+            $answersRepo = $this->getDoctrine()->getRepository(PollAnswer::class);
             $answers = $answersRepo->getAnswerByPollAndUser($poll, $user);
             if(count($answers) == 0){
                 $userCanRespond = true;

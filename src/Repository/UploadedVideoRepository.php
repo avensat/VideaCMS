@@ -39,7 +39,13 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
             $em->persist($repo);
             $em->flush();
         }
+    }
 
-
+    public function getCount(){
+        $query = $this->createQueryBuilder('uv')
+            ->select('count(uv.id)')
+            ->getQuery();
+        $result = $query->getSingleScalarResult();
+        return $result;
     }
 }

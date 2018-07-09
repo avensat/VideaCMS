@@ -5,7 +5,7 @@
 .fakeloader {
     width: 100%;
     height: 100%;
-    background-color: #0d93ff;
+    background-color: #e71d36;
     position: absolute;
     z-index: 99999;
     display: flex;
@@ -13,6 +13,12 @@
 
 .fontawesome-i2svg-active .fakeloader {
     display: none;
+}
+
+.fontawesome-i2svg-pending {
+    margin: 0;
+    height: 100%;
+    overflow: hidden
 }
 
 .sk-folding-cube {
