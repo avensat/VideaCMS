@@ -1,0 +1,56 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Users</span>
+                    <span class="info-box-number">{{ users_count }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-pie-chart"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Polls</span>
+                    <span class="info-box-number">{{ polls_count }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-video-camera"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Videos</span>
+                    <span class="info-box-number">{{ videos_count }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="fa fa-comment"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Comments</span>
+                    <span class="info-box-number">{{ comments_count }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-newspaper-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Articles</span>
+                    <span class="info-box-number">{{ articles_count }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -25,7 +25,12 @@ class YoutubeHelper
         curl_close($ch);
 
         $data = json_decode($result);
-        return $data->items[0]->statistics;
+        if(isset($data->items)){
+            return $data->items[0]->statistics;
+        } else {
+            return "Error";
+        }
+        
 
     }
 }
