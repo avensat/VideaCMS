@@ -22,7 +22,7 @@ class UploadType extends AbstractType
             ->add('title', TextType::class)
             ->add('videoFile', FileType::class)
             ->add('description', TextareaType::class)
-            ->add('public', CheckboxType::class, ['required' => false])
+            ->add('public', CheckboxType::class, ['required' => false, 'label' => "Cette vidéo est publique", "attr" => ['checked' => "checked"]])
             ->add('submit', SubmitType::class);
     }/**
      * {@inheritdoc}

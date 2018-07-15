@@ -1049,7 +1049,7 @@ section .section-title {
     background-position: top left;
 }
 
-.channel .channel-article-bg{
+.channel-article-bg{
     background-image: url(../../../../dist/imgs/bgs/articles-channel.png);
     width: 100%;
     background-repeat: no-repeat;
