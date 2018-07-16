@@ -3,10 +3,10 @@ VideaCMS
 
 ## What is VideaCMS
 
-VideaCMS is content management system created for "videos maker" the main purpose is to provide a place where the "video maker" can reunite her community and share content.
+VideaCMS is content management system created for "videos makers" the main purpose is to provide a place where the "videos makers" can reunite their community and share content.
 ## How to install ?
 
-Before installing you need PHP 7.1 and Composer
+Before installing you need PHP 7.2 and Composer
 
 ### Clone the repository
 
