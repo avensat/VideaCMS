@@ -1,16 +1,15 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Réinitialiser mon mot de passe</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('dist/styles/Front/style.css') }}">
 </head>
 <body>
-<div class="login-container">
+<div class="register-container">
     <div class="left-column">
         <img class="logo"
              src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU3IDU3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NyA1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIyNTZweCIgaGVpZ2h0PSIyNTZweCI+CjxwYXRoIGQ9Ik01NS4yNjMsMTYuNDI5Yy0xLjA4Ny0wLjY5NS0yLjQzNy0wLjc4OC0zLjYwOC0wLjI0N0w0NCwxOS43MTV2LTAuMTMxYzAtMS44MjMtMS40ODMtMy4zMDctMy4zMDctMy4zMDdIMzZ2LTUgIGMwLTEuNjU0LTEuMzQ2LTMtMy0zSDFjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDFoMzJjMC41NTEsMCwxLDAuNDQ4LDEsMXY1SDMuMzA3QzEuNDgzLDE2LjI3OCwwLDE3Ljc2MSwwLDE5LjU4NHYyNS4zODcgIGMwLDEuODIzLDEuNDgzLDMuMzA3LDMuMzA3LDMuMzA3aDM3LjM4NmMxLjgyNCwwLDMuMzA3LTEuNDgzLDMuMzA3LTMuMzA3di0wLjEzMWw3LjY1NSwzLjUzM2MwLjUwNiwwLjIzMywxLjA0NSwwLjM0OSwxLjU4MiwwLjM0OSAgYzAuNzA3LDAsMS40MDktMC4yLDIuMDI3LTAuNTk2QzU2LjM1MSw0Ny40MzEsNTcsNDYuMjQ1LDU3LDQ0Ljk1NFYxOS42MDJDNTcsMTguMzExLDU2LjM1MSwxNy4xMjUsNTUuMjYzLDE2LjQyOXogTTQyLDQ0Ljk3MSAgYzAsMC43MjEtMC41ODYsMS4zMDctMS4zMDcsMS4zMDdIMy4zMDdDMi41ODYsNDYuMjc4LDIsNDUuNjkyLDIsNDQuOTcxVjE5LjU4NGMwLTAuNzIxLDAuNTg2LTEuMzA3LDEuMzA3LTEuMzA3aDM3LjM4NiAgYzAuNzIxLDAsMS4zMDcsMC41ODYsMS4zMDcsMS4zMDd2MS4wNTR2MjMuMjc5VjQ0Ljk3MXogTTU1LDQ0Ljk1NGMwLDAuNjE0LTAuMjk3LDEuMTU3LTAuODE0LDEuNDg4ICBjLTAuNTE3LDAuMzMxLTEuMTMzLDAuMzc2LTEuNjkyLDAuMTE1TDQ0LDQyLjYzOFYyMS45MTdsOC40OTMtMy45MTljMC41NTgtMC4yNiwxLjE3NS0wLjIxNiwxLjY5MiwwLjExNVM1NSwxOC45ODgsNTUsMTkuNjAyICBWNDQuOTU0eiIgZmlsbD0iI0ZGRkZGRiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"/>
@@ -21,41 +20,23 @@
     <div class="right-column">
         <div class="d-flex flex-column">
             <div class="singlepage-text">
-                Connexion
+                Réinitialiser mon mot de passe
             </div>
-            <form action="{{ path("fos_user_security_check") }}" method="post" class="login-form">
-                {% if error %}
-                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-
-                {% if csrf_token %}
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                {% endif %}
-
-                <div class="form-group">
-                    <input type="text" id="username" name="_username" value="{{ last_username }}"
-                           required="required" autocomplete="username" class="form-control"
-                           placeholder="{{ 'security.login.username'|trans }}"/>
+            <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request reset-form">
+                <div>
+                    <div class="form-group">
+                        <label for="username" class="form-label">{{ 'resetting.request.username'|trans }}</label>
+                        <input type="text" id="username" name="username" required="required" class="form-control"/>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <input type="password" id="password" name="_password"
-                           required="required" autocomplete="current-password" class="form-control"
-                           placeholder="{{ 'security.login.password'|trans }}"/>
+                <div>
+                    <div class="right">
+                        <input class="btn btn-primary" type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+                    </div>
                 </div>
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" value="on" />
-                    <label class="form-check-label" for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-                </div>
-                <br>
-
-                <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"
-                       class="btn btn-outline-light align-self-end" />
             </form>
             <a class="btn btn-secondary singlepage-btn" href="{{ path("front_homepage") }}">Retour</a>
         </div>
-
     </div>
 </div>
 </body>
@@ -73,7 +54,7 @@
         left: 35vh;
     }
 
-    .login-container {
+    .register-container {
         width: 100%;
         height: 100%;
         display: flex;
@@ -100,7 +81,7 @@
         height: 100vh;
     }
 
-    .login-form {
+    .reset-form {
         margin-top: 25vh;
         color: #ffff;
         transform: translateY(-50%);

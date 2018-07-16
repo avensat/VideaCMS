@@ -1,12 +1,13 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Inscription</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('dist/styles/Front/style.css') }}">
 </head>
 <body>
 <div class="register-container">
@@ -19,6 +20,9 @@
     </div>
     <div class="right-column">
         <div class="d-flex flex-column">
+            <div class="singlepage-text">
+                Créer un compte
+            </div>
             {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register register-form'}}) }}
                 <div class="form-group">
                 {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'form.email'|trans}}) }}
@@ -42,6 +46,7 @@
                     <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-outline-light"/>
                 </div>
             {{ form_end(form) }}
+            <a class="btn btn-primary singlepage-btn" href="{{ path("front_homepage") }}">Retour</a>
         </div>
     </div>
 </div>
@@ -88,7 +93,8 @@
     }
 
     .register-form {
-        margin-top: 50vh;
+        margin-top: 25vh;
+        color: #ffff;
         transform: translateY(-50%);
         width: 50vh;
         margin-left: auto;

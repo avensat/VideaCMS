@@ -1146,3 +1146,23 @@ section .section-title {
 .add .disabled i{
     color: #b6b5b5;
 }
+
+.singlepage-text{
+    font-family: 'Oswald', sans-serif;
+    font-size: 45px;
+    color: #FDFFFC;
+    margin-right: auto;
+    margin-top: 20vh;
+    margin-left: auto;
+    text-transform: uppercase;
+    box-shadow: 0 0 black;
+}
+
+.right{
+    text-align: right;
+}
+
+.singlepage-btn{
+    margin: auto;
+    text-transform: uppercase;
+}
