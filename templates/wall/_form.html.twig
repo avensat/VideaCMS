@@ -1,0 +1,4 @@
+{{ form_start(form) }}
+    {{ form_widget(form.content, {"attr": {"placeholder": "Votre message"}}) }}
+    {{ form_widget(form.submit, {'label': button_label, "attr": {"class": "post-btn btn-primary"}}) }}
+{{ form_end(form) }}

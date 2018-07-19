@@ -5,7 +5,7 @@
 .fakeloader {
     width: 100%;
     height: 100%;
-    background-color: #e71d36;
+    background-color: rgba(0, 0, 0, 0.42);
     position: absolute;
     z-index: 99999;
     display: flex;
@@ -732,7 +732,7 @@ li {
     background-repeat: no-repeat;
 }
 
-.home .login-btn{
+.login-btn{
     width: 100%;
 }
 
@@ -775,11 +775,11 @@ li {
     color: red;
 }
 
-.home .login-box .right{
+.login-box .right{
     float: right;
 }
 
-.home .login-box .right a{
+.login-box .right a{
     color: #FDFFFC;
     font-size: 15px;
 }
@@ -1165,4 +1165,105 @@ section .section-title {
 .singlepage-btn{
     margin: auto;
     text-transform: uppercase;
+}
+
+.wall .post-btn{
+    float: right;
+    margin-top: 10px;
+}
+
+.wall .content{
+    width: 100%;
+    display: block;
+    position: relative;
+    margin-top: 60px;
+}
+
+.wall .message{
+    margin-top: 15px;
+}
+
+.wall .message .user a{
+    font-weight: bold;
+    color: #E71D36;
+}
+
+.wall .message .action{
+    display: inline-block;
+    float: right;
+    width: 7%;
+}
+
+.wall .message .action a {
+    color: #2EC4B6;
+}
+
+.wall .message .date{
+    display: block;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.wall .message .corp{
+    display: inline-block;
+    width: 93%;
+}
+
+.wall .message .action .edit{
+    margin-left: 10px;
+}
+
+.wall .delete{
+
+}
+
+.wall-show .header{
+    font-size: 30px;
+}
+
+.wall-show span a{
+    color: #E71D36;
+}
+
+.wall-show .content{
+    font-size: 25px;
+}
+
+.wall-show .date{
+    display: block;
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+.wall-show .edit{
+    float: right;
+}
+
+.wall-show .back{
+    margin-bottom: 15px;
+    font-size: 47px;
+    color: #2EC4B6;
+}
+
+.social{
+    text-align: center;
+    margin-top: 30px;
+}
+
+.social .fa-facebook-square{
+    font-size: 40px;
+    margin-right: 15px;
+    color: #3b5998;
+}
+
+.social .fa-twitter-square{
+    font-size: 40px;
+    color: #00aced;
+}
+
+.social .sTitle{
+    display: block;
+    font-size: 25px;
+    color: #011627;
+    font-family: 'Oswald', sans-serif;
 }

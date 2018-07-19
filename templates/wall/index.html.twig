@@ -1,0 +1,103 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Wall index{% endblock %}
+
+{% block mainContent %}
+
+    <div class="container wall">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="title">Mur</div>
+                            {% if app.user %}
+                                <div class="post-form">
+                                    {{ include('wall/_form.html.twig', {'button_label': 'Poster'}) }}
+                                </div>
+                            {% endif %}
+                            <div class="content">
+                                {% for wall in walls %}
+                                    <div class="message">
+                                        <div class="corp">
+                                            <span class="user"><a href="{{ path("video_channel", {'user': wall.userId.username}) }}">{{ wall.userId.username }}</a></span> a dit : <span class="text">{{ wall.content }}</span>
+                                            <span class="date">le {{ wall.createdAt ? wall.createdAt|date('d-m-Y à H:i') : '' }}</span>
+                                        </div>
+                                        <div class="action">
+                                            <a class="view" href="{{ path('wall_show', {'id': wall.id}) }}"><i class="fal fa-eye"></i></a>
+                                            {% if wall.userId.id == app.user.id %}
+                                                <a class="edit" href="{{ path('wall_edit', {'id': wall.id}) }}"><i class="fal fa-pen"></i></a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+
+                                {% else %}
+                                    Aucun messages
+                                {% endfor %}
+                            </div>
+                        <div class="navigation">
+                            {{ knp_pagination_render(walls) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                {% if app.user is not null %}
+                    <div class="card menu-box">
+                        <div class="card-header fs-header">
+                            <i class="fal fa-user"></i>  Mon compte
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list">
+                                <a href="{{ path("video_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-video"></i> Mes vidéos</a>
+                                {% if is_granted('ROLE_CREATOR') %}
+                                    <a href="{{ path("news_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-newspaper"></i> Mes articles</a>
+                                    <a href="{{ path("poll_manage") }}" class="list-group-item list-group-item-action"><i class="fal fa-chart-pie"></i> Mes sondages</a>
+                                {% endif %}
+                                <a href="{{ path("video_channel", {'user': app.user.username}) }}" class="list-group-item list-group-item-action"><i class="fal fa-user-circle"></i> Ma chaine</a>
+                                <a href="{{ path("fos_user_profile_edit") }}" class="list-group-item list-group-item-action"><i class="fal fa-cogs"></i> Mon compte</a>
+                                <a href="{{ path("fos_user_security_logout") }}" class="list-group-item list-group-item-action"><i class="fal fa-sign-out"></i> Me déconnecter</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card login-box">
+                        <div class="card-header fs-header">
+                            <i class="fal fa-sign-in"></i><span> Connexion</span>
+                            <span class="right"><a href="{{ path("fos_user_resetting_request") }}">Mot de passe oublié ?</a> </span>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ path("fos_user_security_check") }}" class="login" method="post">
+                                <div class="form-group">
+                                    <label for="email">Pseudo <span class="red">*</span> </label>
+                                    <input type="text" name="_username" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre pseudo" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Mot de passe <span class="red">*</span></label>
+                                    <input type="password" name="_password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required="required">
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="_remember_me" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Mémoriser ma connexion</label>
+                                </div>
+                                <input type="hidden" name="_csrf_token" value="{{ render(controller('App\\Controller\\UserController::getTokenAction')) }}" />
+                                <br>
+                                <button type="submit" class="btn btn-primary login-btn" style="margin-bottom: 10px;">Connexion</button>
+                            </form>
+                            <a href="{{ path("fos_user_registration_register") }}" class="btn btn-secondary login-btn">Créer un compte</a>
+                        </div>
+                    </div>
+                {% endif %}
+                <br>
+                <div class="card">
+                    <div class="card-header fs-header">
+                        <i class="fal fa-bullhorn"></i><span> Publicité</span>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ asset("dist/imgs/ad.jpg") }}" width="100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

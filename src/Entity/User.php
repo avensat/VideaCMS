@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -108,12 +109,18 @@ class User extends BaseUser
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Wall", mappedBy="user_id", orphanRemoval=true)
+     */
+    private $walls;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->videos = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->walls = new ArrayCollection();
     }
 
     /**
@@ -550,5 +557,36 @@ class User extends BaseUser
     public function setBiography($biography)
     {
         $this->biography = $biography;
+    }
+
+    /**
+     * @return Collection|Wall[]
+     */
+    public function getWalls(): Collection
+    {
+        return $this->walls;
+    }
+
+    public function addWall(Wall $wall): self
+    {
+        if (!$this->walls->contains($wall)) {
+            $this->walls[] = $wall;
+            $wall->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWall(Wall $wall): self
+    {
+        if ($this->walls->contains($wall)) {
+            $this->walls->removeElement($wall);
+            // set the owning side to null (unless already changed)
+            if ($wall->getUserId() === $this) {
+                $wall->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }
