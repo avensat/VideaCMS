@@ -1,7 +1,7 @@
 easy_admin:
-    site_name: 'VideaCMS <em style="font-size: 80%;">Administration</em>'
+    site_name: 'VideaCMS - Administration'
     design:
-        brand_color: '#011627'
+        brand_color: '#E71D36'
         assets:
             css:
             #https://symfony.com/doc/master/bundles/EasyAdminBundle/book/design-configuration.html
