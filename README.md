@@ -4,9 +4,9 @@
   <br>
   <br>
 </h1>
-<h4 align="center">Video Sharing platform and more</h4>
+<h3 align="center">Video Sharing platform and more</h3>
 
-**VideaCMS** is **Content Management System** created for "videos makers" the main purpose is to provide a place where you can reunite your community and share content with lot of features.
+**VideaCMS** is a **Content Management System** created for "videos makers" the main purpose is to provide a place where you can reunite your community and share content with lot of features.
 <br><br>
 <img src="http://dev.webwork.fr/videa/home.png">
 <br>
