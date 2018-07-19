@@ -1,4 +1,4 @@
-<img src="http://dev.webwork.fr/videa/git_logo.png">
+<img src="http://dev.webwork.fr/videa/git_logo2.png">
   
 ## What is VideaCMS
 
