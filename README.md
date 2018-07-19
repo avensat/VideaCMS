@@ -1,15 +1,23 @@
-<img src="http://dev.webwork.fr/videa/git_logo2.png">
-  
-## What is VideaCMS
+<h1 align="center">
+  <br>
+  <img src="http://dev.webwork.fr/videa/git_logo2.png" width="400px">
+  <br>
+  <br>
+</h1>
+<h4 align="center">Video Sharing platform and more</h4>
 
-VideaCMS is content management system created for "videos makers" the main purpose is to provide a place where the "videos makers" can reunite their community and share content.
+**VideaCMS** is **Content Management System** created for "videos makers" the main purpose is to provide a place where you can reunite your community and share content with lot of features.
+<br><br>
+<img src="http://dev.webwork.fr/videa/home.png">
+<br>
+<br>
 ## How to install ?
 
-Before installing you need PHP 7.2 and Composer
+Before installing you need **PHP 7.2**, **FFMpeg** and **Composer**
 
 ### Clone the repository
 
-`git clone https://github.com/Nsbx/videa_cms.git`
+`git clone https://github.com/Kodmit/VideaCMS.git`
 
 ### Run composer
 `composer update`
