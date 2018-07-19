@@ -1,6 +1,5 @@
-<div style="text-align: center">
-  <img src="http://dev.webwork.fr/videa/git_logo.png">
-</div>
+<img src="http://dev.webwork.fr/videa/git_logo.png">
+  
 ## What is VideaCMS
 
 VideaCMS is content management system created for "videos makers" the main purpose is to provide a place where the "videos makers" can reunite their community and share content.
