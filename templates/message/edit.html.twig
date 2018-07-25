@@ -1,13 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends "front/layout.html.twig" %}
 
-{% block title %}Edit Message{% endblock %}
+{% block title %}Editer mon message{% endblock %}
 
-{% block body %}
-    <h1>Edit Message</h1>
+{% block mainContent %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="subtitle">Editer mon message</div>
+                {{ include('message/_form.html.twig', {'button_label': 'Editer'}) }}
 
-    {{ include('message/_form.html.twig', {'button_label': 'Update'}) }}
+                <div style="text-align: right;">
+                    <a class="btn btn-secondary" href="{{ path('thread_show', {'id': message.thread.id}) }}">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('message_index') }}">back to list</a>
 
-    {{ include('message/_delete_form.html.twig') }}
 {% endblock %}

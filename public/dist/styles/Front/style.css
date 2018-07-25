@@ -1355,3 +1355,13 @@ section .section-title {
     color: grey;
     padding-left: 10px;
 }
+
+.thread .modified{
+    bottom: 0;
+    position: absolute;
+    text-align: right;
+    width: 95%;
+    color: #b8b8b8;
+    font-style: italic;
+    font-size: 13px;
+}

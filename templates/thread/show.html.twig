@@ -24,16 +24,25 @@
                     <div class="col-md-10">
                         <div class="bar">
                             écrit le {{ thread.createdAt|date("d/m/y à H:i") }}
-                            {% if app.user == thread.user %}
-                                <div class="edition">
+                            <div class="edition">
+                                {% if app.user == thread.user or is_granted('ROLE_MODERATOR') == true %}
                                     <a class="edit" href="{{ path('thread_edit', {'id': thread.id}) }}">éditer</a>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                     {{ include('thread/_delete_form.html.twig') }}
-                                </div>
-                            {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                         <span class="message">
-                            {{ thread.content }}
+                            {% autoescape %}
+                                {{ thread.content|raw }}
+                            {% endautoescape %}
                         </span>
+                        {% if thread.lastModification %}
+                            <div class="modified">
+                                Dernière modification le {{ thread.lastModification|date("d/m/y à H:i") }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -61,18 +70,25 @@
                         <div class="col-md-10">
                             <div class="bar">
                                 écrit le {{ message.createdAt|date("d/m/y à H:i") }}
-                                {% if app.user == message.user %}
-                                    <div class="edition">
+                                <div class="edition">
+                                    {% if app.user == message.user or is_granted('ROLE_MODERATOR') == true %}
                                         <a class="edit" href="{{ path('message_edit', {'id': message.id}) }}">éditer</a>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
                                         {{ include('message/_delete_form.html.twig') }}
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
                             <span class="message">
                             {% autoescape %}
                                 {{ message.content|raw }}
                             {% endautoescape %}
                         </span>
+                            {% if message.lastModification %}
+                                <div class="modified">
+                                    Dernière modification le {{ message.lastModification|date("d/m/y à H:i") }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

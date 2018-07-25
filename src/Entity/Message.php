@@ -34,6 +34,11 @@ class Message
     private $created_at;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $last_modification;
+
+    /**
      * @ORM\Column(type="text")
      */
     private $content;
@@ -80,6 +85,18 @@ class Message
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getLastModification(): ?\DateTimeInterface
+    {
+        return $this->last_modification;
+    }
+
+    public function setLastModification(\DateTimeInterface $last_modification): self
+    {
+        $this->last_modification = $last_modification;
 
         return $this;
     }

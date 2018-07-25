@@ -15,13 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MessageController extends Controller
 {
-    /**
-     * @Route("/", name="message_index", methods="GET")
-     */
-    public function index(MessageRepository $messageRepository): Response
-    {
-        return $this->render('message/index.html.twig', ['messages' => $messageRepository->findAll()]);
-    }
 
     /**
      * @Route("/new", name="message_new", methods="GET|POST")
@@ -63,9 +56,13 @@ class MessageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $message->setLastModification(new \DateTime("now"));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
 
-            return $this->redirectToRoute('message_edit', ['id' => $message->getId()]);
+            $this->addFlash('success', "Votre message a été modifié !");
+            return $this->redirectToRoute('thread_show', ['id' => $message->getThread()->getId()]);
         }
 
         return $this->render('message/edit.html.twig', [
@@ -79,6 +76,7 @@ class MessageController extends Controller
      */
     public function delete(Request $request, Message $message): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($message);

@@ -103,7 +103,7 @@ class ThreadController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($message);
             $em->flush();
-            $this->addFlash("success", "Message posté");
+            $this->addFlash("success", "Sujet posté");
             return $this->redirectToRoute("thread_show", ["id" => $thread->getId()]);
         }
         return $this->render('thread/show.html.twig', [
@@ -122,9 +122,13 @@ class ThreadController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $thread->setLastModification(new \DateTime("now"));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($thread);
+            $em->flush();
 
-            return $this->redirectToRoute('thread_edit', ['id' => $thread->getId()]);
+            $this->addFlash("success", "Sujet edité");
+            return $this->redirectToRoute('thread_show', ['id' => $thread->getId()]);
         }
 
         return $this->render('thread/edit.html.twig', [
@@ -138,6 +142,7 @@ class ThreadController extends Controller
      */
     public function delete(Request $request, Thread $thread): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$thread->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($thread);

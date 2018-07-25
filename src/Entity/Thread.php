@@ -40,6 +40,11 @@ class Thread
     private $status;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $last_modification;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="thread", orphanRemoval=true)
      */
     private $messages;
@@ -135,6 +140,18 @@ class Thread
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getLastModification(): ?\DateTimeInterface
+    {
+        return $this->last_modification;
+    }
+
+    public function setLastModification(\DateTimeInterface $last_modification): self
+    {
+        $this->last_modification = $last_modification;
 
         return $this;
     }
