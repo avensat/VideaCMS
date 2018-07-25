@@ -8,6 +8,8 @@
         <link rel="stylesheet" href="{{ asset('dist/styles/Front/plyr.css') }}">
         <link rel="stylesheet" href="{{ asset('dist/styles/ionicons.min.css') }}">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+
         <title>{% block title %}VideaCMS{% endblock %}</title>
     </head>
 
@@ -57,6 +59,14 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('poll_homepage') }}">Sondages</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('wall_index') }}">Fil</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('thread_index') }}">Forum</a>
                             </li>
 
                             {% if is_granted('ROLE_CREATOR') %}
@@ -148,6 +158,15 @@
                 </div>
             </div>
         </section>
+        <script>
+            ClassicEditor
+                .create( document.querySelector( 'textarea' ), {
+                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+                } )
+                .catch( error => {
+                console.log( error );
+            } );
+        </script>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="http://malsup.github.io/min/jquery.form.min.js"></script>
         <script src="https://unpkg.com/sweetalert2@7.22.2/dist/sweetalert2.all.js"></script>

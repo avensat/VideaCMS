@@ -1,0 +1,92 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Forum{% endblock %}
+
+{% block mainContent %}
+    <div class="container thread">
+
+        <div class="sTitle"><a class="back" href="{{ path('thread_index') }}"><i class="fal fa-arrow-square-left"></i></a> {{ thread.title }}</div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 left-col">
+                        <img src="{{ getProfilePic(thread.user) }}" width="150px">
+                        <a href="{{ path("video_channel", {'user': thread.user.username}) }}" class="author">{{ thread.user.username }}</a>
+                        {% for role in thread.user.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                <div style="font-size: 15px;" class="admin"><i class="fal fa-star"></i> Administrateur</div>
+                            {% endif %}
+                            {% if role == "ROLE_CREATOR" %}
+                                <div style="font-size: 15px;" class="creator"><i class="fal fa-badge-check"></i> Créateur</div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-10">
+                        <div class="bar">
+                            écrit le {{ thread.createdAt|date("d/m/y à H:i") }}
+                            {% if app.user == thread.user %}
+                                <div class="edition">
+                                    <a class="edit" href="{{ path('thread_edit', {'id': thread.id}) }}">éditer</a>
+                                    {{ include('thread/_delete_form.html.twig') }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <span class="message">
+                            {{ thread.content }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if messages|length >= 1 %}
+            <div class="subtitle">Réponses</div>
+        {% endif %}
+        {% for message in messages %}
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2 left-col">
+                            <img src="{{ getProfilePic(message.user) }}" width="150px">
+                            <a href="{{ path("video_channel", {'user': message.user.username}) }}" class="author">{{ message.user.username }}</a>
+                            {% for role in message.user.roles %}
+                                {% if role == "ROLE_ADMIN" %}
+                                    <div style="font-size: 15px;" class="admin"><i class="fal fa-star"></i> Administrateur</div>
+                                {% endif %}
+                                {% if role == "ROLE_CREATOR" %}
+                                    <div style="font-size: 15px;" class="creator"><i class="fal fa-badge-check"></i> Créateur</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-10">
+                            <div class="bar">
+                                écrit le {{ message.createdAt|date("d/m/y à H:i") }}
+                                {% if app.user == message.user %}
+                                    <div class="edition">
+                                        <a class="edit" href="{{ path('message_edit', {'id': message.id}) }}">éditer</a>
+                                        {{ include('message/_delete_form.html.twig') }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <span class="message">
+                            {% autoescape %}
+                                {{ message.content|raw }}
+                            {% endautoescape %}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="navigation">
+            {{ knp_pagination_render(messages) }}
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <div class="subtitle">Répondre</div>
+                {{ include('message/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "front/layout.html.twig" %}
+
+{% block title %}Forum{% endblock %}
+
+{% block mainContent %}
+<div class="container threads">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="title">Forum</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sujet</th>
+                                <th>Auteur</th>
+                                <th>Messages</th>
+                                <th>Création</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for thread in threads %}
+                            <tr>
+                                <td>
+                                    {% if thread.status == "open" %}
+                                        <i class="fas fa-folder" style="color: #8e78e3"></i>
+                                    {% elseif thread.status == "locked" %}
+                                        <i class="fas fa-lock-alt"></i>
+                                    {% endif %}
+                                    <a href="{{ path('thread_show', {'id': thread.id}) }}" class="sTitle"> {{ thread.title }}</a>
+                                </td>
+                                <td><a class="blue" href="{{ path("video_channel", {'user': thread.user.username}) }}">{{ thread.user.username }}</a></td>
+                                <td>{{ thread.messages|length }}</td>
+                                <td class="blue">le {{ thread.createdAt ? thread.createdAt|date('d/m/Y à H:i') : '' }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Pas de sujets</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="navigation">
+                {{ knp_pagination_render(threads) }}
+            </div>
+            <br>
+            {% if app.user %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subtitle">Ecrire un sujet</div>
+                        <hr>
+                        {{ include('thread/_form.html.twig') }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subtitle">Ecrire un sujet</div>
+                        <hr>
+                        <div class="alert alert-warning">Vous devez être connecté pour écrire un sujet.</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subtitle">Derniers messages</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

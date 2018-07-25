@@ -114,6 +114,16 @@ class User extends BaseUser
      */
     private $walls;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Thread", mappedBy="user")
+     */
+    private $threads;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
+     */
+    private $messages;
+
 
     public function __construct()
     {
@@ -121,6 +131,8 @@ class User extends BaseUser
         $this->videos = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->walls = new ArrayCollection();
+        $this->threads = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -584,6 +596,68 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($wall->getUserId() === $this) {
                 $wall->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Thread[]
+     */
+    public function getThreads(): Collection
+    {
+        return $this->threads;
+    }
+
+    public function addThread(Thread $thread): self
+    {
+        if (!$this->threads->contains($thread)) {
+            $this->threads[] = $thread;
+            $thread->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThread(Thread $thread): self
+    {
+        if ($this->threads->contains($thread)) {
+            $this->threads->removeElement($thread);
+            // set the owning side to null (unless already changed)
+            if ($thread->getUser() === $this) {
+                $thread->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
             }
         }
 

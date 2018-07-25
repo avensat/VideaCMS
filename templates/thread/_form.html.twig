@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.title, "Sujet") }}
+        {{ form_widget(form.title) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.content, "Message") }}
+        {{ form_widget(form.content, {'attr': {'class': 'editor', 'cols': 5}}) }}
+    </div>
+
+    <button class="btn">{{ button_label|default('Poster') }}</button>
+{{ form_end(form) }}

@@ -1020,7 +1020,7 @@ section .section-title {
     background-repeat: no-repeat;
 }
 
-.channel .admin{
+.admin{
     padding-top:10px;
     text-align: center;
     font-size: 20px;
@@ -1029,7 +1029,7 @@ section .section-title {
     color: #FF9F1C;
 }
 
-.channel .creator{
+.creator{
     text-align: center;
     font-size: 20px;
     text-transform: uppercase;
@@ -1266,4 +1266,92 @@ section .section-title {
     font-size: 25px;
     color: #011627;
     font-family: 'Oswald', sans-serif;
+}
+
+.threads .sTitle{
+    font-weight: bold;
+    color: #011627;
+}
+
+.threads .blue{
+    color: #011627;
+}
+
+.thread .author{
+    font-size: 23px;
+    margin-top: 5px;
+    margin-bottom: -5px;
+    display: block;
+    font-family: 'Oswald', sans-serif;
+}
+
+.thread .left-col{
+    text-align: center;
+    border-right: 1px solid #e7e7e7;
+}
+
+.thread .message{
+    display: block;
+    margin-top: 10px;
+}
+
+.thread .bar{
+    border-bottom: 1px solid #e7e7e7;
+    font-size: 15px;
+    color: #2EC4B6;
+    padding-bottom: 2px;
+}
+
+.thread .edition{
+    display: inline-block;
+    float: right;
+}
+
+.thread .delete{
+    display: inline-block;
+}
+
+.thread .btn-custom{
+    background-color: transparent;
+    border: 0;
+    color: #2EC4B6;
+}
+
+.thread .edit{
+    display: inline-block;
+    color: #2EC4B6;
+}
+
+.thread .sTitle{
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 10px;
+    font-size: 35px;
+    margin-top: -15px;
+    color: #011627;
+}
+
+.thread .back{
+    padding-right: 10px;
+    font-size: 32px;
+    color: #E71D36;
+}
+
+.thread .subtitle{
+    margin-top: 20px;
+    margin-bottom: -20px;
+    font-size: 27px;
+}
+
+.navigation nav{
+    margin-right: auto;
+    width: 20%;
+    margin-top: 20px;
+    margin-left: auto;
+}
+
+.thread .message blockquote{
+    font-style: italic;
+    border-left: 4px solid #c8c8c8;
+    color: grey;
+    padding-left: 10px;
 }
