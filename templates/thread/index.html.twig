@@ -9,29 +9,49 @@
             <div class="card">
                 <div class="card-body">
                     <div class="title">Forum</div>
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Sujet</th>
                                 <th>Auteur</th>
                                 <th>Messages</th>
-                                <th>Création</th>
+                                <th>Dernier message</th>
                             </tr>
                         </thead>
                         <tbody>
-                        {% for thread in threads %}
+                        {% for thread in threads if thread.status == "pinned" %}
                             <tr>
                                 <td>
-                                    {% if thread.status == "open" %}
-                                        <i class="fas fa-folder" style="color: #8e78e3"></i>
-                                    {% elseif thread.status == "locked" %}
+                                    {% if thread.locked %}
+                                        <i class="fas fa-thumbtack" style="color: #FF9F1C;"></i>&nbsp;
                                         <i class="fas fa-lock-alt"></i>
+                                    {% else %}
+                                        <i class="fas fa-thumbtack" style="color: #FF9F1C;"></i>
                                     {% endif %}
                                     <a href="{{ path('thread_show', {'id': thread.id}) }}" class="sTitle"> {{ thread.title }}</a>
                                 </td>
                                 <td><a class="blue" href="{{ path("video_channel", {'user': thread.user.username}) }}">{{ thread.user.username }}</a></td>
                                 <td>{{ thread.messages|length }}</td>
-                                <td class="blue">le {{ thread.createdAt ? thread.createdAt|date('d/m/Y à H:i') : '' }}</td>
+                                <td class="blue">le {{ thread.lastMessage ? thread.lastMessage|date('d/m/Y à H:i') : '' }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Pas de sujets</td>
+                            </tr>
+                        {% endfor %}
+                        {% for thread in threads if thread.status == "open" %}
+                            <tr>
+                                <td>
+                                    {% if thread.locked %}
+                                        <i class="fas fa-lock-alt"></i>
+                                    {% else %}
+                                        <i class="fas fa-folder" style="color: #8e78e3"></i>
+                                    {% endif %}
+                                    <a href="{{ path('thread_show', {'id': thread.id}) }}" class="sTitle"> {{ thread.title }}</a>
+                                </td>
+                                <td><a class="blue" href="{{ path("video_channel", {'user': thread.user.username}) }}">{{ thread.user.username }}</a></td>
+                                <td>{{ thread.messages|length }}</td>
+                                <td class="blue">le {{ thread.lastMessage ? thread.lastMessage|date('d/m/Y à H:i') : '' }}</td>
                             </tr>
                         {% else %}
                             <tr>
@@ -71,11 +91,19 @@
                     <div class="subtitle">Dernières réponses</div>
                     <ul style="padding:0; margin-top: 10px">
                         {% for message in getLastMessages() %}
-                            <li style="margin-bottom: 10px;"><i class="fas fa-folder" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">{{ message.thread.title|length > 15 ? message.thread.title|slice(0, 15) ~ '[...]' : message.thread.title }}</a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}.</li>
+                            <li style="margin-bottom: 10px;"><i class="fas fa-comment-alt" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">{{ message.thread.title|length > 15 ? message.thread.title|slice(0, 15) ~ '[...]' : message.thread.title }}</a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}.</li>
                         {% else %}
                             Aucune réponses
                         {% endfor %}
                     </ul>
+                </div>
+            </div>
+            <br>
+            <div class="card">
+                <div class="card-body stats">
+                    <div class="subtitle">Statistiques</div>
+                    <span><i class="fal fa-comments"></i> {{ messages|length }} messages</span>
+                    <span><i class="fal fa-folder"></i> {{ threads|length }} sujets</span>
                 </div>
             </div>
         </div>

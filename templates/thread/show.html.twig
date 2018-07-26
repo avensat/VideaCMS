@@ -4,7 +4,22 @@
 
 {% block mainContent %}
     <div class="container thread">
-
+        {% if is_granted('ROLE_MODERATOR') %}
+            {% if thread.locked %}
+                {% set lock_label = "Déverouiller" %}
+            {% else %}
+                {% set lock_label = "Verouiller" %}
+            {% endif %}
+            {% if thread.status == "pinned" %}
+                {% set pin_label = "Désépingler" %}
+            {% else %}
+                {% set pin_label = "Épingler" %}
+            {% endif %}
+            <div class="moderation">
+                <a href="{{ path("thread_change_status", {"id": thread.id, "action": "lock"}) }}"><i class="fal fa-lock"></i> {{ lock_label }}</a>
+                <a href="{{ path("thread_change_status", {"id": thread.id, "action": "pin"}) }}"><i class="fal fa-thumbtack"></i> {{ pin_label }}</a>
+            </div>
+        {% endif %}
         <div class="sTitle"><a class="back" href="{{ path('thread_index') }}"><i class="fal fa-arrow-square-left"></i></a> {{ thread.title }}</div>
         <div class="card">
             <div class="card-body">
@@ -100,8 +115,14 @@
         <br>
         <div class="card">
             <div class="card-body">
-                <div class="subtitle">Répondre</div>
-                {{ include('message/_form.html.twig') }}
+                {% if thread.locked %}
+                    <div class="videa-alert">
+                        <i class="fal fa-lock-alt"></i> Désolé, ce sujet est verouillé.
+                    </div>
+                {% else %}
+                    <div class="subtitle">Répondre</div>
+                    {{ include('message/_form.html.twig') }}
+                {% endif %}
             </div>
         </div>
     </div>

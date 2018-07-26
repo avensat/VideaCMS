@@ -1373,3 +1373,56 @@ section .section-title {
 .bold{
     font-weight:bold;
 }
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #E5F0F4;
+}
+
+.threads tbody td{
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 0;
+}
+
+.threads .table thead th {
+    vertical-align: bottom;
+    border-bottom: 0;
+}
+
+.thread .moderation{
+    text-align: right;
+}
+.thread .moderation a{
+    text-transform: uppercase;
+    padding-right: 20px;
+}
+
+.videa-alert{
+    text-align: center;
+    border-radius: 5px;
+    width: 80%;
+    margin: auto;
+    color: #FF9F1C;
+    font-size: 30px;
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    padding: 30px;
+}
+
+.videa-alert svg{
+    font-size: 45px;
+    margin-right: 15px;
+}
+
+.threads .stats{
+    text-align: center;
+}
+
+.threads .stats span{
+    padding: 10px;
+    font-size: 20px;
+}
+
+.threads .stats span svg{
+    color: #8e78e3;
+}

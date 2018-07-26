@@ -47,9 +47,19 @@ class Thread
     private $status;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $locked;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $last_modification;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $last_message;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="thread", orphanRemoval=true)
@@ -69,6 +79,7 @@ class Thread
     {
         $this->messages = new ArrayCollection();
         $this->created_at = new \DateTime("now");
+        $this->last_message = new \DateTime("now");
     }
 
     public function getId()
@@ -108,6 +119,18 @@ class Thread
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getLocked(): ?bool
+    {
+        return $this->locked;
+    }
+
+    public function setLocked(string $locked): self
+    {
+        $this->locked = $locked;
 
         return $this;
     }
@@ -163,6 +186,18 @@ class Thread
     public function setLastModification(\DateTimeInterface $last_modification): self
     {
         $this->last_modification = $last_modification;
+
+        return $this;
+    }
+
+    public function getLastMessage(): ?\DateTimeInterface
+    {
+        return $this->last_message;
+    }
+
+    public function setLastMessage(\DateTimeInterface $last_message): self
+    {
+        $this->last_message = $last_message;
 
         return $this;
     }
