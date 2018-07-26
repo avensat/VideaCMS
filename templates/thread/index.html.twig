@@ -69,9 +69,9 @@
             <div class="card">
                 <div class="card-body">
                     <div class="subtitle">Dernières réponses</div>
-                    <ul>
+                    <ul style="padding:0; margin-top: 10px">
                         {% for message in getLastMessages() %}
-                            <li><i class="fas fa-folder" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">{{ message.thread.title }}</a> par <a class="blue bold" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}</li>
+                            <li>Dans <i class="fas fa-folder" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">{{ message.thread.title }}</a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}.</li>
                         {% else %}
                             Aucune réponses
                         {% endfor %}
