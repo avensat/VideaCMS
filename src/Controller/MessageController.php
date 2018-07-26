@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/message")
@@ -52,6 +53,9 @@ class MessageController extends Controller
      */
     public function edit(Request $request, Message $message): Response
     {
+        if($message->getUser() != $this->getUser())
+            throw new AccessDeniedException();
+
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 

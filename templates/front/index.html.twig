@@ -11,28 +11,31 @@
                     <div class="title">En tendance <i class="fal fa-angle-double-right" style="font-size: 50px;"></i></div>
                     {% set homeVideo = getHomeVideo() %}
 
-                    {% if homeVideo.url is defined %}
-                        <div class="video-container">
-                            <iframe width="420" height="315"
-                                    src="https://www.youtube.com/embed/{{ getUrlId(homeVideo) }}"
-                                    frameborder="0"
-                                    allow="autoplay; encrypted-media" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <a class="video-title" href="{{ path('video_view', {'id': "v"~homeVideo.id}) }}">{{ homeVideo.title }}</a>
+                    {% if homeVideo %}
+                        {% if homeVideo.url is defined %}
+                            <div class="video-container">
+                                <iframe width="420" height="315"
+                                        src="https://www.youtube.com/embed/{{ getUrlId(homeVideo) }}"
+                                        frameborder="0"
+                                        allow="autoplay; encrypted-media" allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a class="video-title" href="{{ path('video_view', {'id': "v"~homeVideo.id}) }}">{{ homeVideo.title }}</a>
+                        {% else %}
+                            <div class="fs-video-body">
+                                <video width="620" height="440" controls>
+                                    <source src="../../../uploads/videos/{{ homeVideo.videoPath }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <a class="video-title" href="{{ path('video_view', {'id': "u"~homeVideo.id}) }}">{{ homeVideo.title }}</a> <p class="views"> <i class="fal fa-eye"></i> {{ homeVideo.views }}</p>
+                            <span class="description">{{ homeVideo.description|length > 200 ? homeVideo.description|slice(0, 200) ~ '[...]' : homeVideo.description  }}</span>
+                            <div style="text-align: right">
+                                <a href="{{ path('video_view', {'id': "u"~homeVideo.id}) }}" class="see-link">Voir la vidéo <i class="fal fa-arrow-right"></i></a>
+                            </div>
+                        {% endif %}
                     {% else %}
-                        <div class="fs-video-body">
-                            <video width="620" height="440" controls>
-                                <source src="../../../uploads/videos/{{ homeVideo.videoPath }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-                        <a class="video-title" href="{{ path('video_view', {'id': "u"~homeVideo.id}) }}">{{ homeVideo.title }}</a> <p class="views"> <i class="fal fa-eye"></i> {{ homeVideo.views }}</p>
-                        <span class="description">{{ homeVideo.description|length > 200 ? homeVideo.description|slice(0, 200) ~ '[...]' : homeVideo.description  }}</span>
-                        <div style="text-align: right">
-                            <a href="{{ path('video_view', {'id': "u"~homeVideo.id}) }}" class="see-link">Voir la vidéo <i class="fal fa-arrow-right"></i></a>
-                        </div>
-
+                        Pas de vidéo
                     {% endif %}
 
                 </div>
