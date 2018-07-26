@@ -39,6 +39,11 @@ class ThreadController extends Controller
         );
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            if(strlen($data->getContent()) <= 9 || strlen($data->getContent() >= 5000)){
+                $this->addFlash("error", "Le texte ne doit pas faire moins de 3 caractères ou plus de 5 000 caractères.");
+                return $this->redirectToRoute("thread_index", ["id" => $thread->getId()]);
+            }
             $thread->setUser($this->getUser());
             $thread->setStatus("open");
             $em = $this->getDoctrine()->getManager();
@@ -99,6 +104,11 @@ class ThreadController extends Controller
         );
 
         if($form->isValid() && $form->isSubmitted()){
+            $data = $form->getData();
+            if(strlen($data->getContent()) <= 9 || strlen($data->getContent() >= 5000)){
+                $this->addFlash("error", "Le texte ne doit pas faire moins de 3 caractères ou plus de 5 000 caractères.");
+                return $this->redirectToRoute("thread_show", ["id" => $thread->getId()]);
+            }
             $message->setUser($this->getUser());
             $message->setThread($thread);
             $em = $this->getDoctrine()->getManager();

@@ -71,7 +71,7 @@
                     <div class="subtitle">Dernières réponses</div>
                     <ul style="padding:0; margin-top: 10px">
                         {% for message in getLastMessages() %}
-                            <li>Dans <i class="fas fa-folder" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">{{ message.thread.title }}</a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}.</li>
+                            <li style="margin-bottom: 10px;"><i class="fas fa-folder" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">{{ message.thread.title|length > 15 ? message.thread.title|slice(0, 15) ~ '[...]' : message.thread.title }}</a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}.</li>
                         {% else %}
                             Aucune réponses
                         {% endfor %}

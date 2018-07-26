@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ThreadRepository")
@@ -30,6 +31,12 @@ class Thread
     private $created_at;
 
     /**
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 100,
+     *      minMessage = "Le sujet doit faire plus de 2 caractères.",
+     *      maxMessage = "Le sujet ne peut pas faire plus de 100 caractères."
+     * )
      * @ORM\Column(type="string", length=100)
      */
     private $title;
@@ -50,6 +57,10 @@ class Thread
     private $messages;
 
     /**
+     * @Assert\NotBlank(
+     *     message = "Le texte ne doit pas être vide"
+     * )
+     *
      * @ORM\Column(type="text")
      */
     private $content;
