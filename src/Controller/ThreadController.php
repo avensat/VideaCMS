@@ -119,7 +119,7 @@ class ThreadController extends Controller
      */
     public function edit(Request $request, Thread $thread): Response
     {
-        if($thread->getUser() != $this->getUser())
+        if($thread->getUser() != $this->getUser() && !$this->get('security.context_listener.0')->isGranted('ROLE_MODERATOR'))
             throw new AccessDeniedException();
 
         $form = $this->createForm(ThreadType::class, $thread);

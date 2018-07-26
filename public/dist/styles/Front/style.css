@@ -1365,3 +1365,11 @@ section .section-title {
     font-style: italic;
     font-size: 13px;
 }
+
+.blue{
+    color: #8e78e3;
+}
+
+.bold{
+    font-weight:bold;
+}
