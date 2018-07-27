@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
+
 body{background:#f3f3f3;}
 #wrapper{padding:90px 15px;}
 .navbar-expand-lg .navbar-nav.side-nav{flex-direction: column;}
@@ -21,3 +23,73 @@ body{background:#f3f3f3;}
 .side-nav .dropdown {position:initial;}
 .side-nav .dropdown-menu {opacity:0;left:120%;top:0;height:100%;border:0;padding:0;margin:0;border-radius:0;box-shadow:5px 0 5px rgba(0,0,0,.1);background:#eee;visibility: hidden;display:block;transition: .4s ease all;}
 .side-nav .dropdown-menu.show {left:100%;opacity:1;visibility: visible;display:block;transition: .4s ease all;}
+.title{
+    font-family: 'Oswald', sans-serif;
+    font-size: 55px;
+    text-transform: uppercase;
+    margin-top: -25px;
+    color: #343a40;
+    border-bottom: 2px solid #343a40;
+}
+.subtitle{
+    font-family: 'Oswald', sans-serif;
+    font-size: 55px;
+    color: #cacaca;
+}
+
+.dashboard .description{
+    font-size: 30px;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    color: #acafb3;
+}
+
+.dashboard .grey{
+    background-color: #e9e9e9;
+    padding: 15px;
+    padding-bottom: 3px;
+}
+
+.dashboard .top{
+    margin-top: 30px;
+}
+
+.dashboard .bar-title{
+    text-align: center;
+    color: #585f66;
+}
+
+.dashboard .next-link{
+    text-align: center;
+}
+
+.dashboard .next-link a{
+    color: #585f66;
+}
+
+.dashboard .next-link svg{
+    margin-top: 40px;
+}
+
+.dashboard .card-text{
+    float: right;
+    font-size: 50px;
+    font-family: 'Oswald', sans-serif;
+    margin-top: -25px;
+    color: #2EC4B6;
+}
+
+.dashboard .general-stat{
+    text-align: center;
+    color: #585f66;
+}
+
+.dashboard .general-stat svg{
+    font-size: 70px;
+}
+
+.dashboard .general-stat span{
+    display: block;
+    font-size: 35px;
+    color: #2EC4B6;
+}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -16,8 +17,10 @@ class BackofficeController extends Controller
      */
     public function index()
     {
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+
         return $this->render('backoffice/index.html.twig', [
-            'controller_name' => 'BackofficeController',
+            'users' => $users,
         ]);
     }
 }
