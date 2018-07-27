@@ -34,10 +34,6 @@
                                 <td>{{ thread.messages|length }}</td>
                                 <td class="blue">le {{ thread.lastMessage ? thread.lastMessage|date('d/m/Y à H:i') : '' }}</td>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4">Pas de sujets</td>
-                            </tr>
                         {% endfor %}
                         {% for thread in threads if thread.status == "open" %}
                             <tr>
@@ -80,7 +76,9 @@
                     <div class="card-body">
                         <div class="subtitle">Ecrire un sujet</div>
                         <hr>
-                        <div class="alert alert-warning">Vous devez être connecté pour écrire un sujet.</div>
+                        <div class="videa-alert" style="font-size: 20px;">
+                            <i style="font-size: 23px; margin-right: 5px;" class="fal fa-sign-in"></i> <a href="{{ path('fos_user_security_login') }}">Connectez-vous</a> pour écrire un sujet.
+                        </div>
                     </div>
                 </div>
             {% endif %}

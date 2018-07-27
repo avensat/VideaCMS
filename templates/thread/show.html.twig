@@ -120,8 +120,14 @@
                         <i class="fal fa-lock-alt"></i> Désolé, ce sujet est verouillé.
                     </div>
                 {% else %}
+                    {% if app.user %}
                     <div class="subtitle">Répondre</div>
                     {{ include('message/_form.html.twig') }}
+                    {% else %}
+                        <div class="videa-alert">
+                            <i class="fal fa-lock-alt"></i> Vous devez être connecté pour répondre.
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

@@ -40,6 +40,7 @@ class ThreadController extends Controller
         );
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->denyAccessUnlessGranted('ROLE_USER');
             $data = $form->getData();
             if(strlen($data->getContent()) <= 9 || strlen($data->getContent() >= 5000)){
                 $this->addFlash("error", "Le texte ne doit pas faire moins de 3 caractères ou plus de 5 000 caractères.");
@@ -66,6 +67,7 @@ class ThreadController extends Controller
      */
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $thread = new Thread();
         $form = $this->createForm(ThreadType::class, $thread);
         $form->handleRequest($request);
@@ -142,6 +144,7 @@ class ThreadController extends Controller
         );
 
         if($form->isValid() && $form->isSubmitted()){
+            $this->denyAccessUnlessGranted('ROLE_USER');
             if($thread->getLocked())
                 throw new AccessDeniedException();
 
@@ -171,6 +174,7 @@ class ThreadController extends Controller
      */
     public function edit(Request $request, Thread $thread): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         if($thread->getUser() != $this->getUser() && !$this->get('security.context_listener.0')->isGranted('ROLE_MODERATOR'))
             throw new AccessDeniedException();
 
