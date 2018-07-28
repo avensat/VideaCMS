@@ -30,7 +30,7 @@ class Wall
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="walls")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $userId;
+    private $user;
 
     public function __construct()
     {
@@ -68,12 +68,12 @@ class Wall
 
     public function getUserId(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
     public function setUserId(?User $user_id): self
     {
-        $this->userId = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }

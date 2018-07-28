@@ -1,0 +1,93 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Tout voir pour {{ user.username }}{% endblock %}
+{% block body %}
+
+    <div class="title">{{ type }}</div>
+    <small class="text-muted">Totalité des éléments pour {{ user.username }}.</small>
+    <a href="{{ path("backoffice_show_user", {'id': user.id}) }}" class="back"><i class="fal fa-angle-double-left"></i> Retour</a>
+    {% if type == "forum" %}
+        <div class="subtitle" style="margin-top: -25px;">Sujets</div>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Contenu</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for message in data|sort|reverse %}
+                        <tr>
+                            <td>{{ message.createdAt|date("d/m/y à H:i") }}</td>
+                            <td>{{ message.content|length > 500 ? message.content|slice(0, 500) ~ '[...]' : message.content }}</td>
+                            <td><a href="{{ path("thread_show", {'id': message.id}) }}">Voir</a> </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Pas de messages</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="subtitle">Messages</div>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Contenu</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for message in messages|sort|reverse %}
+                        <tr>
+                            <td>{{ message.createdAt|date("d/m/y à H:i") }}</td>
+                            <td>{{ message.content|length > 500 ? message.content|slice(0, 500) ~ '[...]' : message.content }}</td>
+                            <td><a href="{{ path("thread_show", {'id': message.id}) }}">Voir</a> </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Pas de messages</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% elseif type == "wall" %}
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Contenu</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for message in data|sort|reverse %}
+                        <tr>
+                            <td>{{ message.createdAt|date("d/m/y à H:i") }}</td>
+                            <td>{{ message.content|length > 500 ? message.content|slice(0, 500) ~ '[...]' : message.content }}</td>
+                            <td><a href="{{ path("wall_show", {'id': message.id}) }}">Voir</a> </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Pas de messages</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

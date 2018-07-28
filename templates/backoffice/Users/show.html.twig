@@ -1,0 +1,136 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Voir {{ user.username }}{% endblock %}
+{% block body %}
+    <div class="title"><i class="fal fa-user"></i> {{ user.username }}</div>
+    <small class="text-muted">Consultez les informations de cet utilisateur.</small>
+    <div class="subtitle">Informations</div>
+    <div class="row profile">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body left">
+                    <img src="{{ getProfilePic(user) }}" width="200px">
+                    <span class="username">{{ user.username }}</span>
+                    {% if user.certified %}
+                        Utilisateur certifié
+                    {% else %}
+                        Utilisateur non certifié
+                    {% endif %}
+                    <span class="registration">Inscrit le : {{ user.createdAt|date("d M Y à H:i:s") }}</span>
+                    <span class="registration">Dernière connexion le : {{ user.lastLogin|date("d M Y à H:i:s") }}</span>
+                    <span class="bio">
+                        <span>Biographie</span>{{ user.biography }}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Adresse email : {{ user.email }}</li>
+                        <li class="list-group-item">Facebook : {{ user.facebook }}</li>
+                        <li class="list-group-item">Twitter : {{ user.twitter }}</li>
+                        <li class="list-group-item">Youtube : {{ user.youtube }}</li>
+                    </ul>
+                </div>
+            </div>
+            <a href="{{ path("video_channel", {'user': user.username}) }}" class="btn btn-secondary">Consulter sa chaine</a>
+        </div>
+        <div class="col-md-2 center">
+            <a href="button" class="btn btn-secondary" style="display: block">Modifier</a>
+            <a href="button" class="btn btn-warning top" style="display: block">Bloquer le compte</a>
+            <a href="button" class="btn btn-danger top" style="display: block">Supprimer</a>
+        </div>
+    </div>
+    <hr>
+    <div class="subtitle">Activité récente</div>
+
+    <div class="row grey top bars">
+        <div class="col-md-1 bar-title">
+            <div style="margin-top: 25px;">
+                <i class="fal fa-comments fa-4x"></i>
+                <div class="description">Forum</div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Derniers messages & sujets de {{ user.username }}</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Contenu</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for message in user.messages|slice(0, 5)|sort|reverse %}
+                        <tr>
+                            <td>{{ message.createdAt|date("d/m/y à H:i") }}</td>
+                            <td>{{ message.content|length > 200 ? message.content|slice(0, 200) ~ '[...]' : message.content }}</td>
+                            <td><a href="{{ path("thread_show", {'id': message.thread.id}) }}">Voir</a> </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3">Pas de messages</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 next-link">
+            <a href="{{ path("backoffice_user_all", {"type": "forum", "id": user.id}) }}">
+                <i class="fal fa-angle-double-right fa-5x"></i>
+                <span style="display: block">Tout voir</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="row grey top bars">
+        <div class="col-md-1 bar-title">
+            <div style="margin-top: 25px;">
+                <i class="fal fa-list-ul fa-4x"></i>
+                <div class="description">Fil d'actualité</div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Dernières publications de {{ user.username }}</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Contenu</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for wall in user.walls|slice(0, 5)|sort|reverse %}
+                            <tr>
+                                <td>{{ wall.createdAt|date("d/m/y à H:i") }}</td>
+                                <td>{{ wall.content|length > 200 ? wall.content|slice(0, 200) ~ '[...]' : wall.content }}</td>
+                                <td><a href="{{ path("wall_show", {'id': wall.id}) }}">Voir</a> </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Pas de messages</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 next-link">
+            <a href="{{ path("backoffice_user_all", {"type": "wall", "id": user.id}) }}">
+                <i class="fal fa-angle-double-right fa-5x"></i>
+                <span style="display: block">Tout voir</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}

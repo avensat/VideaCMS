@@ -110,7 +110,7 @@ class User extends BaseUser
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Wall", mappedBy="user_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Wall", mappedBy="user", orphanRemoval=true)
      */
     private $walls;
 
@@ -124,6 +124,11 @@ class User extends BaseUser
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
 
     public function __construct()
     {
@@ -133,6 +138,7 @@ class User extends BaseUser
         $this->walls = new ArrayCollection();
         $this->threads = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->created_at = new \DateTime("now");
     }
 
     /**
@@ -660,6 +666,18 @@ class User extends BaseUser
                 $message->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

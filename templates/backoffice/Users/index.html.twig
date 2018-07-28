@@ -1,0 +1,38 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Utilisateurs{% endblock %}
+{% block body %}
+<div class="title">Utilisateurs</div>
+    <small class="text-muted">Vous pouvez via cette page gérer les utilisateurs de votre site.</small>
+    <table class="table top">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Email</th>
+            <th scope="col">Dernière connexion</th>
+            <th scope="col">Date inscription</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ path("backoffice_show_user", {"id": user.id}) }}">{{ user.username }}</a></td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.lastLogin|date("d/m/y à H:i") }}</td>
+                <td>{{ user.createdAt|date("d/m/y") }}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                        <a href="" class="btn btn-secondary"><i class="fal fa-trash-alt"></i></a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(users) }}
+    </div>
+
+{% endblock %}
