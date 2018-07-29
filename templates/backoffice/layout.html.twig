@@ -22,16 +22,15 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav animate side-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path("backoffice_index") }}" title="Index"><i class="fas fa-comment"></i> Index <i class="fal fa-tachometer shortmenu animate"></i></a>
+                    <a class="nav-link" href="{{ path("backoffice_index") }}" title="Index"><i class="fal fa-tachometer"></i> Index <i class="fal fa-tachometer shortmenu animate"></i></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i> Membres <i class="fas fa-user shortmenu animate"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Liste des utilisateurs</a>
-                        <a class="dropdown-item" href="#">Ajouter un utilisateur</a>
-                        <a class="dropdown-item" href="#">Gestion des rôles</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_users") }}">Liste des utilisateurs</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_user_add") }}">Ajouter un utilisateur</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

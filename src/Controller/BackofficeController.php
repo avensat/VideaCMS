@@ -7,6 +7,7 @@ use App\Entity\Thread;
 use App\Entity\User;
 use App\Entity\Wall;
 use App\Form\UserType;
+use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -278,5 +280,29 @@ class BackofficeController extends Controller
             return $this->redirectToRoute("backoffice_user_edit", ["id" => $user->getId()]);
         }
         throw new BadRequestHttpException();
+    }
+
+    /**
+     * @Route("/user/add", name="backoffice_user_add")
+     */
+    public function addUser(Request $request){
+
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user)->handleRequest($request);
+
+        if($form->isValid() && $form->isSubmitted()) {
+            $userManager = $this->get('fos_user.user_manager');
+            $exists = $userManager->findUserBy(array('email' => $user->getEmail()));
+            if ($exists instanceof User) {
+                $this->addFlash('errror', 'Cet email existe déjà');
+            }
+            $userManager->updateUser($user);
+            $this->addFlash('success', "L'utilisateur a bien été créé.");
+            return $this->redirectToRoute("backoffice_users");
+        }
+
+        return $this->render('backoffice/Users/add.html.twig', [
+            "form" => $form->createView()
+        ]);
     }
 }

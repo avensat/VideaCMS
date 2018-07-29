@@ -21,9 +21,9 @@
                 <td>{{ user.lastLogin|date("d/m/y à H:i") }}</td>
                 <td>{{ user.createdAt|date("d/m/y") }}</td>
                 <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <a href="" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
-                        <a href="" class="btn btn-secondary"><i class="fal fa-trash-alt"></i></a>
+                    <div class="btn-group" role="group">
+                        <a href="{{ path("backoffice_show_user", {"id": user.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                        <a href="{{ path("backoffice_user_edit", {"id": user.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
                     </div>
                 </td>
             </tr>
