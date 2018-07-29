@@ -1,0 +1,55 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Rôles de {{ user.username }}{% endblock %}
+{% block body %}
+    <div class="title">Gestion des rôles</div>
+    <a href="{{ path("backoffice_show_user", {'id': user.id}) }}" class="back"><i class="fal fa-angle-double-left"></i> Retour</a>
+    <div class="card top">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Description des rôles</h3>
+                    <p><b>Administrateur :</b> L'utilisateur peut accéder à cette interface d'administration et possède les mêmes droits que vous.</p>
+                    <p><b>Modérateur :</b> L'utilisateur peut modifier, épingler, et vérouiller des sujets sur le forum, idem pour le fil d'actualité. Le modérateur ne peut pas supprimer de contenu, uniquement l'administrateur le peut.</p>
+                    <p><b>Créateur :</b> Il peut héberger des vidéos sur le serveur, écrire des articles et lancer des sondages. Il possède le status "Certifié".</p>
+                </div>
+                <div class="col-md-6">
+                    <h3>Cliquez sur un rôle pour l'ajouter ou le retirer</h3>
+                    <div class="top">
+                        <a href="{{ path("backoffice_user_roles_manage", {"id": user.id, "type": "admin"}) }}" class="role-badge">
+                            {% if admin %}
+                                <i style="color: #3aff3a" class="fal fa-check-circle"></i>
+                            {% else %}
+                                <i class="fal fa-times-circle"></i>
+                            {% endif %}
+                            Administrateur
+                        </a>
+                        <a href="{{ path("backoffice_user_roles_manage", {"id": user.id, "type": "moderator"}) }}" class="role-badge">
+                            {% if moderator %}
+                                <i style="color: #3aff3a" class="fal fa-check-circle"></i>
+                            {% else %}
+                                <i class="fal fa-times-circle"></i>
+                            {% endif %}
+                            Modérateur
+                        </a>
+
+                        {% if creator %}
+                            <a onclick="return confirm('Attention : L\'utilisateur ne pourra plus héberger de vidéos, écrire d\'articles ou de sondages. ');" href="{{ path("backoffice_user_roles_manage", {"id": user.id, "type": "creator"}) }}" class="role-badge">
+                                <i style="color: #3aff3a" class="fal fa-check-circle"></i>
+                                Créateur
+                            </a>
+                        {% else %}
+                            <a href="{{ path("backoffice_user_roles_manage", {"id": user.id, "type": "creator"}) }}" class="role-badge">
+                                <i class="fal fa-times-circle"></i>
+                                Créateur
+                            </a>
+                        {% endif %}
+
+                    </div>
+                    <div class="alert alert-secondary top" role="alert">
+                        Veuillez noter que les changements seront effectifs après la déconnexion / reconnexion de l'utilisateur.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

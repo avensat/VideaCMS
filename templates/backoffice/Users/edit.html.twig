@@ -1,0 +1,57 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Editer {{ user.username }}{% endblock %}
+{% block body %}
+    <div class="title">Editer</div>
+    <a href="{{ path("backoffice_show_user", {'id': user.id}) }}" class="back"><i class="fal fa-angle-double-left"></i> Retour</a>
+    <div class="row top">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Informations générales</h4>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Nom d'utilisateur</h4>
+                    {{ form_start(formPseudo) }}
+                    {{ form_widget(formPseudo) }}
+                    {{ form_end(formPseudo) }}
+                </div>
+            </div>
+            <div class="card top">
+                <div class="card-body">
+                    <h4>Changer le mot de passe</h4>
+                    {{ form_start(formPassword) }}
+                    <div class="form-group">
+                        {{ form_label(formPassword.password1, "Entrez le mot de passe") }}
+                        {{ form_widget(formPassword.password1) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formPassword.password2, "Répetez le mot de passe") }}
+                        {{ form_widget(formPassword.password2) }}
+                    </div>
+                    {{ form_widget(formPassword.submit, {"label": "Modifier"}) }}
+                    {{ form_end(formPassword) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 center">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Changer la photo de profil</h4>
+                    <img src="{{ getProfilePic(app.user) }}" width="300px">
+                    {{ form_start(formPicture) }}
+                    {{ form_widget(formPicture) }}
+                    {{ form_end(formPicture) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

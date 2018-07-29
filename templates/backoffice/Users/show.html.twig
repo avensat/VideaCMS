@@ -10,6 +10,9 @@
                 <div class="card-body left">
                     <img src="{{ getProfilePic(user) }}" width="200px">
                     <span class="username">{{ user.username }}</span>
+                    {% if not user.enabled %}
+                        <span class="unactivated">Compte désactivé</span>
+                    {% endif %}
                     {% if user.certified %}
                         Utilisateur certifié
                     {% else %}
@@ -32,14 +35,27 @@
                         <li class="list-group-item">Facebook : {{ user.facebook }}</li>
                         <li class="list-group-item">Twitter : {{ user.twitter }}</li>
                         <li class="list-group-item">Youtube : {{ user.youtube }}</li>
+                        <li class="list-group-item">
+                            Roles :
+                            {% for role in user.roles %}
+                                {{ role }} |
+                            {% else %}
+                                Pas de rôles
+                            {% endfor %}
+                            <a href="{{ path("backoffice_user_roles", {"id": user.id}) }}" class="role-link">Ajouter / Retirer un rôle</a>
+                        </li>
                     </ul>
                 </div>
             </div>
             <a href="{{ path("video_channel", {'user': user.username}) }}" class="btn btn-secondary">Consulter sa chaine</a>
         </div>
         <div class="col-md-2 center">
-            <a href="button" class="btn btn-secondary" style="display: block">Modifier</a>
-            <a href="button" class="btn btn-warning top" style="display: block">Bloquer le compte</a>
+            <a href="{{ path("backoffice_user_edit", {"id": user.id}) }}" class="btn btn-secondary" style="display: block">Modifier</a>
+            {% if not user.enabled %}
+                <a href="{{ path("backoffice_user_block", {"id": user.id}) }}" class="btn btn-warning top" style="display: block">Activer le compte</a>
+            {% else %}
+                <a href="{{ path("backoffice_user_block", {"id": user.id}) }}" class="btn btn-warning top" style="display: block">Désactiver le compte</a>
+            {% endif %}
             <a href="button" class="btn btn-danger top" style="display: block">Supprimer</a>
         </div>
     </div>
