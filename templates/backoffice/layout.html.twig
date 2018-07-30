@@ -48,7 +48,8 @@
                         <i class="fas fa-comments"></i> Forum <i class="fas fa-comments shortmenu animate"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Liste des sujets</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_forum_threads") }}">Liste des sujets</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_forum_messages") }}">Liste des messages</a>
                         <a class="dropdown-item" href="#">Modération</a>
                     </div>
                 </li>

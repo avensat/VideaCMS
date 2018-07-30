@@ -80,6 +80,7 @@ class Thread
         $this->messages = new ArrayCollection();
         $this->created_at = new \DateTime("now");
         $this->last_message = new \DateTime("now");
+        $this->locked = 0;
     }
 
     public function getId()

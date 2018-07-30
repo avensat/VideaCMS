@@ -424,4 +424,32 @@ class BackofficeController extends Controller
             "videos" => $videos
         ]);
     }
+
+    /**
+     * @Route("/forum/threads", name="backoffice_forum_threads")
+     */
+    public function threadList(Request $request){
+
+        $query = $this->getDoctrine()->getRepository(Thread::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $threads = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Forum/threads.html.twig', [
+            "threads" => $threads
+        ]);
+    }
+
+    /**
+     * @Route("/forum/messages", name="backoffice_forum_messages")
+     */
+    public function messagesList(Request $request){
+
+        $query = $this->getDoctrine()->getRepository(Message::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $messages = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Forum/messages.html.twig', [
+            "messages" => $messages
+        ]);
+    }
 }

@@ -1,0 +1,45 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Sujets{% endblock %}
+{% block body %}
+    <div class="title">Sujets</div>
+    <div class="card top">
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Auteur</th>
+                    <th scope="col">Création</th>
+                    <th scope="col">Dernier message</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for thread in threads %}
+                    <tr>
+                        <td><a href="">{{ thread.title }}</a></td>
+                        <td>{{ thread.status }}</td>
+                        <td>{{ thread.user.username }}</td>
+                        <td>{{ thread.createdAt|date("d/m/y à H:i") }}</td>
+                        <td>{{ thread.lastMessage|date("d/m/y à H:i") }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ path("thread_show", {"id": thread.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path("thread_edit", {"id": thread.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Pas de sujets</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(threads) }}
+    </div>
+{% endblock %}
