@@ -1,0 +1,32 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Editer {{ video.title }}{% endblock %}
+{% block body %}
+    <div class="title">Editer</div>
+    <a href="{{ path("backoffice_videos_hosted") }}" class="back"><i class="fal fa-angle-double-left"></i> Retour</a>
+
+    <div class="row top">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Modifier les informations</h4>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input type="submit" value="Modifier" class="btn btn-primary">
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Modifier la vidéo</h4>
+                    {{ form_start(formVideo) }}
+                    {{ form_widget(formVideo) }}
+                    <input type="submit" value="Modifier" class="btn btn-primary">
+                    {{ form_end(formVideo) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

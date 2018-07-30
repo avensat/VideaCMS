@@ -3,11 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\ProviderVideo;
 use App\Entity\Thread;
+use App\Entity\UploadedVideo;
 use App\Entity\User;
 use App\Entity\Wall;
+use App\Form\UploadType;
 use App\Form\UserType;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -303,6 +310,118 @@ class BackofficeController extends Controller
 
         return $this->render('backoffice/Users/add.html.twig', [
             "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/videos/hosted", name="backoffice_videos_hosted")
+     */
+    public function hostedVideos(Request $request){
+        $query = $this->getDoctrine()->getRepository(UploadedVideo::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $videos = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Videos/hosted.html.twig', [
+            "videos" => $videos
+        ]);
+    }
+
+    /**
+     * @Route("/videos/hosted/edit/{id}", name="backoffice_videos_hosted_edit")
+     */
+    public function editHostedVideos(UploadedVideo $video, Request $request){
+
+        $form = $this->createFormBuilder()
+            ->add("title", TextType::class, ["data" => $video->getTitle()])
+            ->add("description", TextareaType::class, ["data" => $video->getDescription()])
+            ->add("public", CheckboxType::class, ["data" => $video->getPublic()])
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        $formVideo = $this->createFormBuilder()
+            ->add("video", FileType::class)
+            ->setAction($this->generateUrl("backoffice_video_edit_upload", ['id' => $video->getId()]))
+            ->getForm();
+
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $video->setTitle($data['title']);
+            $video->setDescription($data['description']);
+            $video->setPublic($data['public']);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Informations modifiés");
+            return $this->redirectToRoute("backoffice_videos_hosted_edit", ["id" => $video->getId()]);
+        }
+
+        return $this->render('backoffice/Videos/editHosted.html.twig', [
+            "video" => $video,
+            "form" => $form->createView(),
+            "formVideo" => $formVideo->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/videos/edit/upload/{id}", name="backoffice_video_edit_upload")
+     * @Method({"POST"})
+     */
+    public function editHostedVideo(Request $request, UploadedVideo $upVideo){
+        $formVideo = $this->createFormBuilder()
+            ->add("video", FileType::class)
+            ->setAction($this->generateUrl("backoffice_video_edit_upload", ['id' => $upVideo->getId()]))
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        if($formVideo->isSubmitted() && $formVideo->isValid()){
+            $upVideo->preUploadVideo();
+            $upVideo->uploadVideo();
+
+            // Generate thumbnail
+
+            $ffmpeg = FFMpeg::create(array(
+                'ffmpeg.binaries'  => $_ENV["FFMPEG_PATH"],
+                'ffprobe.binaries' => $_ENV["FFPROBE_PATH"],
+                'timeout'          => 3600,
+                'ffmpeg.threads'   => 12,
+            ));
+
+            $publicPath = $this->get('kernel')->getRootDir() . '/../public/';
+
+            $video = $ffmpeg->open($publicPath.'uploads/videos/'.$upVideo->getVideoPath());
+
+            $video
+                ->filters()
+                ->resize(new Dimension(320, 240))
+                ->synchronize();
+
+            $random = random_bytes(32);
+            $randomString = bin2hex($random);
+
+            $video
+                ->frame(TimeCode::fromSeconds(2))
+                ->save($publicPath.'uploads/videos/thumbnails/'.$randomString.'.jpg');
+
+            $upVideo->setThumbnail($randomString.'.jpg');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($upVideo);
+            $em->flush();
+            $this->addFlash("success", "Vidéo modifiée");
+            return $this->redirectToRoute("backoffice_videos_hosted_edit", ["id" => $upVideo->getId()]);
+        }
+        throw new BadRequestHttpException();
+    }
+
+    /**
+     * @Route("/videos/links", name="backoffice_videos_linked")
+     */
+    public function linkedVideos(Request $request){
+        $query = $this->getDoctrine()->getRepository(ProviderVideo::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $videos = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Videos/links.html.twig', [
+            "videos" => $videos
         ]);
     }
 }

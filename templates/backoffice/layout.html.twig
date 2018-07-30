@@ -38,7 +38,8 @@
                         <i class="fas fa-play-circle"></i> Vidéos <i class="fas fa-play-circle shortmenu animate"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Liste des articles</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_videos_hosted") }}">Liste des vidéos locales</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_videos_linked") }}">Liste des vidéos distantes</a>
                         <a class="dropdown-item" href="#">Modération</a>
                     </div>
                 </li>
