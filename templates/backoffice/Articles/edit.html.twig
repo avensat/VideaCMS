@@ -1,0 +1,26 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Articles{% endblock %}
+{% block body %}
+    <div class="title">Editer</div>
+    <a href="{{ path("backoffice_articles") }}" class="back"><i class="fal fa-angle-double-left"></i> Retour</a>
+    <div class="card top">
+        <div class="card-body">
+            <h4>Editer l'article "{{ article.title }}"</h4>
+            {{ form_start(form) }}
+            <div class="form-group top">
+                {{ form_label(form.title, "Titre de l'article") }}
+                {{ form_widget(form.title) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.category, "Catégorie") }}
+                {{ form_widget(form.category) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.content, "Texte de l'article") }}
+                {{ form_widget(form.content, {"attr": {"class": "editor"}}) }}
+            </div>
+            {{ form_widget(form.save, {"label": "Modifier"}) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Message;
 use App\Entity\ProviderVideo;
 use App\Entity\Thread;
 use App\Entity\UploadedVideo;
 use App\Entity\User;
 use App\Entity\Wall;
+use App\Form\ArticleType;
 use App\Form\UploadType;
 use App\Form\UserType;
 use FFMpeg\Coordinate\Dimension;
@@ -451,5 +453,48 @@ class BackofficeController extends Controller
         return $this->render('backoffice/Forum/messages.html.twig', [
             "messages" => $messages
         ]);
+    }
+
+    /**
+     * @Route("/articles/", name="backoffice_articles")
+     */
+    public function articlesList(Request $request){
+        $query = $this->getDoctrine()->getRepository(Article::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Articles/index.html.twig', [
+            "articles" => $articles
+        ]);
+    }
+
+    /**
+     * @Route("/articles/edit/{id}", name="backoffice_articles_edit")
+     */
+    public function articlesEdit(Request $request, Article $article){
+
+        $form = $this->createForm(ArticleType::class, $article)->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Article modifié");
+            return $this->redirectToRoute("backoffice_articles_edit", ["id" => $article->getId()]);
+        }
+
+        return $this->render('backoffice/Articles/edit.html.twig', [
+            "article" => $article,
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/articles/remove/{id}", name="backoffice_articles_remove")
+     */
+    public function articlesRemove(Request $request, Article $article){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
+        $this->addFlash("success", "Article supprimé");
+        return $this->redirectToRoute("backoffice_articles");
     }
 }

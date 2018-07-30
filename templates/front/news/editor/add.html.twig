@@ -57,7 +57,7 @@
                         </div>
                         <div class="form-group">
                         {{ form_label(form.content, "Texte de l'article") }}
-                        {{ form_widget(form.content) }}
+                        {{ form_widget(form.content, {'attr': {"class": "editor"}}) }}
                         {{ form_errors(form.content) }}
                         </div>
                         {{ form_widget(form.save, {'label': 'Publier'}) }}

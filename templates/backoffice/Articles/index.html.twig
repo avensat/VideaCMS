@@ -1,0 +1,44 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Articles{% endblock %}
+{% block body %}
+    <div class="title">Articles</div>
+    <div class="card top">
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Utilisateur</th>
+                    <th scope="col">Date d'ajout</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td><a href="">{{ article.title }}</a></td>
+                        <td>{{ article.category.title }}</td>
+                        <td>{{ article.user.username }}</td>
+                        <td>{{ article.creation|date("d/m/y à H:i") }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ path("news_view", {'id': article.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path("backoffice_articles_edit", {"id": article.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a onclick="return confirm('Êtes vous sûr ?');" href="{{ path("backoffice_articles_remove", {"id": article.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Pas d'articles</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(articles) }}
+    </div>
+{% endblock %}
