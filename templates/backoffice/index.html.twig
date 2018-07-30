@@ -18,7 +18,7 @@
                         <h5 class="card-title">Nouveaux inscrits</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Cette semaine</h6>
                         <p class="card-text">
-                            12
+                            {{ countByDate("User", 7) }}
                         </p>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <h5 class="card-title">Nouveaux inscrits</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Ce mois-ci</h6>
                         <p class="card-text">
-                            20
+                            {{ countByDate("User", 30) }}
                         </p>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <h5 class="card-title">Utilisateurs</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Nombre total</h6>
                         <p class="card-text">
-                            2675
+                            {{ countByDate("User") }}
                         </p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         <h5 class="card-title">Nouvelles vidéos</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Ce mois-ci</h6>
                         <p class="card-text">
-                            8
+                            {{ countByDate("UploadedVideo", 30) }}
                         </p>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         <h5 class="card-title">Uploads</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Total</h6>
                         <p class="card-text">
-                            64
+                            {{ countByDate("UploadedVideo") }}
                         </p>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                         <h5 class="card-title">Liens</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Total</h6>
                         <p class="card-text">
-                            34
+                            {{ countByDate("ProviderVideo") }}
                         </p>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                         <h5 class="card-title">Sujets</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Ce mois-ci</h6>
                         <p class="card-text">
-                            12
+                            {{ countByDate("Thread", 30) }}
                         </p>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                         <h5 class="card-title">Messages</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Cette semaine</h6>
                         <p class="card-text">
-                            20
+                            {{ countByDate("Message", 7) }}
                         </p>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                         <h5 class="card-title">Sujets</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Nombre total</h6>
                         <p class="card-text">
-                            2675
+                            {{ countByDate("Thread") }}
                         </p>
                     </div>
                 </div>
@@ -149,22 +149,22 @@
         <div class="row top">
             <div class="col-md-3 general-stat">
                 <i class="fal fa-newspaper fa-4x"></i>
-                <span>23 articles</span>
+                <span>{{ countByDate("Article") }} articles</span>
             </div>
 
             <div class="col-md-3 general-stat">
                 <i class="fal fa-chart-pie fa-4x"></i>
-                <span>2 sondages</span>
+                <span>{{ countByDate("Poll") }} sondages</span>
             </div>
 
             <div class="col-md-3 general-stat">
                 <i class="fal fa-comment fa-4x"></i>
-                <span>189 commentaires</span>
+                <span>{{ countByDate("Comment") }} commentaires</span>
             </div>
 
             <div class="col-md-3 general-stat">
                 <i class="fal fa-list fa-4x"></i>
-                <span>1254 publications</span>
+                <span>{{ countByDate("Wall") }} publications</span>
             </div>
         </div>
 

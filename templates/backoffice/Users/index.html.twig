@@ -18,8 +18,8 @@
             <tr>
                 <td><a href="{{ path("backoffice_show_user", {"id": user.id}) }}">{{ user.username }}</a></td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.lastLogin|date("d/m/y à H:i") }}</td>
-                <td>{{ user.createdAt|date("d/m/y") }}</td>
+                <td>le {{ user.lastLogin|date("d/m/y à H:i") }}</td>
+                <td>le {{ user.createdAt|date("d/m/y à H:i") }}</td>
                 <td>
                     <div class="btn-group" role="group">
                         <a href="{{ path("backoffice_show_user", {"id": user.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>

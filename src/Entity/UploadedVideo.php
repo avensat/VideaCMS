@@ -96,7 +96,7 @@ class UploadedVideo
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    private $created_at;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="videoUpload")
@@ -118,7 +118,7 @@ class UploadedVideo
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime("now");
+        $this->created_at = new \DateTime("now");
     }
 
     /**
@@ -413,7 +413,7 @@ class UploadedVideo
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $createdAt;
 
         return $this;
     }
@@ -425,7 +425,7 @@ class UploadedVideo
      */
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     /**
