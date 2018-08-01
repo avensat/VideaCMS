@@ -1,0 +1,13 @@
+general:
+    template_name: 'Default'
+    description: 'The default template for Videa'
+    template_folder: 'default'
+    template_version: 0.0.1
+    author: 'Kodmit'
+    website: 'kodmit.com'
+
+parameters:
+    background_color: '#fefefe'
+    background_image: 'default'
+    card_color: 'red'
+    text_color: '#0000'

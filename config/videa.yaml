@@ -1,0 +1,5 @@
+global:
+    site_name: 'Videa CMS'
+    description: 'Platform for video sharing and more...'
+    version: 0.0.1
+    theme: 'default'
