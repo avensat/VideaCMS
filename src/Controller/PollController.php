@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Poll;
 use App\Entity\PollAnswer;
+use App\Service\TemplateService;
 use phpseclib\File\ANSI;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -17,6 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PollController extends Controller
 {
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
+
     /**
      * @Route("/", name="poll_homepage")
      */
@@ -34,7 +43,7 @@ class PollController extends Controller
             10/*limit per page*/
         );
 
-        return $this->render('/front/poll/index.html.twig', [
+        return $this->render($this->template.'/front/poll/index.html.twig', [
             'polls' => $polls,
         ]);
     }
@@ -60,7 +69,7 @@ class PollController extends Controller
             $userCanRespond = false;
         }
 
-        return $this->render('/front/poll/get.html.twig', [
+        return $this->render($this->template.'/front/poll/get.html.twig', [
             'poll' => $poll,
             'answersCount' => count($answersRepo->getAnswerByPoll($poll)),
             'userCanRespond' => $userCanRespond,
@@ -135,7 +144,7 @@ class PollController extends Controller
             return $this->redirectToRoute("poll_manage");
         }
 
-        return $this->render('/front/poll/create.html.twig', [
+        return $this->render($this->template.'/front/poll/create.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -148,7 +157,7 @@ class PollController extends Controller
         $this->denyAccessUnlessGranted('ROLE_CREATOR');
 
         $polls = $this->getDoctrine()->getRepository(Poll::class)->findBy(['user' => $this->getUser()]);
-        return $this->render('/front/poll/manage.html.twig', [
+        return $this->render($this->template.'/front/poll/manage.html.twig', [
             "polls" => $polls
         ]);
     }
@@ -193,7 +202,7 @@ class PollController extends Controller
         }
 
 
-        return $this->render('/front/poll/edit.html.twig', [
+        return $this->render($this->template.'/front/poll/edit.html.twig', [
             'form' => $form->createView(),
             'choices' => $choices
         ]);

@@ -1,0 +1,30 @@
+{% extends template_service.getTemplate() ~ "/front/layout.html.twig" %}
+
+{% block title %}News - {% endblock %}
+
+{% block mainContent %}
+    <div class="container">
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-lg-8 offset-md-2 mb-4">
+                <div class="card">
+                    <div class="card-header fs-header">
+                        <img width="30px" src="{{ asset('dist/imgs/icons/folded-newspaper.svg') }}"> <span>{{ article.title }}</span>
+                    </div>
+                    <div class="card-body">
+                        {{ article.content }}
+                    </div>
+                    <div class="card-footer">
+                        {{ article.user.username }} dans {{ article.category.title }}
+                        <a href="{{ path('news_view', {'id': article.id}) }}" class="btn btn-success float-right">Lire la suite</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                Pas d'articles
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+

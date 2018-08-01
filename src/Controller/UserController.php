@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\TemplateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -19,10 +20,13 @@ class UserController extends Controller
 {
 
     private $tokenManager;
+    private $template;
 
     public function __construct(CsrfTokenManagerInterface $tokenManager = null)
     {
         $this->tokenManager = $tokenManager;
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
     }
 
     public function indexAction()
@@ -66,7 +70,7 @@ class UserController extends Controller
             return $this->redirectToRoute('user_custom');
         }
 
-        return $this->render('/front/user/edit_custom.html.twig', array(
+        return $this->render($this->template.'/front/user/edit_custom.html.twig', array(
             "form" => $form->createView(),
             "formPicture" => $formPicture->createView()
         ));
@@ -108,7 +112,7 @@ class UserController extends Controller
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array("username" => $username));
 
 
-        return $this->render('/front/user/profile/view.html.twig', array(
+        return $this->render($this->template.'/front/user/profile/view.html.twig', array(
             "user" => $user
         ));
     }
@@ -132,7 +136,7 @@ class UserController extends Controller
             10/*limit per page*/
         );
 
-        return $this->render('/front/user/list.html.twig', array(
+        return $this->render($this->template.'/front/user/list.html.twig', array(
             "users" => $pagination
         ));
     }

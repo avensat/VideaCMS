@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
+use App\Service\TemplateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,14 @@ use Symfony\Component\Security\Core\Security;
  */
 class MessageController extends Controller
 {
+
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
 
     /**
      * @Route("/new", name="message_new", methods="GET|POST")
@@ -35,7 +44,7 @@ class MessageController extends Controller
             return $this->redirectToRoute('message_index');
         }
 
-        return $this->render('message/new.html.twig', [
+        return $this->render($this->template.'/message/new.html.twig', [
             'message' => $message,
             'form' => $form->createView(),
         ]);
@@ -46,7 +55,7 @@ class MessageController extends Controller
      */
     public function show(Message $message): Response
     {
-        return $this->render('message/show.html.twig', ['message' => $message]);
+        return $this->render($this->template.'/message/show.html.twig', ['message' => $message]);
     }
 
     /**
@@ -71,7 +80,7 @@ class MessageController extends Controller
             return $this->redirectToRoute('thread_show', ['id' => $message->getThread()->getId()]);
         }
 
-        return $this->render('message/edit.html.twig', [
+        return $this->render($this->template.'/message/edit.html.twig', [
             'message' => $message,
             'form' => $form->createView(),
         ]);

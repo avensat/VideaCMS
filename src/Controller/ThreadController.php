@@ -7,6 +7,7 @@ use App\Entity\Thread;
 use App\Form\MessageType;
 use App\Form\ThreadType;
 use App\Repository\ThreadRepository;
+use App\Service\TemplateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,15 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ThreadController extends Controller
 {
+
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
+
     /**
      * @Route("/", name="thread_index", methods="GET|POST")
      */
@@ -55,7 +65,7 @@ class ThreadController extends Controller
             return $this->redirectToRoute('thread_index');
         }
 
-        return $this->render('thread/index.html.twig', [
+        return $this->render($this->template.'/thread/index.html.twig', [
             'threads' => $threads,
             'messages' => $messages,
             'form' => $form->createView(),
@@ -82,7 +92,7 @@ class ThreadController extends Controller
             return $this->redirectToRoute('thread_index');
         }
 
-        return $this->render('thread/new.html.twig', [
+        return $this->render($this->template.'/thread/new.html.twig', [
             'thread' => $thread,
             'form' => $form->createView(),
         ]);
@@ -162,7 +172,7 @@ class ThreadController extends Controller
             $this->addFlash("success", "Sujet posté");
             return $this->redirectToRoute("thread_show", ["id" => $thread->getId()]);
         }
-        return $this->render('thread/show.html.twig', [
+        return $this->render($this->template.'/thread/show.html.twig', [
             'thread' => $thread,
             'messages' => $messages,
             'form' => $form->createView()
@@ -191,7 +201,7 @@ class ThreadController extends Controller
             return $this->redirectToRoute('thread_show', ['id' => $thread->getId()]);
         }
 
-        return $this->render('thread/edit.html.twig', [
+        return $this->render($this->template.'/thread/edit.html.twig', [
             'thread' => $thread,
             'form' => $form->createView(),
         ]);

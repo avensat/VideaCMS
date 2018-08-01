@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Wall;
 use App\Form\WallType;
 use App\Repository\WallRepository;
+use App\Service\TemplateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class WallController extends Controller
 {
+
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
+
     /**
      * @Route("/", name="wall_index", methods="GET|POST")
      */
@@ -45,7 +55,7 @@ class WallController extends Controller
         );
 
 
-        return $this->render('wall/index.html.twig', [
+        return $this->render($this->template.'/wall/index.html.twig', [
             'walls' => $walls,
             'form' => $form->createView()
         ]);
@@ -69,7 +79,7 @@ class WallController extends Controller
             return $this->redirectToRoute('wall_index');
         }
 
-        return $this->render('wall/new.html.twig', [
+        return $this->render($this->template.'/wall/new.html.twig', [
             'wall' => $wall,
             'form' => $form->createView(),
         ]);
@@ -80,7 +90,7 @@ class WallController extends Controller
      */
     public function show(Wall $wall): Response
     {
-        return $this->render('wall/show.html.twig', ['wall' => $wall]);
+        return $this->render($this->template.'/wall/show.html.twig', ['wall' => $wall]);
     }
 
     /**
@@ -97,7 +107,7 @@ class WallController extends Controller
             return $this->redirectToRoute('wall_edit', ['id' => $wall->getId()]);
         }
 
-        return $this->render('wall/edit.html.twig', [
+        return $this->render($this->template.'/wall/edit.html.twig', [
             'wall' => $wall,
             'form' => $form->createView(),
         ]);

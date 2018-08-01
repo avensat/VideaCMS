@@ -1,0 +1,20 @@
+{% extends template_service.getTemplate() ~ "/front/layout.html.twig" %}
+
+{% block title %}Editer mon sujet{% endblock %}
+
+{% block mainContent %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+            <div class="subtitle">Editer mon sujet</div>
+
+            {{ include('thread/_form.html.twig', {'button_label': 'Editer'}) }}
+
+            <div style="text-align: right;">
+                <a class="btn btn-secondary" href="{{ path('thread_index') }}">Retour</a>
+            </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

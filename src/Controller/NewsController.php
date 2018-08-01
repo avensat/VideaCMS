@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\ArticleType;
 use App\Form\CategoryType;
+use App\Service\TemplateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +16,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class NewsController extends Controller
 {
+
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
+
     /**
      * @Route("/news", name="news_homepage")
      */
     public function indexAction()
     {
         $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
-        return $this->render('front/news/index.html.twig', array(
+        return $this->render($this->template.'/front/news/index.html.twig', array(
             "articles" => $articles
         ));
     }
@@ -47,7 +57,7 @@ class NewsController extends Controller
             $this->addFlash('success', 'Article publié !');
             return $this->redirectToRoute("news_manage");
         }
-        return $this->render('front/news/editor/add.html.twig', array(
+        return $this->render($this->template.'/front/news/editor/add.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -71,7 +81,7 @@ class NewsController extends Controller
             return $this->redirectToRoute("news_manage");
         }
 
-        return $this->render('front/news/editor/addCat.html.twig', array(
+        return $this->render($this->template.'/front/news/editor/addCat.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -97,7 +107,7 @@ class NewsController extends Controller
             return $this->redirectToRoute("news_manage");
         }
 
-        return $this->render('front/news/editor/edit.html.twig', array(
+        return $this->render($this->template.'/front/news/editor/edit.html.twig', array(
             'form' => $form->createView()
         ));
 
@@ -122,7 +132,7 @@ class NewsController extends Controller
             return $this->redirectToRoute("news_manage");
         }
 
-        return $this->render('front/news/editor/editCat.html.twig', array(
+        return $this->render($this->template.'/front/news/editor/editCat.html.twig', array(
             'form' => $form->createView()
         ));
 
@@ -169,7 +179,7 @@ class NewsController extends Controller
 
         $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array("id" => $id));
 
-        return $this->render('front/news/view.html.twig', array(
+        return $this->render($this->template.'/front/news/view.html.twig', array(
             'article' => $article
         ));
     }
@@ -203,7 +213,7 @@ class NewsController extends Controller
             10/*limit per page*/
         );
 
-        return $this->render('front/news/editor/manage.html.twig', array(
+        return $this->render($this->template.'/front/news/editor/manage.html.twig', array(
             'articles' => $articles,
             'categories' => $categories
         ));

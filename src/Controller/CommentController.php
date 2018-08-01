@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Service\TemplateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,6 +17,14 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class CommentController extends Controller
 {
+
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
 
     public function indexAction()
     {
@@ -34,7 +43,7 @@ class CommentController extends Controller
             ->getForm()
         ;
 
-        return $this->render('/front/comment/comment.html.twig', array(
+        return $this->render($this->template.'/comment/comment.html.twig', array(
             'form' => $form->createView(),
             'comments' => $comments
         ));

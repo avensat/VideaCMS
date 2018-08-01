@@ -1,0 +1,27 @@
+{% extends template_service.getTemplate() ~ "/front/layout.html.twig" %}
+
+{% block title %}Publication de {{ wall.userId.username }}{% endblock %}
+
+{% block mainContent %}
+
+    <div class="container wall-show">
+        <a class="back" href="{{ path('wall_index') }}"><i class="fal fa-arrow-square-left"></i></a>
+        <div class="card">
+            <div class="card-body">
+                <div style="display: block">
+                    <span class="header"><a href="{{ path("video_channel", {'user': wall.userId.username}) }}">{{ wall.userId.username }}</a> a dit : </span>
+                    {% if app.user.id == wall.userId.id %}
+                        <span class="edit"><a href="{{ path('wall_edit', {'id': wall.id}) }}"><i class="fal fa-pen"></i></a></span>
+                    {% endif %}
+                </div>
+                <span class="content">{{ wall.content }}</span>
+                <span class="date">le {{ wall.createdAt ? wall.createdAt|date('d/m/y à H:i') : '' }}</span>
+            </div>
+        </div>
+        <div class="social">
+            <span class="sTitle">Partager sur les réseaux sociaux</span>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}"><i class="fab fa-facebook-square"></i></a>
+            <a href="http://www.twitter.com/share?url={{ app.request.uri }}"><i class="fab fa-twitter-square"></i></a>
+        </div>
+    </div>
+{% endblock %}

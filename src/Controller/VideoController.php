@@ -9,6 +9,7 @@ use App\Entity\UploadedVideo;
 use App\Entity\ProviderVideo;
 use App\Form\UploadType;
 use App\Form\VideoType;
+use App\Service\TemplateService;
 use DateTime;
 use FFMpeg\FFMpeg;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,6 +30,14 @@ use FFMpeg\Coordinate\TimeCode;
  */
 class VideoController extends Controller
 {
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
+
     /**
      * @Route("/", name="video_homepage")
      */
@@ -51,7 +60,7 @@ class VideoController extends Controller
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
-        return $this->render('/front/video/index.html.twig', [
+        return $this->render($this->template.'/front/video/index.html.twig', [
             'videos' => $data,
         ]);
     }
@@ -62,7 +71,7 @@ class VideoController extends Controller
     public function addAction(Request $request){
 
 
-        return $this->render('/front/video/add.html.twig');
+        return $this->render($this->template.'/front/video/add.html.twig');
     }
 
     /**
@@ -75,14 +84,13 @@ class VideoController extends Controller
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $video = new ProviderVideo();
-        $form = $this->get('form.factory')->create(VideoType::class, $video);
+        $form = $this->createForm(VideoType::class, $video);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $this->getUser()->getId()));
-            $video->setUser($user);
+            $video->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($video);
             $em->flush();
@@ -91,7 +99,7 @@ class VideoController extends Controller
             return $this->redirectToRoute('video_add');
         }
 
-        return $this->render('/front/video/creator/add.html.twig', array(
+        return $this->render($this->template.'/front/video/creator/add.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -154,7 +162,7 @@ class VideoController extends Controller
             return new JsonResponse(["status" => "ok", "link" => $uploadVideo->getId()]);
         }
 
-        return $this->render('/front/video/creator/upload.html.twig', array(
+        return $this->render($this->template.'/front/video/creator/upload.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -169,7 +177,7 @@ class VideoController extends Controller
         $extVideos = $this->getDoctrine()->getRepository(ProviderVideo::class)->findBy(array("user" => $this->getUser()));
         $upVideos = $this->getDoctrine()->getRepository(UploadedVideo::class)->findBy(array("user" => $this->getUser()));
 
-        return $this->render('/front/video/creator/manage.html.twig', array(
+        return $this->render($this->template.'/front/video/creator/manage.html.twig', array(
             'extVideos' => $extVideos,
             'upVideos' => $upVideos
         ));
@@ -247,7 +255,7 @@ class VideoController extends Controller
                     $request->getSession()->getFlashBag()->add('success', 'Vidéo modifiée');
                 }
 
-                return $this->render('/front/video/creator/editUploaded.html.twig', array(
+                return $this->render($this->template.'/front/video/creator/editUploaded.html.twig', array(
                     'form' => $form->createView()
                 ));
             }
@@ -269,7 +277,7 @@ class VideoController extends Controller
                     $request->getSession()->getFlashBag()->add('success', 'Vidéo modifiée');
                 }
 
-                return $this->render('/front/video/creator/editVideo.html.twig', array(
+                return $this->render($this->template.'/front/video/creator/editVideo.html.twig', array(
                     'form' => $form->createView()
                 ));
             }
@@ -305,7 +313,7 @@ class VideoController extends Controller
             $path = $video->getWebVideoPath();
 
 
-            return $this->render('/front/video/viewUploaded.html.twig', array(
+            return $this->render($this->template.'/front/video/viewUploaded.html.twig', array(
                 'video' => $video,
                 'path' => $path
             ));
@@ -371,7 +379,7 @@ class VideoController extends Controller
             return $a < $b ? 1 : -1;
         });
 
-        return $this->render('/front/video/channel.html.twig', array(
+        return $this->render($this->template.'/front/video/channel.html.twig', array(
             'user' => $user,
             'videos' => $videos,
             'articles' => $articles,
