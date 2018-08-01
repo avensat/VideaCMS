@@ -1,0 +1,44 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Sondages{% endblock %}
+{% block body %}
+    <div class="title">Sondages</div>
+    <div class="card top">
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Créateur</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Question</th>
+                    <th scope="col">Date d'ajout</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for poll in polls %}
+                    <tr>
+                        <td><a href="">{{ poll.user.username }}</a></td>
+                        <td>{{ poll.title }}</td>
+                        <td>{{ poll.question }}</td>
+                        <td>{{ poll.createdAt|date("d/m/y à H:i") }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ path("poll_view", {'id': poll.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path("backoffice_poll_edit", {"id": poll.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a onclick="return confirm('Êtes vous sûr ?');" href="{{ path("backoffice_poll_delete", {"id": poll.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Pas de sondages</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(polls) }}
+    </div>
+{% endblock %}

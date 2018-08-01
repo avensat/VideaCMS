@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Message;
+use App\Entity\Poll;
 use App\Entity\ProviderVideo;
 use App\Entity\Thread;
 use App\Entity\UploadedVideo;
@@ -19,6 +20,7 @@ use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -496,5 +498,71 @@ class BackofficeController extends Controller
         $em->flush();
         $this->addFlash("success", "Article supprimé");
         return $this->redirectToRoute("backoffice_articles");
+    }
+
+
+    /**
+     * @Route("/polls/", name="backoffice_polls")
+     */
+    public function polls(Request $request){
+
+        $query = $this->getDoctrine()->getRepository(Poll::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $polls = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Polls/index.html.twig', [
+            "polls" => $polls
+        ]);
+    }
+
+    /**
+     * @Route("/polls/edit/{id}", name="backoffice_poll_edit")
+     */
+    public function editPoll(Request $request, Poll $poll){
+        $choices = $poll->getChoice();
+
+        $form = $this->createFormBuilder()
+            ->add('title', TextType::class, ['data' => $poll->getTitle()])
+            ->add('question', TextType::class, ['data' => $poll->getQuestion()])
+            ->add('poll', HiddenType::class)
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        if($form->isSubmitted()){
+            $data = $form->getData();
+
+            $poll->setTitle($data['title']);
+            $poll->setQuestion($data['question']);
+            $out = [];
+            foreach ($data['poll'] as $key => $value){
+                $in = ["id" => $key, "value" => $value];
+                array_push($out, $in);
+            }
+            $poll->setChoice($out);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($poll);
+            $em->flush();
+            $this->addFlash('success', 'Sondage modifié !');
+            return $this->redirectToRoute("backoffice_poll_edit", ['id' => $poll->getId()]);
+        }
+
+        return $this->render('backoffice/Polls/edit.html.twig', [
+            "poll" => $poll,
+            'form' => $form->createView(),
+            'choices' => $choices
+        ]);
+    }
+
+    /**
+     * @Route("/polls/delete/{id}", name="backoffice_poll_delete")
+     */
+    public function deletePoll(Request $request, Poll $poll){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($poll);
+        $em->flush();
+        $this->addFlash("success", "Sondage supprimé");
+        return $this->redirectToRoute("backoffice_polls");
     }
 }
