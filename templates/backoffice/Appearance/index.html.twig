@@ -1,0 +1,75 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Apparence{% endblock %}
+{% block body %}
+    <div class="title">Apparence</div>
+    <small class="text-muted">Modifiez l'apparence de votre site via cette page.</small>
+    <div class="subtitle">Thème actuel</div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row theme-metadata">
+                <div class="col-md-4">
+                    <img src="{{ asset("templates/default/thumbnail.png") }}" width="100%">
+                </div>
+                <div class="col-md-4">
+                    <p><span>Nom du template : </span> {{ theme.general.template_name }} </p>
+                    <p><span>Description : </span> {{ theme.general.description }} </p>
+                    <p><span>Version : </span> {{ theme.general.template_version }} </p>
+                    <p><span>Auteur : </span> {{ theme.general.author }} </p>
+                    <p><span>Site web : </span> <a href="{{ theme.general.website }}">{{ theme.general.website }}</a> </p>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#theme-info">Informations</button>
+                </div>
+                <div class="col-md-4">
+                    <h3>Changer le thème</h3>
+                    {{ form_start(themeForm) }}
+                    {{ form_label(themeForm.themes, "Choisissez un thème dans la liste") }}
+                    {{ form_widget(themeForm.themes) }}
+                    <button type="submit" class="btn btn-light top">Valider</button>
+                    {{ form_end(themeForm) }}
+                    <a href="" class="how-to">Comment installer un thème (Documentation)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="theme-info" tabindex="-1" role="dialog" aria-labelledby="theme-info" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ theme.general.template_name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <p>Chemin d'accès au thème :</p>
+                    <pre>/templates/{{ theme.general.template_folder }}/</pre>
+
+                    <p>Chemin d'accès aux fichiers publics :</p>
+                    <pre>/public/templates/{{ theme.general.template_folder }}/</pre>
+                    <br>
+                    <i>Si vous rencontrez des problèmes de lecture des fichiers publics, vérifiez que le serveur web a bien les droits en lecture / écriture dessus.</i>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="subtitle">Paramètres du thème</div>
+    <div class="card">
+        <div class="card-body">
+
+            {% for key, param in theme.parameters %}
+                <div class="form-group">
+                    <label for="{{ key }}">{{ key }}</label>
+                    <input title="{{ key }}" name="{{ key }}" type="text" class="form-control" value="{{ param }}">
+                </div>
+            {% else %}
+                Ce thème ne possède pas de paramètres
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

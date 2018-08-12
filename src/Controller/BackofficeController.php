@@ -32,6 +32,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @Route("/backoffice")
@@ -109,7 +110,7 @@ class BackofficeController extends Controller
             $user->setEnabled(true);
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash("success", "Status changé.");
-        return $this->redirectToRoute("backoffice_user_show", ["id" => $user->getId()]);
+        return $this->redirectToRoute("backoffice_show_user", ["id" => $user->getId()]);
     }
 
     /**
@@ -564,5 +565,38 @@ class BackofficeController extends Controller
         $em->flush();
         $this->addFlash("success", "Sondage supprimé");
         return $this->redirectToRoute("backoffice_polls");
+    }
+
+    /**
+     * @Route("/appearance", name="backoffice_appearance")
+     */
+    public function appearance(Request $request){
+
+        $config = Yaml::parseFile('../config/videa.yaml');
+        $theme = Yaml::parseFile('../config/templates/'.$config['global']['theme'].'.yaml');
+
+        $scan = scandir("../config/templates");
+        $templates = [];
+        foreach ($scan as $file){
+            if($file != "." || $file != ".."){
+                $file = explode(".", $file);
+                array_push($templates, $file[0]);
+            }
+        }
+
+        $themeForm = $this->createFormBuilder()
+            ->add('themes', ChoiceType::class, [
+                'multiple' => false,
+                "choices" => array_flip($templates)
+            ])
+            ->getForm();
+
+        // TODO: Theme entity with multiple parameters, images and array with additional parameters, replace the YAML file for theme by an entity but keep videa.yaml
+        // Almost done...
+
+        return $this->render('backoffice/Appearance/index.html.twig', [
+            'theme' => $theme,
+            'themeForm' => $themeForm->createView()
+        ]);
     }
 }
