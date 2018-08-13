@@ -725,7 +725,7 @@ li {
 }
 
 .videa-cms{
-    background-image: url(../../../../dist/imgs/back/background.jpg);
+    background-image: url(../../../../../dist/imgs/back/background.jpg);
     width: 100%;
     background-repeat: no-repeat;
 }
@@ -1041,21 +1041,21 @@ section .section-title {
 }
 
 .channel .channel-poll-bg{
-    background-image: url(../../../../dist/imgs/bgs/polls-channel.png);
+    background-image: url(../../../../../dist/imgs/bgs/polls-channel.png);
     width: 100%;
     background-repeat: no-repeat;
     background-position: top left;
 }
 
 .channel-article-bg{
-    background-image: url(../../../../dist/imgs/bgs/articles-channel.png);
+    background-image: url(../../../../../dist/imgs/bgs/articles-channel.png);
     width: 100%;
     background-repeat: no-repeat;
     background-position: top left;
 }
 
 .channel-videos-bg{
-    background-image: url(../../../../dist/imgs/bgs/videos-channel.png);
+    background-image: url(../../../../../dist/imgs/bgs/videos-channel.png);
     width: 100%;
     background-repeat: no-repeat;
     background-position: top left;

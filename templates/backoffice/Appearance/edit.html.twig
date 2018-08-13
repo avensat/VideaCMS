@@ -1,0 +1,13 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Apparence{% endblock %}
+{% block body %}
+<div class="title">Modifier une configuration de thème</div>
+<div class="card top">
+    <div class="card-body">
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}

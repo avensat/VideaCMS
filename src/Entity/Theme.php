@@ -61,6 +61,12 @@ class Theme
      */
     private $created_at;
 
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+        $this->last_update = new \DateTime();
+    }
+
     public function getId()
     {
         return $this->id;

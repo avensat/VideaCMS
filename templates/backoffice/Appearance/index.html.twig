@@ -11,11 +11,11 @@
                     <img src="{{ asset("templates/default/thumbnail.png") }}" width="100%">
                 </div>
                 <div class="col-md-4">
-                    <p><span>Nom du template : </span> {{ theme.general.template_name }} </p>
-                    <p><span>Description : </span> {{ theme.general.description }} </p>
-                    <p><span>Version : </span> {{ theme.general.template_version }} </p>
-                    <p><span>Auteur : </span> {{ theme.general.author }} </p>
-                    <p><span>Site web : </span> <a href="{{ theme.general.website }}">{{ theme.general.website }}</a> </p>
+                    <p><span>Nom du template : </span> {{ theme.name }} </p>
+                    <p><span>Description : </span> {{ theme.description }} </p>
+                    <p><span>Version : </span> {{ theme.version }} </p>
+                    <p><span>Auteur : </span> {{ theme.author }} </p>
+                    <p><span>Site web : </span> <a href="{{ theme.website }}">{{ theme.website }}</a> </p>
                     <button class="btn btn-primary" data-toggle="modal" data-target="#theme-info">Informations</button>
                 </div>
                 <div class="col-md-4">
@@ -35,7 +35,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ theme.general.template_name }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{ theme.name }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -43,10 +43,10 @@
                 <div class="modal-body">
 
                     <p>Chemin d'accès au thème :</p>
-                    <pre>/templates/{{ theme.general.template_folder }}/</pre>
+                    <pre>/templates/{{ theme.folder }}/</pre>
 
                     <p>Chemin d'accès aux fichiers publics :</p>
-                    <pre>/public/templates/{{ theme.general.template_folder }}/</pre>
+                    <pre>/public/templates/{{ theme.folder }}/</pre>
                     <br>
                     <i>Si vous rencontrez des problèmes de lecture des fichiers publics, vérifiez que le serveur web a bien les droits en lecture / écriture dessus.</i>
                 </div>
@@ -60,15 +60,41 @@
     <div class="subtitle">Paramètres du thème</div>
     <div class="card">
         <div class="card-body">
-
-            {% for key, param in theme.parameters %}
-                <div class="form-group">
-                    <label for="{{ key }}">{{ key }}</label>
-                    <input title="{{ key }}" name="{{ key }}" type="text" class="form-control" value="{{ param }}">
+            <div class="row">
+                <div class="col-md-8">
+                    {{ form_start(parametersForm) }}
+                        {{ form_widget(parametersForm.name, {"attr": {"style": "display: none"}}) }}
+                        {{ form_widget(parametersForm.description, {"attr": {"style": "display: none"}}) }}
+                        {{ form_widget(parametersForm.folder, {"attr": {"style": "display: none"}}) }}
+                        {{ form_widget(parametersForm.version, {"attr": {"style": "display: none"}}) }}
+                        {{ form_widget(parametersForm.author, {"attr": {"style": "display: none"}}) }}
+                        {{ form_widget(parametersForm.website, {"attr": {"style": "display: none"}}) }}
+                        {% for parameter in parametersForm.parameters %}
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        {{ form_widget(parameter.parameter, {"attr": {"readonly": "readonly"}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-1" style="text-align: center">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_widget(parameter.value) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            Pas de paramètres
+                        {% endfor %}
+                        {{ form_widget(parametersForm.submit, {"label": "Sauvegarder"}) }}
+                    {{ form_end(parametersForm) }}
                 </div>
-            {% else %}
-                Ce thème ne possède pas de paramètres
-            {% endfor %}
+                <div class="col-md-4">
+                    <a href="{{ path("backoffice_appearance_edit", {"id": theme.id}) }}" style="float: right" class="btn btn-primary">Modifier la configuration</a>
+                </div>
+            </div>
         </div>
     </div>
 

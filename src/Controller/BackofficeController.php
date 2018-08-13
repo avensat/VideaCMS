@@ -6,19 +6,24 @@ use App\Entity\Article;
 use App\Entity\Message;
 use App\Entity\Poll;
 use App\Entity\ProviderVideo;
+use App\Entity\Theme;
 use App\Entity\Thread;
 use App\Entity\UploadedVideo;
 use App\Entity\User;
 use App\Entity\Wall;
 use App\Form\ArticleType;
+use App\Form\ThemeParametersType;
+use App\Form\ThemeType;
 use App\Form\UploadType;
 use App\Form\UserType;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -573,30 +578,89 @@ class BackofficeController extends Controller
     public function appearance(Request $request){
 
         $config = Yaml::parseFile('../config/videa.yaml');
-        $theme = Yaml::parseFile('../config/templates/'.$config['global']['theme'].'.yaml');
-
-        $scan = scandir("../config/templates");
-        $templates = [];
-        foreach ($scan as $file){
-            if($file != "." || $file != ".."){
-                $file = explode(".", $file);
-                array_push($templates, $file[0]);
-            }
-        }
 
         $themeForm = $this->createFormBuilder()
-            ->add('themes', ChoiceType::class, [
-                'multiple' => false,
-                "choices" => array_flip($templates)
+            ->add('themes', EntityType::class, [
+                "class" => Theme::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choisissez un thème',
             ])
+            ->setAction($this->generateUrl("backoffice_change_theme"))
             ->getForm();
 
-        // TODO: Theme entity with multiple parameters, images and array with additional parameters, replace the YAML file for theme by an entity but keep videa.yaml
-        // Almost done...
+        $currentThemeObject = $this->getDoctrine()->getRepository(Theme::class)->findOneBy(["name" => $config['global']['theme']]);
+        $parametersForm = $this->createForm(ThemeType::class, $currentThemeObject)->handleRequest($request);
+
+        if($parametersForm->isValid() && $parametersForm->isSubmitted()){
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Paramètres du thème modifié");
+            return $this->redirectToRoute("backoffice_appearance");
+        }
 
         return $this->render('backoffice/Appearance/index.html.twig', [
-            'theme' => $theme,
-            'themeForm' => $themeForm->createView()
+            'theme' => $currentThemeObject,
+            'themeForm' => $themeForm->createView(),
+            'parametersForm' => $parametersForm->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/appearance/change-theme", name="backoffice_change_theme", methods="POST")
+     */
+    public function appearanceAdd(Request $request){
+        $form = $this->createFormBuilder()
+            ->add('themes', EntityType::class, [
+                "class" => Theme::class,
+                'choice_label' => 'name',
+            ])
+            ->getForm()
+            ->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $config = Yaml::parseFile('../config/videa.yaml');
+            $config['global']['theme'] = $data['themes']->getFolder();
+            $yaml = Yaml::dump($config);
+            file_put_contents('../config/videa.yaml', $yaml);
+            $this->addFlash("success", "Thème changé !");
+            return $this->redirectToRoute("backoffice_appearance");
+        }
+        return null;
+    }
+
+    /**
+     * @Route("/appearance/add", name="backoffice_appearance_add")
+     */
+    public function changeTheme(Request $request){
+        $theme = new Theme();
+        $theme->setParameters([
+            ["parameter" => "test", "value" => "test2"],
+            ["parameter" => "testtest", "value" => "test3"]
+        ]);
+        $form = $this->createForm(ThemeType::class, $theme)->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($theme);
+            $em->flush();
+        }
+        return $this->render('backoffice/Appearance/add.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/appearance/edit/{id}", name="backoffice_appearance_edit")
+     */
+    public function appearanceEdit(Request $request, Theme $theme){
+        $form = $this->createForm(ThemeType::class, $theme)->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Le thème a bien été modifié");
+            return $this->redirectToRoute("backoffice_appearance_edit", ["id" => $theme->getId()]);
+        }
+        return $this->render('backoffice/Appearance/edit.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }

@@ -1,0 +1,54 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Apparence{% endblock %}
+{% block body %}
+    <div class="title">Ajouter une configuration de thème</div>
+
+    <div class="card top">
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+
+            <ul id="email-fields-list" data-prototype="{{ form_widget(form.parameters.vars.prototype)|e }}" data-widget-tags="{{ '<li></li>'|e }}">
+
+                {% for parameter in form.parameters %}
+                    <li>
+                        {{ form_errors(parameter) }}
+                        {{ form_widget(parameter) }}
+                    </li>
+                {% endfor %}
+
+            </ul>
+            <button type="button" class="add-another-collection-widget" data-list="#email-fields-list">Add another email</button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery('.add-another-collection-widget').click(function (e) {
+                var list = jQuery(jQuery(this).attr('data-list'));
+                // Try to find the counter of the list
+                var counter = list.data('widget-counter') | list.children().length;
+                // If the counter does not exist, use the length of the list
+                if (!counter) { counter = list.children().length; }
+
+                // grab the prototype template
+                var newWidget = list.attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__/g, counter);
+                // Increase the counter
+                counter++;
+                // And store it, the length cannot be used if deleting widgets is allowed
+                list.data(' widget-counter', counter);
+
+                // create a new list element and add it to the list
+                var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+                newElem.appendTo(list);
+            });
+        });
+    </script>
+
+{% endblock %}
