@@ -43,7 +43,7 @@ class CommentController extends Controller
             ->getForm()
         ;
 
-        return $this->render($this->template.'/comment/comment.html.twig', array(
+        return $this->render($this->template.'/front/comment/comment.html.twig', array(
             'form' => $form->createView(),
             'comments' => $comments
         ));
