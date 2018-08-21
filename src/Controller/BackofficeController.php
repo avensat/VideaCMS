@@ -663,4 +663,36 @@ class BackofficeController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/parameters", name="backoffice_parameters")
+     */
+    public function parameters(Request $request){
+        $config = Yaml::parseFile('../config/videa.yaml');
+
+        $form = $this->createFormBuilder()
+            ->add("name", TextType::class, ["data" => $config['global']['site_name']])
+            ->add('description', TextType::class, ["data" => $config['global']['description']])
+            ->add('facebook', UrlType::class, ["data" => $config['global']['social']['facebook'], "required" => false])
+            ->add('twitter', UrlType::class, ["data" => $config['global']['social']['twitter'], "required" => false])
+            ->add('youtube', UrlType::class, ["data" => $config['global']['social']['youtube'], "required" => false])
+            ->getForm()
+            ->handleRequest($request);
+
+        if($form->isValid() && $form->isSubmitted()){
+            $data = $form->getData();
+            $config['global']['site_name'] = $data['name'];
+            $config['global']['description'] = $data['description'];
+            $config['global']['social']['facebook'] = $data['facebook'];
+            $config['global']['social']['twitter'] = $data['twitter'];
+            $config['global']['social']['youtube'] = $data['youtube'];
+            $yaml = Yaml::dump($config);
+            file_put_contents('../config/videa.yaml', $yaml);
+            $this->addFlash("success", "Paramètres enregistrés !");
+            return $this->redirectToRoute("backoffice_parameters");
+        }
+        return $this->render('backoffice/Parameters/index.html.twig', [
+            "form" => $form->createView()
+        ]);
+    }
 }

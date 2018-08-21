@@ -13,13 +13,12 @@
         <title>{% block title %}VideaCMS{% endblock %}</title>
     </head>
 
-    <body style="background-color: #d8d8d8;">
+    <body style="background-color: {{ getTemplateInfo('background_color') }};">
         {% block header %}
         <div class="fixed-top">
             <header class="topbar">
                 <div class="container">
                     <div class="row">
-                        <!-- social icon-->
                         <div class="col-sm-12">
                             <ul class="social-network">
                                 <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-youtube"></i></a></li>
@@ -33,7 +32,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ path('front_homepage') }}" style="text-transform: uppercase; color: black">
-                        <img src="{{ asset("dist/imgs/logo.png") }}" width="145px">
+                        <img src="{{ asset(getTemplateInfo("logo_path")) }}" width="145px">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -150,7 +149,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-                        <p>Vidéa CMS est une plateforme de partage de vidéos et de contenus.</p>
+                        <p>{{ getTemplateInfo('footer_text') }}</p>
                         <p class="h6">&copy Tous droits réservés.<a class="text-green ml-2" href="" target="_blank">Vidéa CMS</a></p>
                     </div>
                     </hr>

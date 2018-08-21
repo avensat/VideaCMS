@@ -3,8 +3,4 @@ global:
     description: 'Platform for video sharing and more...'
     version: 0.0.1
     theme: default
-    social:
-        facebook:
-        twitter:
-        youtube:
-
+    social: { facebook: 'http://dddd.com', twitter: null, youtube: null }
