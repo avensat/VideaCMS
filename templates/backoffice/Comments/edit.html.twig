@@ -1,0 +1,18 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Editer le commentaire{% endblock %}
+{% block body %}
+    <div class="title">Editer</div>
+    <a href="{{ path("backoffice_comments") }}" class="back"><i class="fal fa-angle-double-left"></i> Retour</a>
+    <div class="card top">
+        <div class="card-body">
+            <h4>Editer le commentaire</h4>
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.content, "Commentaire") }}
+                {{ form_widget(form.content) }}
+            </div>
+            {{ form_widget(form.submit, {"label": "Modifier"}) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

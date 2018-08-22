@@ -13,6 +13,7 @@ use App\Entity\UploadedVideo;
 use App\Entity\User;
 use App\Entity\Wall;
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Form\ThemeParametersType;
 use App\Form\ThemeType;
 use App\Form\UploadType;
@@ -708,5 +709,36 @@ class BackofficeController extends Controller
         return $this->render('backoffice/Comments/index.html.twig', [
             "comments" => $comments
         ]);
+    }
+
+
+    /**
+     * @Route("/comment/edit/{id}", name="backoffice_comment_edit")
+     */
+    public function commentEdit(Request $request, Comment $comment){
+
+        $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Commentaire modifié");
+            return $this->redirectToRoute("backoffice_comment_edit", ["id" => $comment->getId()]);
+        }
+
+        return $this->render('backoffice/Comments/edit.html.twig', [
+            "comment" => $comment,
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/comment/remove/{id}", name="backoffice_comment_remove")
+     */
+    public function commentRemove(Request $request, Comment $comment){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
+        $this->addFlash("success", "Article supprimé");
+        return $this->redirectToRoute("backoffice_comments");
     }
 }

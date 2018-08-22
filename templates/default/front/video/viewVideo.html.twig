@@ -18,6 +18,9 @@
                 <div class="col-lg-6 likes">
                     {{ getLikeCountForId(getUrlId(video))|number_format(0, '', ' ') }} <i class="far fa-thumbs-up"></i>
                 </div>
+
+                <div class="comments">Commentaires</div>
+                {{ render(controller('App\\Controller\\CommentController::commentAction',{ 'identifier': "extVideo_" ~ video.id })) }}
             </div>
             <hr />
             <div class="user-box">

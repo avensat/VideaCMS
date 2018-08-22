@@ -129,6 +129,11 @@ class User extends BaseUser
      */
     private $created_at;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="user", orphanRemoval=true)
+     */
+    private $reports;
+
 
     public function __construct()
     {
@@ -139,6 +144,7 @@ class User extends BaseUser
         $this->threads = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->created_at = new \DateTime("now");
+        $this->reports = new ArrayCollection();
     }
 
     /**
@@ -678,6 +684,37 @@ class User extends BaseUser
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getUser() === $this) {
+                $report->setUser(null);
+            }
+        }
 
         return $this;
     }

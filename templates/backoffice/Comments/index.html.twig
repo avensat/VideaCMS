@@ -23,9 +23,8 @@
                         <td>{{ comment.date|date("d/m/y à H:i") }}</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a href="{{ path("news_view", {'id': comment.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
-                                <a href="{{ path("backoffice_articles_edit", {"id": comment.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
-                                <a onclick="return confirm('Êtes vous sûr ?');" href="{{ path("backoffice_articles_remove", {"id": comment.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                                <a href="{{ path("backoffice_comment_edit", {"id": comment.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a onclick="return confirm('Êtes vous sûr ?');" href="{{ path("backoffice_comment_remove", {"id": comment.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>
