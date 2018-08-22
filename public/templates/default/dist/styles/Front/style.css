@@ -833,7 +833,7 @@ section .section-title {
     text-transform: uppercase;
 }
 #footer {
-    background: #011627 !important;
+    background: #011627;
     margin-top: 30px;
 }
 #footer h5{

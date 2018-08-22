@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Theme;
 use App\Service\TemplateService;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Yaml\Yaml;
 
 class CoreExtension extends \Twig_Extension
 {
@@ -28,6 +29,7 @@ class CoreExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('getTemplateInfo', array($this, 'getTemplateInfo')),
+            new \Twig_SimpleFunction('getSocialNetwork', array($this, 'getSocialNetwork')),
         );
     }
 
@@ -42,7 +44,11 @@ class CoreExtension extends \Twig_Extension
         }
 
         return 0;
+    }
 
+    public function getSocialNetwork($platform){
+        $config = Yaml::parseFile('../config/videa.yaml');
+        return $config['global']['social'][$platform];
     }
 
 }

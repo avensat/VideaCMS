@@ -16,14 +16,14 @@
     <body style="background-color: {{ getTemplateInfo('background_color') }};">
         {% block header %}
         <div class="fixed-top">
-            <header class="topbar">
+            <header class="topbar" style="background-color: {{ getTemplateInfo('topbar_color') }};">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12">
                             <ul class="social-network">
-                                <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-youtube"></i></a></li>
-                                <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a class="waves-effect waves-dark" href="#"><i class="fab fa-facebook"></i></a></li>
+                                <li><a class="waves-effect waves-dark" href="{{ getSocialNetwork("youtube") }}"><i class="fab fa-youtube"></i></a></li>
+                                <li><a class="waves-effect waves-dark" href="{{ getSocialNetwork("twitter") }}"><i class="fab fa-twitter"></i></a></li>
+                                <li><a class="waves-effect waves-dark" href="{{ getSocialNetwork("facebook") }}"><i class="fab fa-facebook"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
             <br>
         {% block mainContent %} {% endblock %}
         </div>
-        <section id="footer">
+        <section id="footer" style="background-color: {{ getTemplateInfo('footer_color') }};">
             <div class="container">
                 <div class="row text-center text-xs-center text-sm-left text-md-left">
                     <div class="col-xs-12 col-sm-4 col-md-4">

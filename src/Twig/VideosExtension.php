@@ -45,29 +45,9 @@ class VideosExtension extends \Twig_Extension
 		);
 	}
 
-	public function getUpVideoUrl($id){
-		if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off'){
-			$proto = "https://";
-		}
-		else{
-			$proto = "http://";
-		}
-		return $proto.$_SERVER['SERVER_NAME']."/videos/view/u".$id;
-	}
-
-	public function getExtVideoUrl($id){
-		if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off'){
-			$proto = "https://";
-		}
-		else{
-			$proto = "http://";
-		}
-		return $proto.$_SERVER['SERVER_NAME']."/videos/view/v".$id;
-	}
-
 	public function getLastVideos($limit = 5){
-        $providerVideos = $this->em->getRepository(ProviderVideo::class)->findAll();
-        $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findAll();
+        $providerVideos = $this->em->getRepository(ProviderVideo::class)->findBy([], ["id" => "DESC"], $limit, 0);
+        $uploadedVideos = $this->em->getRepository(UploadedVideo::class)->findBy([], ["id" => "DESC"], $limit, 0);
         $videos = array_merge($providerVideos, $uploadedVideos);
         usort($videos, function($a, $b) {
             if ($a == $b)

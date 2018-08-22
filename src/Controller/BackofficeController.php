@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Entity\Message;
 use App\Entity\Poll;
 use App\Entity\ProviderVideo;
@@ -693,6 +694,19 @@ class BackofficeController extends Controller
         }
         return $this->render('backoffice/Parameters/index.html.twig', [
             "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/comments/", name="backoffice_comments")
+     */
+    public function commentsList(Request $request){
+        $query = $this->getDoctrine()->getRepository(Comment::class)->findBy([], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $comments = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Comments/index.html.twig', [
+            "comments" => $comments
         ]);
     }
 }

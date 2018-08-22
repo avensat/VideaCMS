@@ -302,7 +302,7 @@ class VideoController extends Controller
         if($type == "v"){
             $video = $this->getDoctrine()->getRepository(ProviderVideo::class)->findOneBy(array("id" => $id));
 
-            return $this->render('/front/video/viewVideo.html.twig', array(
+            return $this->render($this->template.'/front/video/viewVideo.html.twig', array(
                 'video' => $video
             ));
         }

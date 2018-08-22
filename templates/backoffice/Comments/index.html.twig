@@ -1,0 +1,44 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Commentaires{% endblock %}
+{% block body %}
+    <div class="title">Commentaires</div>
+    <div class="card top">
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Utilisateur</th>
+                    <th scope="col">Likes</th>
+                    <th scope="col">Identifiant</th>
+                    <th scope="col">Date d'ajout</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td><a href="">{{ comment.user.username }}</a></td>
+                        <td>{{ comment.likes }}</td>
+                        <td>{{ comment.identifier }}</td>
+                        <td>{{ comment.date|date("d/m/y à H:i") }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ path("news_view", {'id': comment.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path("backoffice_articles_edit", {"id": comment.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a onclick="return confirm('Êtes vous sûr ?');" href="{{ path("backoffice_articles_remove", {"id": comment.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Pas de commentaires</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(comments) }}
+    </div>
+{% endblock %}
