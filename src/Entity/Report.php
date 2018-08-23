@@ -42,6 +42,11 @@ class Report
      */
     private $entity;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $identifier = 0;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
@@ -110,5 +115,28 @@ class Report
         $this->entity = $entity;
 
         return $this;
+    }
+
+    /**
+     * Set identifier.
+     *
+     * @param int $identifier
+     *
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * Get identifier.
+     *
+     * @return int
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 }
