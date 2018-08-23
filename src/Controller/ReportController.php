@@ -56,6 +56,7 @@ class ReportController extends Controller
             }
             return $this->redirect($data['url']);
         }
+        return null;
     }
 
     // Rendered controller, no routing needed
