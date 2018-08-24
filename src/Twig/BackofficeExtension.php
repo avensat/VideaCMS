@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\Article;
+use App\Entity\Report;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 
@@ -26,6 +27,7 @@ class BackofficeExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('countByDate', array($this, 'countByDate')),
+            new \Twig_SimpleFunction('getSameReports', array($this, 'getSameReports')),
         );
     }
 
@@ -43,5 +45,10 @@ class BackofficeExtension extends \Twig_Extension
 
         $data = $query->getResult();
         return $data[0][1];
+    }
+
+    public function getSameReports($entity, $identifier){
+        $reports = $this->em->getRepository(Report::class)->findBy(["entity" => $entity, "identifier" => $identifier]);
+        return $reports;
     }
 }

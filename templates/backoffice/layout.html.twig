@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div id="wrapper" class="animate">
+<div id="wrapper" class="animate open">
     <nav class="navbar header-top fixed-top navbar-expand-lg navbar-dark bg-dark">
         <span class="navbar-toggler-icon leftmenutrigger"></span>
         <a class="navbar-brand" href="#">Videa Manager</a>
@@ -21,9 +21,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav animate side-nav">
+            <ul class="navbar-nav animate side-nav open">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path("backoffice_index") }}" title="Index"><i class="fal fa-tachometer"></i> Index <i class="fal fa-tachometer shortmenu animate"></i></a>
+                    <a class="nav-link" href="{{ path("backoffice_index") }}" title="Index"><i class="fal fa-tachometer"></i> Dashboard <i class="fal fa-tachometer shortmenu animate"></i></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,6 +32,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path("backoffice_users") }}">Liste des utilisateurs</a>
                         <a class="dropdown-item" href="{{ path("backoffice_user_add") }}">Ajouter un utilisateur</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_reports", {"entity" : "user"}) }}">Signalements</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -41,7 +42,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path("backoffice_videos_hosted") }}">Liste des vidéos locales</a>
                         <a class="dropdown-item" href="{{ path("backoffice_videos_linked") }}">Liste des vidéos distantes</a>
-                        <a class="dropdown-item" href="#">Modération</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_reports", {"entity" : "video"}) }}">Signalements</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -51,7 +52,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path("backoffice_forum_threads") }}">Liste des sujets</a>
                         <a class="dropdown-item" href="{{ path("backoffice_forum_messages") }}">Liste des messages</a>
-                        <a class="dropdown-item" href="#">Modération</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_reports", {"entity" : "forum"}) }}">Signalements</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -60,7 +61,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path("backoffice_articles") }}">Liste des articles</a>
-                        <a class="dropdown-item" href="#">Modération</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_reports", {"entity" : "article"}) }}">Signalements</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -69,7 +70,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path("backoffice_polls") }}">Liste des sondages</a>
-                        <a class="dropdown-item" href="#">Modération</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_reports", {"entity" : "poll"}) }}">Signalements</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -78,17 +79,20 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path("backoffice_comments") }}">Liste des commentaires</a>
-                        <a class="dropdown-item" href="#">Modération</a>
+                        <a class="dropdown-item" href="{{ path("backoffice_reports", {"entity" : "comment"}) }}">Signalements</a>
                     </div>
                 </li>
                 <li>
                     <a class="nav-link" href="{{ path("backoffice_appearance") }}" title="Cart"><i class="fas fa-magic"></i> Apparence <i class="fas fa-magic shortmenu animate"></i></a>
                 </li>
                 <li>
+                    <a class="nav-link" href="{{ path("backoffice_reports_all") }}" title="Cart"><i class="fas fa-exclamation-triangle"></i> Signalements <i class="fas fa-exclamation-triangle shortmenu animate"></i></a>
+                </li>
+                <li>
                     <a class="nav-link" href="{{ path("backoffice_parameters") }}" title="Cart"><i class="fas fa-cog"></i> Paramètres <i class="fas fa-cog shortmenu animate"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" title="Cart"><i class="fas fa-cogs"></i> Config <i class="fas fa-cogs shortmenu animate"></i></a>
+                    <a class="nav-link" href="#" title="Cart"><i class="fas fa-cogs"></i> Configuration <i class="fas fa-cogs shortmenu animate"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('front_homepage') }}" title="Cart"><i class="fas fa-eye"></i> Voir le site <i class="fas fa-eye shortmenu animate"></i></a>

@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Entity\Message;
 use App\Entity\Poll;
 use App\Entity\ProviderVideo;
+use App\Entity\Report;
 use App\Entity\Theme;
 use App\Entity\Thread;
 use App\Entity\UploadedVideo;
@@ -734,11 +735,69 @@ class BackofficeController extends Controller
     /**
      * @Route("/comment/remove/{id}", name="backoffice_comment_remove")
      */
-    public function commentRemove(Request $request, Comment $comment){
+    public function commentRemove(Comment $comment){
         $em = $this->getDoctrine()->getManager();
         $em->remove($comment);
         $em->flush();
         $this->addFlash("success", "Article supprimé");
         return $this->redirectToRoute("backoffice_comments");
+    }
+
+    /**
+     * @Route("/reports/{entity}", name="backoffice_reports")
+     */
+    public function reportsList($entity, Request $request){
+        $query = $this->getDoctrine()->getRepository(Report::class)->findBy(["entity" => $entity], ["id" => "DESC"]);
+        $paginator  = $this->get('knp_paginator');
+        $reports = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Reports/index.html.twig', [
+            "reports" => $reports,
+            "entity" => $entity
+        ]);
+    }
+
+    /**
+     * @Route("/reports", name="backoffice_reports_all")
+     */
+    public function reports(Request $request)
+    {
+        $query = $this->getDoctrine()->getRepository(Report::class)->findAll(["id" => "DESC"]);
+        $paginator = $this->get('knp_paginator');
+        $reports = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/Reports/all.html.twig', [
+            "reports" => $reports
+        ]);
+    }
+
+    /**
+     * @Route("/report/edit/{id}", name="backoffice_report_edit")
+     */
+    public function reportEdit(Request $request, Report $report){
+
+        $form = $this->createForm(CommentType::class, $report)->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Signalement modifié");
+            return $this->redirectToRoute("backoffice_report_edit", ["id" => $report->getId()]);
+        }
+
+        return $this->render('backoffice/Reports/edit.html.twig', [
+            "report" => $report,
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/report/remove/{id}", name="backoffice_report_remove")
+     */
+    public function reportRemove(Report $report){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($report);
+        $em->flush();
+        $this->addFlash("success", "Signalement supprimé");
+        return $this->redirectToRoute("backoffice_reports");
     }
 }
