@@ -1,0 +1,49 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Signalements{% endblock %}
+{% block body %}
+    <div class="title">Signalements</div>
+    <div class="card top">
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Raison</th>
+                    <th scope="col">Signalements</th>
+                    <th scope="col">Entité</th>
+                    <th scope="col">Utilisateur</th>
+                    <th scope="col">URL</th>
+                    <th scope="col">Date</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for report in reports %}
+                    <tr>
+                        <td>{{ report.identifier }}</td>
+                        <td>{{ report.reason }}</td>
+                        <td>{{ getSameReports(report.entity, report.identifier)|length }}</td>
+                        <td>{{ report.entity }}</td>
+                        <td>{{ report.user.username }}</td>
+                        <td>{{ report.createdAt|date("d/m/y à H:i") }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ report.url }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
+                                <a href="{{ path("backoffice_report_edit", {"id": report.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a onclick="return confirm('Êtes vous sûr ?');" href="{{ path("backoffice_report_remove", {"id": report.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun signalements</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(reports) }}
+    </div>
+{% endblock %}

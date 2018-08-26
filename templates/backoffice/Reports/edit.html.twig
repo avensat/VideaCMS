@@ -1,0 +1,15 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Editer le signalement{% endblock %}
+{% block body %}
+    <div class="title">Editer le signalement</div>
+    <div class="card top">
+        <div class="card-body">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" class="btn btn-primary" value="Modifier">
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}

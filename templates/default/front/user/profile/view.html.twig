@@ -52,7 +52,7 @@
                 {% else %}
                     <b>Cette utilisateur n'a pas de vidéos</b>
                 {% endfor %}
-                <button type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-danger">Signaler</button>
+                {{ render(controller('App\\Controller\\ReportController::report',{ 'identifier': user.id, 'entity': 'user', 'url': app.request.uri })) }}
             </div>
         </div>
 
