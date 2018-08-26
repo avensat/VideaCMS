@@ -29,25 +29,28 @@
                     <div class="card-body">
                         <div class="head">Dernière vidéo <i class="fal fa-angle-down"></i></div>
                         {% set lastVideo = getLastVideoForUser(user) %}
-
-                        {% if lastVideo.url is defined %}
-                            <div class="video-container">
-                                <iframe width="420" height="315"
-                                        src="https://www.youtube.com/embed/{{ getUrlId(lastVideo) }}"
-                                        frameborder="0"
-                                        allow="autoplay; encrypted-media" allowfullscreen>
-                                </iframe>
-                            </div>
-                            <a class="video-title" href="{{ path('video_view', {'id': "v"~lastVideo.id}) }}">{{ lastVideo.title }}</a>
+                        {% if lastVideo is not null %}
+                            {% if lastVideo.url is defined %}
+                                <div class="video-container">
+                                    <iframe width="420" height="315"
+                                            src="https://www.youtube.com/embed/{{ getUrlId(lastVideo) }}"
+                                            frameborder="0"
+                                            allow="autoplay; encrypted-media" allowfullscreen>
+                                    </iframe>
+                                </div>
+                                <a class="video-title" href="{{ path('video_view', {'id': "v"~lastVideo.id}) }}">{{ lastVideo.title }}</a>
+                            {% else %}
+                                <div class="fs-video-body">
+                                    <video width="620" height="440" controls>
+                                        <source src="../../../uploads/videos/{{ lastVideo.videoPath }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <a class="video-title" href="{{ path('video_view', {'id': "u"~lastVideo.id}) }}">{{ lastVideo.title }}</a>
+                                <p class="">{{ lastVideo.views }} vues</p>
+                            {% endif %}
                         {% else %}
-                            <div class="fs-video-body">
-                                <video width="620" height="440" controls>
-                                    <source src="../../../uploads/videos/{{ lastVideo.videoPath }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                            <a class="video-title" href="{{ path('video_view', {'id': "u"~lastVideo.id}) }}">{{ lastVideo.title }}</a>
-                            <p class="">{{ lastVideo.views }} vues</p>
+                            Pas de vidéos
                         {% endif %}
                     </div>
                 </div>
@@ -73,7 +76,12 @@
 
                         <div class="bio">
                             <span class="bTitle">A Propos</span>
-                            {{ user.biography }}
+                            {% if app.user == user and user.biography is null %}
+                                Hey ! Vous n'avez pas de description ! <a href="">Cliquez-ici pour en ajouter une :)</a>
+                            {% else %}
+                                {{ user.biography }}
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -81,7 +89,7 @@
                 <div class="card">
                     <div class="card-body">
                         <a href="" class="btn btn-secondary">Contacter</a>
-                        <a href="" class="btn btn-danger">Signaler</a>
+                        {{ render(controller('App\\Controller\\ReportController::report',{ 'identifier': user.id, 'entity': 'user', 'url': app.request.uri })) }}
                     </div>
                 </div>
 

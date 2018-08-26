@@ -8,6 +8,7 @@ use App\Entity\Poll;
 use App\Entity\ProviderVideo;
 use App\Entity\UploadedVideo;
 use App\Entity\User;
+use App\Service\TemplateService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends BaseAdminController
 {
+
+    private $template;
+
+    public function __construct()
+    {
+        $template = new TemplateService();
+        $this->template = $template->getTemplate();
+    }
+
     public function createNewUserEntity()
     {
         return $this->get('fos_user.user_manager')->createUser();
@@ -38,7 +48,7 @@ class AdminController extends BaseAdminController
      */
     public function administrationCreatorAction()
     {
-        return $this->render('/front/administration/index.html.twig');
+        return $this->render($this->template.'/front/administration/index.html.twig');
     }
 
     /**
