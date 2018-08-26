@@ -776,11 +776,20 @@ class BackofficeController extends Controller
      */
     public function reportEdit(Request $request, Report $report){
 
-        $form = $this->createForm(CommentType::class, $report)->handleRequest($request);
+        $form = $this->createFormBuilder($report)
+            ->add("reason", TextareaType::class)
+            ->add("url", UrlType::class)
+            ->add("entity", HiddenType::class)
+            ->add("identifier", HiddenType::class)
+            ->getForm()
+            ->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash("success", "Signalement modifié");
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($report);
+            $em->flush();
             return $this->redirectToRoute("backoffice_report_edit", ["id" => $report->getId()]);
         }
 
@@ -798,6 +807,6 @@ class BackofficeController extends Controller
         $em->remove($report);
         $em->flush();
         $this->addFlash("success", "Signalement supprimé");
-        return $this->redirectToRoute("backoffice_reports");
+        return $this->redirectToRoute("backoffice_reports_all");
     }
 }
