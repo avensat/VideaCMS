@@ -31,21 +31,17 @@
                         <div class="form-group">
                             {{ form_label(form.title, "Titre de votre vidéo") }}
                             {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.title) }}
                         </div>
                         <div class="form-group">
                             {{ form_label(form.videoFile, "Fichier") }}
                             {{ form_widget(form.videoFile, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.videoFile) }}
                         </div>
                         <div class="form-group">
                             {{ form_label(form.description, "Description de la vidéo") }}
                             {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.description) }}
                         </div>
                         <div class="form-group">
                             {{ form_widget(form.public, {'attr': {'class': 'form-checkbox'}}) }}
-                            {{ form_errors(form.public) }}
                         </div>
                         {{ form_widget(form.submit, {'label': 'Téléverser la vidéo', 'attr': {'class': 'btn btn-primary'}}) }}
 

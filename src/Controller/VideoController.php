@@ -121,13 +121,16 @@ class VideoController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $userInfo = $this->getDoctrine()->getRepository(User::class)->findOneBy(array("id" => $this->getUser()->getId()));
+            $userInfo = $this->getUser();
             $uploadVideo->setUser($userInfo);
             $uploadVideo->setUserLikes(array());
             $uploadVideo->preUploadVideo();
             $uploadVideo->uploadVideo();
 
             // Generate thumbnail
+
+            if(!$_ENV["FFMPEG_PATH"])
+                return new JsonResponse(["status" => "ffmpeg_missing", "link" => ""]);
 
             $ffmpeg = FFMpeg::create(array(
                 'ffmpeg.binaries'  => $_ENV["FFMPEG_PATH"],
@@ -156,8 +159,6 @@ class VideoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($uploadVideo);
             $em->flush();
-
-
 
             return new JsonResponse(["status" => "ok", "link" => $uploadVideo->getId()]);
         }

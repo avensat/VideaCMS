@@ -30,7 +30,7 @@
                     <div id="reload">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="title">{{ video.title }}</div>
+                                <div class="stitle">{{ video.title }}</div>
                                 <div class="views">{{ video.views }} vues</div>
                             </div>
                             <div class="col-lg-6 likes">
@@ -45,6 +45,9 @@
                         </div>
                         <div class="description">
                             {{ video.description }}
+                            <div style="float: right">
+                                {{ render(controller('App\\Controller\\ReportController::report',{ 'identifier': video.id, 'entity': 'uVideo', 'url': app.request.uri })) }}
+                            </div>
                         </div>
 
                         <div class="comments">Commentaires</div>
