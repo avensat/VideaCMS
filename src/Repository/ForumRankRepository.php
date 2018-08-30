@@ -47,4 +47,19 @@ class ForumRankRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param $userID
+     * @return array
+     */
+    public function getRanks(){
+
+        $ranks = $this->createQueryBuilder('p')
+            ->orderBy("p.id", "ASC")
+            ->getQuery()
+            ->getArrayResult();
+
+        return $ranks;
+    }
+
 }

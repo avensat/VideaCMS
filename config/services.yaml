@@ -61,6 +61,11 @@ services:
              - { name: twig.extension }
            arguments: [ '@doctrine.orm.entity_manager' ]
 
+    App\Twig\ForumExtension:
+        tags:
+            - { name: twig.extension }
+        arguments: [ '@doctrine.orm.entity_manager' ]
+
     App\Twig\BackofficeExtension:
            tags:
              - { name: twig.extension }

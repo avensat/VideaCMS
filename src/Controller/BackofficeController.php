@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\ForumRank;
 use App\Entity\Message;
 use App\Entity\Poll;
 use App\Entity\ProviderVideo;
@@ -15,6 +16,7 @@ use App\Entity\User;
 use App\Entity\Wall;
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Form\ForumRankType;
 use App\Form\ThemeParametersType;
 use App\Form\ThemeType;
 use App\Form\UploadType;
@@ -762,7 +764,7 @@ class BackofficeController extends Controller
      */
     public function reports(Request $request)
     {
-        $query = $this->getDoctrine()->getRepository(Report::class)->findAll(["id" => "DESC"]);
+        $query = $this->getDoctrine()->getRepository(Report::class)->findBy(["id" => "DESC"]);
         $paginator = $this->get('knp_paginator');
         $reports = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
 
@@ -808,5 +810,39 @@ class BackofficeController extends Controller
         $em->flush();
         $this->addFlash("success", "Signalement supprimé");
         return $this->redirectToRoute("backoffice_reports_all");
+    }
+
+    /**
+     * @Route("/ranks", name="backoffice_forum_ranks")
+     */
+    public function ranks(Request $request)
+    {
+        $query = $this->getDoctrine()->getRepository(ForumRank::class)->findAll();
+        $paginator = $this->get('knp_paginator');
+        $ranks = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
+        return $this->render('backoffice/forum/ranks/index.html.twig', [
+            "ranks" => $ranks
+        ]);
+    }
+
+    /**
+     * @Route("/rank/add", name="backoffice_forum_rank_add")
+     */
+    public function rankAdd(Request $request)
+    {
+        $rank = new ForumRank();
+        $form = $this->createForm(ForumRankType::class, $rank)->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($rank);
+            $em->flush();
+            $this->addFlash("success", "Rang ajouté avec succès.");
+            return $this->redirectToRoute("backoffice_forum_ranks");
+        }
+        return $this->render('backoffice/forum/ranks/add.html.twig', [
+            "form" => $form->createView()
+        ]);
     }
 }

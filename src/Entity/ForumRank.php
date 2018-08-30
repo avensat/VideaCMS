@@ -22,12 +22,17 @@ class ForumRank
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $color;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $msg;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
 
@@ -49,6 +54,18 @@ class ForumRank
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

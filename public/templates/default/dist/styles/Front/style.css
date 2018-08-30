@@ -1288,6 +1288,15 @@ section .section-title {
     border-right: 1px solid #e7e7e7;
 }
 
+.thread .left-col .user-stats{
+    display: block;
+}
+
+.thread .left-col .user-rank{
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .thread .message{
     display: block;
     margin-top: 10px;
