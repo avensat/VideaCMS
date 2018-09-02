@@ -845,4 +845,33 @@ class BackofficeController extends Controller
             "form" => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/rank/edit/{id}", name="backoffice_forum_rank_edit")
+     */
+    public function rankEdit(Request $request, ForumRank $rank)
+    {
+        $form = $this->createForm(ForumRankType::class, $rank)->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Votre modification a été effectuée.");
+            return $this->redirectToRoute("backoffice_forum_rank_edit");
+        }
+        return $this->render('backoffice/forum/ranks/edit.html.twig', [
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/rank/remove/{id}", name="backoffice_forum_rank_remove")
+     */
+    public function rankRemove(ForumRank $rank){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($rank);
+        $em->flush();
+        $this->addFlash("success", "Rang supprimé");
+        return $this->redirectToRoute("backoffice_forum_ranks");
+    }
+
 }

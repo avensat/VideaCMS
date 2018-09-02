@@ -26,8 +26,8 @@
                         <td>{{ rank.msg }}</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a href="{{ path("thread_show", {"id": rank.id}) }}" class="btn btn-secondary"><i class="fal fa-eye"></i></a>
-                                <a href="{{ path("message_edit", {"id": rank.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a href="{{ path("backoffice_forum_rank_edit", {"id": rank.id}) }}" class="btn btn-secondary"><i class="fal fa-edit"></i></a>
+                                <a href="{{ path("backoffice_forum_rank_remove", {"id": rank.id}) }}" class="btn btn-secondary"><i class="fal fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>

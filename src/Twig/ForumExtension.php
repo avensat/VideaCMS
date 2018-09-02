@@ -2,16 +2,16 @@
 
 namespace App\Twig;
 
-use App\Entity\Article;
 use App\Entity\ForumRank;
 use App\Entity\Message;
-use App\Entity\Theme;
 use App\Entity\Thread;
 use App\Entity\User;
-use App\Service\TemplateService;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class ForumExtension
+ * @package App\Twig
+ */
 class ForumExtension extends \Twig_Extension
 {
     /**
@@ -29,16 +29,26 @@ class ForumExtension extends \Twig_Extension
     }
 
 
+    /**
+     * @return array|\Twig_Function[]
+     */
     public function getFunctions()
     {
         return array(
             new \Twig_SimpleFunction('getForumRank', array($this, 'getForumRank')),
+            new \Twig_SimpleFunction('getLastMessagesFor', array($this, 'getLastMessagesFor')),
             new \Twig_SimpleFunction('getMessages', array($this, 'getMessages')),
+            new \Twig_SimpleFunction('getLastThreadsFor', array($this, 'getLastThreadsFor')),
             new \Twig_SimpleFunction('getThreads', array($this, 'getThreads')),
         );
     }
 
-
+    /**
+     * Return the forum rank for selected user
+     *
+     * @param User $user
+     * @return string
+     */
     public function getForumRank(User $user){
         $ranks = $this->em->getRepository(ForumRank::class)->findBy(['enabled' => true]);
         $posts = $this->em->getRepository(Message::class)->findBy(['user' => $user]);
@@ -55,13 +65,47 @@ class ForumExtension extends \Twig_Extension
         return $uRank;
     }
 
+    /**
+     * Return last forum messages for selected user
+     *
+     * @param User $user
+     * @param int $limit
+     * @return array|object[]
+     */
+    public function getLastMessagesFor(User $user, $limit = 10){
+        $posts = $this->em->getRepository(Message::class)->findBy(['user' => $user], ["id" => "DESC"], $limit);
+        return $posts;
+    }
 
+    /**
+     * Return last forum threads for selected user
+     *
+     * @param User $user
+     * @param int $limit
+     * @return array|object[]
+     */
+    public function getLastThreadsFor(User $user, $limit = 10){
+        $threads = $this->em->getRepository(Thread::class)->findBy(['user' => $user], ["id" => "DESC"], $limit);
+        return $threads;
+    }
 
+    /**
+     * Return the number of forum messages for selected user
+     *
+     * @param User $user
+     * @return int
+     */
     public function getMessages(User $user){
         $posts = $this->em->getRepository(Message::class)->findBy(['user' => $user]);
         return count($posts);
     }
 
+    /**
+     * Return the number of forum threads for selected user
+     *
+     * @param User $user
+     * @return int
+     */
     public function getThreads(User $user){
         $threads = $this->em->getRepository(Thread::class)->findBy(['user' => $user]);
         return count($threads);
