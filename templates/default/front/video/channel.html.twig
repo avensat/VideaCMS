@@ -96,6 +96,35 @@
             </div>
         </div>
         <div class="spacer30"></div>
+            <div class="card channel-article-bg">
+                <div class="card-body articles ">
+                <div class="head">Activité récente<i class="fal fa-angle-down"></i></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title" style="font-size: 25px;text-transform: uppercase;">Sujets & réponses <i class="fal fa-angle-down"></i></div>
+                        {% for thread in getLastThreadsFor(user) %}
+                            <li style="margin-bottom: 10px;"><i class="fas fa-folder" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': thread.id}) }}" class="sTitle">{{ thread.title|length > 25 ? thread.title|slice(0, 25) ~ '[...]' : thread.title }}</a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': thread.user.username}) }}">{{ thread.user.username }}</a> le {{ thread.createdAt|date("d/m à H:i") }}.</li>
+                        {% else %}
+                            L'utilisateur n'a pas encore posté de sujets sur le forum
+                        {% endfor %}
+                        {% for message in getLastMessagesFor(user) %}
+                            <li style="margin-bottom: 10px;"><i class="fas fa-comment-alt" style="color: #8e78e3"></i> <a href="{{ path('thread_show', {'id': message.thread.id}) }}" class="sTitle">"<i>{{ message.content|length > 30 ? message.content|slice(0, 30) ~ '[...]' : message.content|striptags }}"</i></a> par <a style="color: #8e78e3;" href="{{ path("video_channel", {'user': message.user.username}) }}">{{ message.user.username }}</a> le {{ message.createdAt|date("d/m à H:i") }}.</li>
+                        {% else %}
+                            L'utilisateur n'a pas encore posté de réponses sur le forum
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="title" style="font-size: 25px;text-transform: uppercase;">Commentaires <i class="fal fa-angle-down"></i></div>
+                        {% for comment in getLastCommentsFor(user) %}
+                            <li><i class="fas fa-comment"></i> {{ comment.content }}</li>
+                        {% else %}
+                            L'utilisateur n'a pas posté de commentaires
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spacer30"></div>
         <div class="card channel-videos-bg">
             <div class="card-body articles ">
                 <div class="head">Vidéos <i class="fal fa-angle-down"></i></div>
@@ -135,36 +164,40 @@
             </div>
         </div>
         <div class="spacer30"></div>
-        <div class="card channel-article-bg">
-            <div class="card-body articles">
-                <div class="head">Articles <i class="fal fa-angle-down"></i></div>
-                {% for article in articles %}
-                    <a href="{{ path("news_view", {'id': article.id}) }}"><span class="atitle">{{ article.title }}</span></a>
-                    <span class="description">{{ article.content|length > 200 ? article.content|slice(0, 200) ~ '[...]' : article.content  }}</span>
-                    <span class="user"><a href="{{ path("video_channel", {'user': article.user.username}) }}">{{ article.user.username }}</a> <span class="date">le {{ article.creation|date("d/m/y à H:i") }}</span></span>
-                    {% if not loop.last %}
-                        <hr/>
-                    {% endif %}
-                {% else %}
-                    Aucun article pour le moment !
-                {% endfor %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card channel-article-bg">
+                    <div class="card-body articles">
+                        <div class="head">Articles <i class="fal fa-angle-down"></i></div>
+                        {% for article in articles %}
+                            <a href="{{ path("news_view", {'id': article.id}) }}"><span class="atitle">{{ article.title }}</span></a>
+                            <span class="description">{{ article.content|length > 200 ? article.content|slice(0, 200) ~ '[...]' : article.content  }}</span>
+                            <span class="user"><a href="{{ path("video_channel", {'user': article.user.username}) }}">{{ article.user.username }}</a> <span class="date">le {{ article.creation|date("d/m/y à H:i") }}</span></span>
+                            {% if not loop.last %}
+                                <hr/>
+                            {% endif %}
+                        {% else %}
+                            Aucun article pour le moment !
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="spacer30"></div>
-        <div class="card channel-poll-bg">
-            <div class="card-body channel-poll">
-                <div class="head">Sondages <i class="fal fa-angle-down"></i></div>
-                <div class="row">
-                    {% for poll in polls %}
-                        <div class="col-md-4 content">
-                            <span class="pTitle">{{ poll.title }}</span>
-                            <span class="question">{{ poll.question }}</span>
-                            <span class="responses">{{ poll.answer|length }} réponse(s) !</span>
-                            <a href="" class="btn btn-secondary ">Voter !</a>
+            <div class="col-md-6">
+                <div class="card channel-poll-bg">
+                    <div class="card-body channel-poll">
+                        <div class="head">Sondages <i class="fal fa-angle-down"></i></div>
+                            {% for poll in polls %}
+                                <div class="col-md-4 content">
+                                    <span class="pTitle">{{ poll.title }}</span>
+                                    <span class="question">{{ poll.question }}</span>
+                                    <span class="responses">{{ poll.answer|length }} réponse(s) !</span>
+                                    <a href="" class="btn btn-secondary ">Voter !</a>
+                                </div>
+                            {% else %}
+                                Aucun sondage pour le moment !
+                            {% endfor %}
                         </div>
-                    {% else %}
-                        Aucun sondage pour le moment !
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

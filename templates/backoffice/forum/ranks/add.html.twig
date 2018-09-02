@@ -1,0 +1,37 @@
+{% extends 'backoffice/layout.html.twig' %}
+{% block title %}Rangs{% endblock %}
+{% block body %}
+    <div class="title">Ajouter un rang</div>
+    <div class="card top">
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            <div class="form-group">
+                {{ form_label(form.name, "Nom du rang") }}
+                {{ form_widget(form.name) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.color, "Couleur du texte") }}
+                {{ form_widget(form.color, {"attr": {"style": "width: 100px"}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.msg, "Messages à atteindre") }}
+                {{ form_widget(form.msg, {"attr": {"style": "width: 200px"}}) }}
+                <i>(0 = Rang par défaut)</i>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.image, "URL de l'image") }}
+                {{ form_widget(form.image) }}
+            </div>
+
+            {{ form_widget(form.enabled, {"label": "Activer ce rang"}) }}
+                <br>
+            <button class="btn btn-primary">Ajouter le rang</button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

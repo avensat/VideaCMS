@@ -35,6 +35,12 @@
                                 <div style="font-size: 15px;" class="creator"><i class="fal fa-badge-check"></i> Créateur</div>
                             {% endif %}
                         {% endfor %}
+                        {% set rank = getForumRank(thread.user) %}
+                        <div style="margin-top: 5px">
+                            <span class="user-rank" style="color: {{ rank.color }}">{{ rank.name }}</span>
+                            <span class="user-stats">{{ getThreads(thread.user) }} sujet(s)</span>
+                            <span class="user-stats">{{ getMessages(thread.user) }} réponse(s)</span>
+                        </div>
                     </div>
                     <div class="col-md-10">
                         <div class="bar">
@@ -81,6 +87,13 @@
                                     <div style="font-size: 15px;" class="creator"><i class="fal fa-badge-check"></i> Créateur</div>
                                 {% endif %}
                             {% endfor %}
+                            {% set rank = getForumRank(thread.user) %}
+                            <span class="user-rank" style="color: {{ rank.color }}">{{ rank.name }}</span>
+                            <div style="margin-top: 5px">
+                                <span class="user-stats">{{ getThreads(thread.user) }} sujet(s)</span>
+                                <span class="user-stats">{{ getMessages(thread.user) }} réponse(s)</span>
+                            </div>
+
                         </div>
                         <div class="col-md-10">
                             <div class="bar">
