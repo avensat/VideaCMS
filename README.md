@@ -13,5 +13,3 @@
   
 The project is currently under development. More informations coming soon.
 
-http://videa.kodmit.com
-
